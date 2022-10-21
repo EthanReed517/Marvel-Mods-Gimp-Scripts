@@ -3,7 +3,12 @@
 	(gimp-image-undo-group-start image)
 	(gimp-selection-none image)
 	(gimp-image-merge-visible-layers image 2)
-	(gimp-image-scale image 1024 1024)
+	(let*
+		(
+			(squareSize (car (gimp-image-height image)))
+		)
+		(gimp-image-scale image squareSize squareSize)
+	)
 	(gimp-displays-flush)
 	(gimp-image-undo-group-end image)
 )

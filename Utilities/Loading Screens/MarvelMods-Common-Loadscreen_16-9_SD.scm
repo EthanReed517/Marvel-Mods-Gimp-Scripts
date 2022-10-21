@@ -3,7 +3,12 @@
 	(gimp-image-undo-group-start image)
 	(gimp-selection-none image)
 	(gimp-image-merge-visible-layers image 2)
-	(gimp-image-scale image 2048 1024)
+	(let*
+		(
+			(squareSize (car (gimp-image-height image)))
+		)
+		(gimp-image-scale image (* squareSize 2) squareSize)
+	)
     (set! layer (car (gimp-image-get-active-layer image)))
     (plug-in-colors-channel-mixer RUN-NONINTERACTIVE image layer FALSE 0 0 1 0 1 0 1 0 0)
 	(gimp-displays-flush)
