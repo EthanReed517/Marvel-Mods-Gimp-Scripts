@@ -37,7 +37,7 @@
 						theImageWidth
 						theImageHeight
 						RGBA-IMAGE
-						"portraits"
+						"Portraits"
 						100
 						LAYER-MODE-NORMAL
 					)

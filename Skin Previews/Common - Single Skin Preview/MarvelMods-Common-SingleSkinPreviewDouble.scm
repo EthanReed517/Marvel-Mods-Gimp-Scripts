@@ -5,6 +5,8 @@
 	(gimp-image-resize image 1086 1080 0 0)
 	(gimp-layer-resize-to-image-size layer)
 	(gimp-image-add-vguide image 643)
+	(gimp-image-add-vguide image 815)
+	(gimp-image-add-vguide image 986)
 	(gimp-image-add-vguide image 1086)
 	(gimp-displays-flush)
 	(gimp-image-undo-group-end image)
