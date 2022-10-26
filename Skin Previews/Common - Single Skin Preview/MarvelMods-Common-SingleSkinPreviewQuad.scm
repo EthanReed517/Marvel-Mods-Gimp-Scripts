@@ -3,7 +3,17 @@
 	(gimp-image-undo-group-start image)
 	(gimp-selection-none image)
 	(gimp-image-resize image 1086 2160 0 0)
-	(gimp-layer-resize-to-image-size layer)
+	(let 
+		(
+			(num-layers (car (gimp-image-get-layers image)))
+			(layer-ids (cadr (gimp-image-get-layers image)))
+			(i 0)
+		)
+		(while (< i num-layers)
+			(gimp-layer-resize-to-image-size (vector-ref layer-ids i))
+			(set! i (+ i 1))
+		)
+	)
 	(gimp-image-add-vguide image 643)
 	(gimp-image-add-vguide image 815)
 	(gimp-image-add-vguide image 986)
