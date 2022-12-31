@@ -34,4 +34,4 @@
     SF-DRAWABLE     "Layer"       0
 )
 ; register the script within gimp menu
-(script-fu-menu-register "script-fu-mua-xml2-double-preview" "<Image>/Marvel Mods/Skin Previews/Single Skin Showcase")
+(script-fu-menu-register "script-fu-mua-xml2-double-preview" "<Image>/Marvel Mods (Legacy)/Skin Previews/Single Skin Showcase")
