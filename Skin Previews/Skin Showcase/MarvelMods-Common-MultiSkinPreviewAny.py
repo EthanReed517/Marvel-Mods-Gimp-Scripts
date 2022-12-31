@@ -8,9 +8,9 @@ def multiSkinPreviewAny (theImage, theLayer, columns, rows):
     theImageWidth = 543 * columns
     theImageHeight = 1080 * rows
     # Create the image
-    theImage = pdb.gimp_image_new(theImageWidth, theImageHeight, 0)
+    theImage = pdb.gimp_image_new(theImageWidth, theImageHeight, RGB)
     # Create the main layer
-    theLayer = pdb.gimp_layer_new(theImage, theImageWidth, theImageHeight, 1, "Background", 100, 28)
+    theLayer = pdb.gimp_layer_new(theImage, theImageWidth, theImageHeight, RGBA_IMAGE, "Background", 100, LAYER_MODE_NORMAL)
     # Add the layer to the image
     pdb.gimp_image_add_layer(theImage, theLayer, 0)
     # Add guides at the top left and bottom right

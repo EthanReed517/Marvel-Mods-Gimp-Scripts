@@ -14,11 +14,11 @@ def singleSkinPreview (theImage, backgroundLayer, previews):
     else:
         imageWidth = 1086
     # Create the image
-    theImage = pdb.gimp_image_new(imageWidth, imageHeight, 0)
+    theImage = pdb.gimp_image_new(imageWidth, imageHeight, RGB)
     # Create the main layer
-    backgroundLayer = pdb.gimp_layer_new(theImage, imageWidth, imageHeight, 1, "Background", 100, 28)
+    backgroundLayer = pdb.gimp_layer_new(theImage, imageWidth, imageHeight, RGBA_IMAGE, "Background", 100, LAYER_MODE_NORMAL)
     # Create the portrait layer
-    portraitLayer = pdb.gimp_layer_new(theImage, imageWidth, imageHeight, 1, "Portraits", 100, 28)
+    portraitLayer = pdb.gimp_layer_new(theImage, imageWidth, imageHeight, RGBA_IMAGE, "Portraits", 100, LAYER_MODE_NORMAL)
     # Add the layers to the image
     pdb.gimp_image_add_layer(theImage, backgroundLayer, 0)
     pdb.gimp_image_add_layer(theImage, portraitLayer, 0)
