@@ -13,7 +13,7 @@ register(
     "BaconWizard17",
     "BaconWizard17",
     "December 2022",
-    "<Image>/Marvel Mods/Skin Previews/Skin Showcase/Single Skin Preview - Export",
+    "<Image>/Marvel Mods/Skin Previews/Skin Showcase/Export Single Skin Preview",
     "*",
     [],
     [],

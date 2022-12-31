@@ -41,7 +41,7 @@ register(
     "BaconWizard17",
     "BaconWizard17",
     "December 2022",
-    "<Image>/Marvel Mods/Skin Previews/Skin Showcase/Multi Skin Preview",
+    "<Image>/Marvel Mods/Skin Previews/Skin Showcase/Create Multi Skin Preview",
     "",
     [
         (PF_SLIDER, "columns", "Number of Columns:", 2, (1, 8, 1)),
