@@ -43,4 +43,4 @@
 )
 
 ; register the script within gimp menu
-(script-fu-menu-register "script-fu-mua-normal" "<Image>/Marvel Mods/Utilities")
+(script-fu-menu-register "script-fu-mua-normal" "<Image>/Marvel Mods (Legacy)/Utilities")

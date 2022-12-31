@@ -24,4 +24,4 @@
     SF-DRAWABLE     "Layer"       0
 )
 ; register the script within gimp menu
-(script-fu-menu-register "script-fu-mua1-convo-preview" "<Image>/Marvel Mods/Skin Previews/MUA1 PC")
+(script-fu-menu-register "script-fu-mua1-convo-preview" "<Image>/Marvel Mods (Legacy)/Skin Previews/MUA1 PC")

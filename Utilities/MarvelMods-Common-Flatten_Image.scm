@@ -19,4 +19,4 @@
     SF-DRAWABLE     "Layer"       0
 )
 ; register the script within gimp menu
-(script-fu-menu-register "script-fu-mua-xml2-flatten-image" "<Image>/Marvel Mods/Utilities")
+(script-fu-menu-register "script-fu-mua-xml2-flatten-image" "<Image>/Marvel Mods (Legacy)/Utilities")

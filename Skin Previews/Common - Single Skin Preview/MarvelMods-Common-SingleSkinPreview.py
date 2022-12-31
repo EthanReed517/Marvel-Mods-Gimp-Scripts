@@ -53,7 +53,7 @@ register(
     "BaconWizard17",
     "BaconWizard17",
     "December 2022",
-    "<Image>/Marvel Mods/Skin Previews/Single Skin Showcase/Single Skin Preview",
+    "<Image>/Marvel Mods/Skin Previews/Skin Showcase/Single Skin Preview",
     "",
     [
         (PF_SLIDER, "previews", "Number of Previews Needed:", 2, (1, 4, 1))

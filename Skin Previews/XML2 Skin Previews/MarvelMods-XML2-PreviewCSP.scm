@@ -20,4 +20,4 @@
     SF-DRAWABLE     "Layer"       0
 )
 ; register the script within gimp menu
-(script-fu-menu-register "script-fu-xml2-csp-preview" "<Image>/Marvel Mods/Skin Previews/XML2 PC")
+(script-fu-menu-register "script-fu-xml2-csp-preview" "<Image>/Marvel Mods (Legacy)/Skin Previews/XML2 PC")

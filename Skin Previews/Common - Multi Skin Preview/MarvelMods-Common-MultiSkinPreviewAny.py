@@ -10,7 +10,7 @@ def multiSkinPreviewAny (theImage, theLayer, columns, rows):
     # Create the image
     theImage = pdb.gimp_image_new(theImageWidth, theImageHeight, 0)
     # Create the main layer
-    theLayer = pdb.gimp_layer_new(theImage, theImageWidth, theImageHeight, 0, "Background", 100, 28)
+    theLayer = pdb.gimp_layer_new(theImage, theImageWidth, theImageHeight, 1, "Background", 100, 28)
     # Add the layer to the image
     pdb.gimp_image_add_layer(theImage, theLayer, 0)
     # Add guides at the top left and bottom right
@@ -41,7 +41,7 @@ register(
     "BaconWizard17",
     "BaconWizard17",
     "December 2022",
-    "<Image>/Marvel Mods/Skin Previews/Multi Skin Showcase/Custom Size Skin Preview",
+    "<Image>/Marvel Mods/Skin Previews/Skin Showcase/Multi Skin Preview",
     "",
     [
         (PF_SLIDER, "columns", "Number of Columns:", 2, (1, 8, 1)),

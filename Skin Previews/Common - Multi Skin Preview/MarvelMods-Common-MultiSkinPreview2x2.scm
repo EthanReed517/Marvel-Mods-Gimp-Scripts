@@ -50,4 +50,4 @@
     ""
 )
 ; register the script within gimp menu
-(script-fu-menu-register "script-fu-mua-xml2-2x2-preview" "<Image>/Marvel Mods/Skin Previews/Multi Skin Showcase")
+(script-fu-menu-register "script-fu-mua-xml2-2x2-preview" "<Image>/Marvel Mods (Legacy)/Skin Previews/Multi Skin Showcase")
