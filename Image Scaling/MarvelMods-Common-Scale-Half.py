@@ -3,7 +3,7 @@
 
 from gimpfu import*
 
-def scale_any (theImage, theLayer):
+def scale_half (theImage, theLayer):
     currentWidth = theImage.width
     currentHeight = theImage.height
     newWidth = currentWidth/2
@@ -11,7 +11,7 @@ def scale_any (theImage, theLayer):
     pdb.gimp_image_scale(theImage, newWidth, newHeight)
 
 register(
-    "python_fu_marvelmods_common_scale_any",
+    "python_fu_marvelmods_common_scale_half",
     "Scale image to half its original size.",
     "Scale image to half its original size.",
     "BaconWizard17",
@@ -21,6 +21,6 @@ register(
     "*",
     [],
     [],
-    scale_any)
+    scale_half)
 
 main()
