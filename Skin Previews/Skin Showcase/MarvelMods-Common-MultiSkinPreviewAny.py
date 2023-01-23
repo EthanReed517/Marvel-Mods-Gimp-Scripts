@@ -3,7 +3,7 @@
 
 from gimpfu import*
 
-def multiSkinPreviewAny (theImage, theLayer, columns, rows):
+def multiSkinPreviewAny (columns, rows):
     # Establish the dimensions of the image based on the number of rows and columns
     theImageWidth = 543 * columns
     theImageHeight = 1080 * rows
@@ -33,21 +33,23 @@ def multiSkinPreviewAny (theImage, theLayer, columns, rows):
         i += 1
     # Display the new image
     display = pdb.gimp_display_new(theImage)
-
+    
 register(
-    "python_fu_marvelmods_common_multiskinpreviewany",
-    "Create template grid for skin preview images.",
-    "Create template grid for skin preview images.",
-    "BaconWizard17",
-    "BaconWizard17",
-    "December 2022",
-    "<Image>/Marvel Mods/Skin Previews/Skin Showcase/Create Multi Skin Preview",
-    "",
-    [
-        (PF_SLIDER, "columns", "Number of Columns:", 2, (1, 8, 1)),
+	"python_fu_marvelmods_common_multiskinpreviewany",
+	"Create template grid for skin preview images.",
+	"Create template grid for skin preview images.",
+	"BaconWizard17",
+	"BaconWizard17",
+	"December 2022",
+	"Create Multi Skin Preview",
+	"", 
+	[
+		(PF_SLIDER, "columns", "Number of Columns:", 2, (1, 8, 1)),
         (PF_SLIDER, "rows", "Number of Rows:", 2, (1, 8, 1))
-    ],
-    [],
-    multiSkinPreviewAny)
+	],
+	[],
+    multiSkinPreviewAny,
+    menu="<Image>/Marvel Mods/Skin Previews/Skin Showcase",
+)
 
 main()
