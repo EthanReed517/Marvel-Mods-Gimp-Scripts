@@ -16,4 +16,4 @@ Any image in GIMP.
 4. Press OK in the dialog. The image will be scaled to its new size.
 
 ## Credits
-BaconWizard17: Script creation
+- BaconWizard17: Script creation

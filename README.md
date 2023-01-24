@@ -19,5 +19,5 @@ Alternatively, you can manually paste individual scripts into the appropriate fo
 2. Each plugin has more detailed information in its own `README.md` file, which is included within this archive.
 
 ## Credits
-BaconWizard17: Script creation
-ak2yny: Assistance with scripts
+- BaconWizard17: Script creation
+- ak2yny: Assistance with scripts
