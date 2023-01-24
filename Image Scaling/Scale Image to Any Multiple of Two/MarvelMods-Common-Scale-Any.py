@@ -6,10 +6,11 @@
 # ########### #
 # GIMP plugin to reduce the size of an image by a particular scale factor (multiple of 2) from 2 to 16. 
 # This was designed with the intention to use it with modding processes for MarvelMods.com, though it can have other uses. 
-# (c) BaconWizard17 2022
+# For detailed instructions, please reference the README.md file included with this download.
+# (c) BaconWizard17 2023
 #
 #   History:
-#   v1.0: 31Dec2022: First published version.
+#   v1.0: 23Jan2023: First published version.
 
 #   This program is free software; you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License as published by
@@ -18,7 +19,7 @@
 #
 #   This program is distributed in the hope that it will be useful,
 #   but WITHOUT ANY WARRANTY; without even the implied warranty of
-#   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 #   GNU General Public License for more details.
 #
 #   You should have received a copy of the GNU General Public License
@@ -37,19 +38,19 @@ from gimpfu import*
 # FUNCTION #
 # ######## #
 # Define the operation
-def scale_any (theImage, theLayer, scale_factor):
+def scale_any (image, layer, scale_factor):
     # Start an undo group so that the entire operation can be undone at once
     pdb.gimp_image_undo_group_start(image)
     # Clear the selection (This is done just in case there is a selection, but there shouldn't be)
     pdb.gimp_selection_none(image)
     # Get the current dimensions of the image
-    currentWidth = theImage.width
-    currentHeight = theImage.height
+    currentWidth = image.width
+    currentHeight = image.height
     # Get the new dimensions by dividing old dimensions by the scale factor
     newWidth = currentWidth/scale_factor
     newHeight = currentHeight/scale_factor
     # scale the image accordingly
-    pdb.gimp_image_scale(theImage, newWidth, newHeight)
+    pdb.gimp_image_scale(image, newWidth, newHeight)
     # Resize the layer to the image size
     pdb.gimp_layer_resize_to_image_size(layer)
     # Display the changes
@@ -72,11 +73,13 @@ register(
     "Scale to Any Size",
     "*",
     [
+        (PF_IMAGE, "image", "Input image", None),
+        (PF_DRAWABLE, 'drawable', 'Layer, mask or channel', None),
         (PF_SLIDER, "scale_factor", "Divide size by:", 8, (2, 16, 2))
     ],
     [],
     scale_any,
-    menu='<Image>/Marvel Mods/Image Scaling/'
+    menu='<Image>/Marvel Mods/Image Scaling'
 )
 
 
