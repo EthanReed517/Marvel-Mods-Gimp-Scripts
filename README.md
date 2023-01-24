@@ -10,7 +10,7 @@ GIMP (primarily verified with GIMP 2.10)
  1. Open `update.bat` with Notepad++ or another text editor.
  2. Edit the file paths in lines 6 and 8 to reflect your GIMP configuration.
  3. Save `update.bat`
- 4. Run `runUpdateAdmin.bat` to run the update script with administrator access, which will allow you to access the necessary folders.
+ 4. Run `runUpdateAdmin` to run the update script with administrator access, which will allow you to access the necessary folders.
 
 Alternatively, you can manually paste individual scripts into the appropriate folders.
 
