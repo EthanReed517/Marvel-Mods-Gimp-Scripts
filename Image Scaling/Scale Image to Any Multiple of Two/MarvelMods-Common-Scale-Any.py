@@ -69,7 +69,7 @@ register(
     "Scale image to any smaller multiple of 2.",
     "BaconWizard17",
     "BaconWizard17",
-    "December 2022",
+    "January 2023",
     "Scale to Any Size",
     "*",
     [
