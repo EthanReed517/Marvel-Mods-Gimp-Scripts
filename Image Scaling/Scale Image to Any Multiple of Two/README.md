@@ -1,4 +1,5 @@
 # Marvel Mods GIMP Plugins
+by BaconWizard17
 ## Scale Image to Any Multiple of Two
 This plugin reduces the size of an image by a particular scale factor (multiple of 2) from 2 to 16. 
 
