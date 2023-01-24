@@ -1,0 +1,18 @@
+# Marvel Mods GIMP Plugins
+by BaconWizard17
+## Crop MUA1 Mannequin Preview
+This plugin crops a screenshot from MUA1 PC to create a preview of a mannequin.
+
+### Compatibility
+This script will only work correctly if the resolution is set to 1920x1080. The screenshot must be taken in the character select screen when hovering over the mannequin in question. I generally take my screenshots using the original (v1.0-v1.5) 36 Roster Hack team stage with the only character in menulocation 7.
+
+### Installation
+ 1. This script can be installed using `runUpdateAdmin.bat` from my scripts, or it can be placed individually in your GIMP plugins directory. The standard location for this is `C:\Users\(your user)\AppData\Roaming\GIMP\2.10\plug-ins`. Check the main `README.md` file in this project for more details on proper installation.
+
+### Usage
+1. Start with an image open in GIMP that you would like to crop. See the "Compatibility" section above for details on the image type.
+2. In the toolbar, go to `Marvel Mods/Skin Previews/Crop Screenshots - MUA1` and choose the `Crop Mannequin Preview` plugin.
+3. The image will be cropped to the correct size.
+
+## Credits
+- BaconWizard17: Script creation

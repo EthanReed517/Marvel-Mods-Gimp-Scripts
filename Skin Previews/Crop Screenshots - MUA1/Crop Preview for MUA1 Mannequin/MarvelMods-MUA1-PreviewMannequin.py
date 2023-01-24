@@ -1,8 +1,43 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+# ########### #
+# INFORMATION #
+# ########### #
+# GIMP plugin to crop a mannequin preview for the PC version of Marvel - Ultimate Alliance.
+# This was designed with the intention to use it with modding processes for MarvelMods.com, though it can have other uses. 
+# For detailed instructions, please reference the README.md file included with this download.
+# (c) BaconWizard17 2023
+#
+#   History:
+#   v1.0: 23Jan2023: First published version.
+
+#   This program is free software; you can redistribute it and/or modify
+#   it under the terms of the GNU General Public License as published by
+#   the Free Software Foundation; either version 2 of the License, or
+#   (at your option) any later version.
+#
+#   This program is distributed in the hope that it will be useful,
+#   but WITHOUT ANY WARRANTY; without even the implied warranty of
+#   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+#   GNU General Public License for more details.
+#
+#   You should have received a copy of the GNU General Public License
+#   along with this program; if not, write to the Free Software
+#   Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+
+
+# ####### #
+# IMPORTS #
+# ####### #
+# Import the gimpfu module so that scripts can be executed
 from gimpfu import*
 
+
+# ######## #
+# FUNCTION #
+# ######## #
+# Define the operation
 def previewMannequin (image, layer):
     # Start an undo group so that the entire operation can be undone at once
     pdb.gimp_image_undo_group_start(image)
@@ -17,17 +52,30 @@ def previewMannequin (image, layer):
     # End the undo group
     pdb.gimp_image_undo_group_end(image)
 
+# ######## #
+# REGISTER #
+# ######## #
+# Register the script in GIMP
 register(
     "python_fu_marvelmods_mua1_previewMannequin",
     "Crops the preview window for MUA1 mannequins.",
     "Crops the preview window for MUA1 mannequins.",
     "BaconWizard17",
     "BaconWizard17",
-    "December 2022",
-    "<Image>/Marvel Mods/Skin Previews/Crop Screenshots - MUA1/Crop Mannequin Preview",
+    "January 2023",
+    "Crop Mannequin Preview",
     "*",
+    [
+        (PF_IMAGE, "image", "Input image", None),
+        (PF_DRAWABLE, 'drawable', 'Layer, mask or channel', None)
+    ],
     [],
-    [],
-    previewMannequin)
+    previewMannequin,
+    menu='<Image>/Marvel Mods/Skin Previews/Crop Screenshots - MUA1'
+)
 
+
+# ############## #
+# MAIN EXECUTION #
+# ############## #
 main()
