@@ -4,7 +4,7 @@
 # ########### #
 # INFORMATION #
 # ########### #
-# GIMP plugin to crop a mannequin preview for the PC version of Marvel - Ultimate Alliance.
+# GIMP plugin to crop a character select portrait preview for the PC version of X-Men Legends II: Rise of Apocalypse.
 # This was designed with the intention to use it with modding processes for MarvelMods.com, though it can have other uses. 
 # For detailed instructions, please reference the README.md file included with this download.
 # (c) BaconWizard17 2023
@@ -38,13 +38,13 @@ from gimpfu import*
 # FUNCTION #
 # ######## #
 # Define the operation
-def previewMannequin (image, layer):
+def previewCSP (image, layer):
     # Start an undo group so that the entire operation can be undone at once
     pdb.gimp_image_undo_group_start(image)
     # Clear the selection (This is done just in case there is a selection, but there shouldn't be)
     pdb.gimp_selection_none(image)
     # Crop the image accordingly
-    pdb.gimp_image_resize(image, 493, 981, -713, 0)
+    pdb.gimp_image_resize(image, 163, 163, -360, -320)
     # Resize the layer to the image size
     pdb.gimp_layer_resize_to_image_size(layer)
     # Display the changes
@@ -57,21 +57,21 @@ def previewMannequin (image, layer):
 # ######## #
 # Register the script in GIMP
 register(
-    "python_fu_marvelmods_mua1_previewMannequin",
-    "Crops the preview window for MUA1 mannequins.",
-    "Crops the preview window for MUA1 mannequins.",
+    "python_fu_marvelmods_xml2_previewCSP",
+    "Crops the preview window for XML2 Character Select Portraits.",
+    "Crops the preview window for XML2 Character Select Portraits.",
     "BaconWizard17",
     "BaconWizard17",
     "January 2023",
-    "Crop Mannequin Preview",
+    "Crop Character Select Portrait Preview",
     "*",
     [
         (PF_IMAGE, "image", "Input image", None),
         (PF_DRAWABLE, 'drawable', 'Layer, mask or channel', None)
     ],
     [],
-    previewMannequin,
-    menu='<Image>/Marvel Mods/Skin Previews/Crop Screenshots - MUA1'
+    previewCSP,
+    menu='<Image>/Marvel Mods/Skin Previews/Crop Screenshots - XML2'
 )
 
 

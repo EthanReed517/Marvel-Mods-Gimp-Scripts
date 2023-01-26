@@ -4,7 +4,7 @@
 # ########### #
 # INFORMATION #
 # ########### #
-# GIMP to plugin crop a skin preview for the PC version of Marvel - Ultimate Alliance.
+# GIMP to plugin crop a skin preview for the PC version of X-Men Legends II: Rise of Apocalypse.
 # This was designed with the intention to use it with modding processes for MarvelMods.com, though it can have other uses. 
 # For detailed instructions, please reference the README.md file included with this download.
 # (c) BaconWizard17 2023
@@ -44,7 +44,7 @@ def previewSkin (image, layer):
     # Clear the selection (This is done just in case there is a selection, but there shouldn't be)
     pdb.gimp_selection_none(image)
     # Crop the image accordingly
-    pdb.gimp_image_resize(image, 395, 785, -339, -196)
+    pdb.gimp_image_resize(image, 543, 1080, -222, 0)
     # Resize the layer to the image size
     pdb.gimp_layer_resize_to_image_size(layer)
     # Display the changes
@@ -57,9 +57,9 @@ def previewSkin (image, layer):
 # ######## #
 # Register the script in GIMP
 register(
-    "python_fu_marvelmods_mua1_previewSkin",
-    "Crops the preview window for MUA1 skins.",
-    "Crops the preview window for MUA1 skins.",
+    "python_fu_marvelmods_xml2_previewSkin",
+    "Crops the preview window for XML2 skins.",
+    "Crops the preview window for XML2 skins.",
     "BaconWizard17",
     "BaconWizard17",
     "January 2023",
@@ -71,7 +71,7 @@ register(
     ],
     [],
     previewSkin,
-    menu='<Image>/Marvel Mods/Skin Previews/Crop Screenshots - MUA1'
+    menu='<Image>/Marvel Mods/Skin Previews/Crop Screenshots - XML2'
 )
 
 

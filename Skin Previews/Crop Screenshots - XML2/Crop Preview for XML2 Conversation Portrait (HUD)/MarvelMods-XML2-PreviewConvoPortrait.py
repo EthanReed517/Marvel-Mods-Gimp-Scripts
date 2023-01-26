@@ -4,7 +4,7 @@
 # ########### #
 # INFORMATION #
 # ########### #
-# GIMP plugin to crop a conversation portrait (HUD) preview for the PC version of Marvel - Ultimate Alliance.
+# GIMP plugin to crop a conversation portrait (HUD) preview for the PC version of X-Men Legends II: Rise of Apocalypse.
 # This was designed with the intention to use it with modding processes for MarvelMods.com, though it can have other uses. 
 # For detailed instructions, please reference the README.md file included with this download.
 # (c) BaconWizard17 2023
@@ -44,13 +44,13 @@ def previewConvo (image, layer):
     # Clear the selection (This is done just in case there is a selection, but there shouldn't be)
     pdb.gimp_selection_none(image)
     # Crop the image accordingly
-    pdb.gimp_image_resize(image, 169, 169, -90, -850)
+    pdb.gimp_image_resize(image, 152, 152, -280, -496)
     # Resize the layer to the image size
     pdb.gimp_layer_resize_to_image_size(layer)
     # Add an alpha channel just in case the layer doesn't currently have one
     pdb.gimp_layer_add_alpha(layer)
     # Create a circular (elliptical) selection for the portrait
-    pdb.gimp_image_select_ellipse(image, CHANNEL_OP_ADD, 0, 0, 169, 169)
+    pdb.gimp_image_select_ellipse(image, CHANNEL_OP_ADD, 0, 0, 152, 152)
     # Invert the selection (because the stuff outside the circle needs to be deleted)
     pdb.gimp_selection_invert(image)
     # Delete what's selected
@@ -67,9 +67,9 @@ def previewConvo (image, layer):
 # ######## #
 # Register the script in GIMP
 register(
-    "python_fu_marvelmods_mua1_previewConvo",
-    "Crops the preview window for MUA1 conversation portraits.",
-    "Crops the preview window for MUA1 conversation portraits.",
+    "python_fu_marvelmods_xml2_previewConvo",
+    "Crops the preview window for XML2 conversation portraits.",
+    "Crops the preview window for XML2 conversation portraits.",
     "BaconWizard17",
     "BaconWizard17",
     "January 2023",
@@ -81,7 +81,7 @@ register(
     ],
     [],
     previewConvo,
-    menu='<Image>/Marvel Mods/Skin Previews/Crop Screenshots - MUA1'
+    menu='<Image>/Marvel Mods/Skin Previews/Crop Screenshots - XML2'
 )
 
 
