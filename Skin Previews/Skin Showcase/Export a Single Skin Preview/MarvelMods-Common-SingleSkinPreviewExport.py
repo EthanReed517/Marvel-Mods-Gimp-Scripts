@@ -60,7 +60,7 @@ register(
     ],
     [],
     singleSkinPreviewExport,
-    menu='<Image>/Marvel Mods/Skin Previews/Skin Showcase/Export Single Skin Preview'
+    menu='<Image>/Marvel Mods/Skin Previews/Skin Showcase'
 )
 
 
