@@ -39,9 +39,16 @@ from gimpfu import*
 # ######## #
 # Define the operation
 def singleSkinPreviewExport (image, layer):
+    # Start an undo group so that the entire operation can be undone at once
+    pdb.gimp_image_undo_group_start(image)
+    # Get the current file name and path
     fileName = pdb.gimp_image_get_filename(image)
+    # Change the path's extension to .png
     fileNameOut = fileName[:-4] + ".png"
+    # Export the file
     pdb.file_png_save(image, layer, fileNameOut, fileNameOut, FALSE, 9, FALSE, FALSE, FALSE, FALSE, FALSE)
+    # End the undo group
+    pdb.gimp_image_undo_group_end(image)
 
 # ######## #
 # REGISTER #
