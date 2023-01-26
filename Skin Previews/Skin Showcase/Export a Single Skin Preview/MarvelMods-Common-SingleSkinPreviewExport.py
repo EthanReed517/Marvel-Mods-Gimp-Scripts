@@ -38,8 +38,10 @@ from gimpfu import*
 # FUNCTION #
 # ######## #
 # Define the operation
-def singleSkinPreviewExport (theImage, backgroundLayer):
-    filename = pdb.gimp_image_get_filename(image)
+def singleSkinPreviewExport (image, layer):
+    fileName = pdb.gimp_image_get_filename(image)
+    fileNameOut = fileName[:-4] + ".png"
+    pdb.file_png_save(image, layer, fileNameOut, fileNameOut, FALSE, 9, FALSE, FALSE, FALSE, FALSE, FALSE)
 
 # ######## #
 # REGISTER #
