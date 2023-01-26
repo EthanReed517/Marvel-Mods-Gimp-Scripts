@@ -39,14 +39,37 @@ from gimpfu import*
 # ######## #
 # Define the operation
 def singleSkinPreviewExport (image, layer):
-    # Start an undo group so that the entire operation can be undone at once
-    pdb.gimp_image_undo_group_start(image)
     # Get the current file name and path
     fileName = pdb.gimp_image_get_filename(image)
     # Change the path's extension to .png
-    fileNameOut = fileName[:-4] + ".png"
-    # Export the file
-    pdb.file_png_save(image, layer, fileNameOut, fileNameOut, FALSE, 9, FALSE, FALSE, FALSE, FALSE, FALSE)
+    fileNameOutHalfSmall = fileName[:-4] + "_1HalfSmall.png"
+    fileNameOutHalfLarge = fileName[:-4] + "_2HalfLarge.png"
+    fileNameOutFull = fileName[:-4] + "_3Full.png"
+    
+    # Start an undo group so that the entire operation can be undone at once
+    pdb.gimp_image_undo_group_start(image)
+    # Clear the selection (This is done just in case there is a selection, but there shouldn't be)
+    pdb.gimp_selection_none(image)
+    # Flatten the image
+    layer = pdb.gimp_image_flatten(image)
+    # Export the full preview
+    pdb.file_png_save(image, layer, fileNameOutFull, fileNameOutFull, FALSE, 9, FALSE, FALSE, FALSE, FALSE, FALSE)
+    # Crop the image for the half preview
+    pdb.gimp_image_resize(image, 543, 1080, 0, 0)
+    # Resize the layer to the image size
+    pdb.gimp_layer_resize_to_image_size(layer)
+    # Display the changes
+    pdb.gimp_displays_flush()
+    # Export the large half preview
+    pdb.file_png_save(image, layer, fileNameOutHalfLarge, fileNameOutHalfLarge, FALSE, 9, FALSE, FALSE, FALSE, FALSE, FALSE)
+    # Scale the image for the small half preview
+    pdb.gimp_image_scale(image, 251, 500)
+    # Resize the layer to the image size
+    pdb.gimp_layer_resize_to_image_size(layer)
+    # Display the changes
+    pdb.gimp_displays_flush()
+    # Export the small half preview
+    pdb.file_png_save(image, layer, fileNameOutHalfSmall, fileNameOutHalfSmall, FALSE, 9, FALSE, FALSE, FALSE, FALSE, FALSE)
     # End the undo group
     pdb.gimp_image_undo_group_end(image)
 
