@@ -39,11 +39,27 @@ from gimpfu import*
 # ######## #
 # FUNCTION #
 # ######## #
+# Define the function for converting to PNG8
+def convertPNG8(image):
+    # Start an undo group so that the entire operation can be undone at once
+    pdb.gimp_image_undo_group_start(image)
+    # Clear the selection (This is done just in case there is a selection, but there shouldn't be)
+    pdb.gimp_selection_none(image)
+    # Flatten the Image
+    layer = pdb.gimp_image_flatten(image)
+    # Index the colors
+    pdb.gimp_image_convert_indexed(image, CONVERT_DITHER_NONE, CONVERT_PALETTE_GENERATE, 256, FALSE, FALSE, "")
+    # Display the changes
+    pdb.gimp_displays_flush()
+    # End the undo group
+    pdb.gimp_image_undo_group_end(image)
 
 # Define the main operation
 def exportPNG8(image, layer):
     # Get the file path and file name
     filePath = pdb.gimp_image_get_filename(image)
+    # Convert to PNG8
+    convertPNG8(image)
 
 # ######## #
 # REGISTER #
