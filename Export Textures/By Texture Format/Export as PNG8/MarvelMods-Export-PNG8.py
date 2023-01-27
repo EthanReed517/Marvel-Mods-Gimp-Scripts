@@ -58,6 +58,8 @@ def convertPNG8(image):
 def exportPNG8(image, layer):
     # Get the file path and file name
     filePath = pdb.gimp_image_get_filename(image)
+    filePathSplit = filePath.split("/")
+    fileName = filePathSplit[-1]
     # Convert to PNG8
     convertPNG8(image)
 
