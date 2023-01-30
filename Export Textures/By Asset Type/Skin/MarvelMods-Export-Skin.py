@@ -131,7 +131,30 @@ def exportSkin(image, layer, console, skinType, texType, charSize, alchemyVersio
                 print("export as BGR DXT1 to 'MUA1 PC' folder")
                 # BGR back to RGB
                 RGB_BGR(image, layer)
-                print("Add more stuff here for PS2, PSP, and GC")
+                # Check if the character is oversized or standard
+                if charSize == 0:
+                    # standard size character
+                    print("Resize so that max dimension is 256")
+                # Convert to PNG8
+                layer = convertIndexed(image, 256)
+                print("Export as png to 'PS2' folder")
+                # Color mode back to RGB
+                pdb.gimp_image_convert_rgb(image)
+                print("resize to half size")
+                # Convert to PNG8
+                layer = convertIndexed(image, 256)
+                # Check which format is being used for PSP
+                if PSPFormat == 0:
+                    # Use PNG4 for PSP
+                    print("Export as png to 'GameCube' folder")
+                    # Color mode back to RGB
+                    pdb.gimp_image_convert_rgb(image)
+                    # Convert to PNG4
+                    layer = convertIndexed(image, 16)
+                    print("Export as png to 'PSP' folder")
+                else:
+                    # use PNG8 for PSP
+                    print("Export as png to 'GameCube and PSP' folder")
             else:
                 # Alchemy 5
                 print("export as BGR DXT1 to 'Wii and MUA1 PC' folder")
