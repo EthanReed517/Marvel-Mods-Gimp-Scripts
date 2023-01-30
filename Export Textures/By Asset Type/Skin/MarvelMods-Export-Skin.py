@@ -50,18 +50,6 @@ def sizeCheck(currentWidth, currentHeight, texType):
     else:
         oversized = False
     return oversized
-
-# Define the folder checking operation
-def folderCheck(dirname, newFolder):
-    # Append the paths
-    outFolder = os.path.join(dirname, newFolder)
-    # Check if the path exists
-    outFolderExists = os.path.exists(outFolder)
-    # If the path doesn't exist, create the new folder
-    if outFolderExists == False:
-        os.mkdir(outFolder)
-    # Return the new path
-    return outFolder
     
 # Define the function for indexing colors
 def convertIndexed(image, colors):
@@ -125,6 +113,29 @@ def resizeMax(image, layer, texType):
     # Display the changes
     pdb.gimp_displays_flush()
 
+# Define the folder checking operation
+def folderCheck(dirname, newFolder):
+    # Append the paths
+    outFolder = os.path.join(dirname, newFolder)
+    # Check if the path exists
+    outFolderExists = os.path.exists(outFolder)
+    # If the path doesn't exist, create the new folder
+    if outFolderExists == False:
+        os.mkdir(outFolder)
+    # Return the new path
+    return outFolder
+    
+# Define the function for exporting as a png
+def exportPNG(image, layer, folder, dirname, newFolder, fileName):
+    # Check if the export folder exists and create it if needed
+    outFolder = folderCheck(dirname, newFolder)
+    # Get the new file name
+    outFileName = fileName[0:-3] + "png"
+    # Get the full save file path
+    outFilePath = os.path.join(outFolder, outFileName)
+    # Export the image
+    pdb.file_png_save(image, layer, outFilePath, outFilePath, 0, 9, 0, 0, 0, 0, 0)
+
 # Define the main operation
 def exportSkin(image, layer, console, skinType, texType, charSize, alchemyVersion, PSPFormat):
     # Get the file path of the original image
@@ -183,7 +194,8 @@ def exportSkin(image, layer, console, skinType, texType, charSize, alchemyVersio
                     resizeMax(image, layer, texType)
                 # Convert to PNG8
                 layer = convertIndexed(image, 256)
-                print("Export as png to 'PS2' folder")
+                # Export the image
+                exportPNG(image, layer, folder, dirname, "PS2", fileName)
                 # Color mode back to RGB
                 pdb.gimp_image_convert_rgb(image)
                 # Resize to half size
@@ -193,15 +205,18 @@ def exportSkin(image, layer, console, skinType, texType, charSize, alchemyVersio
                 # Check which format is being used for PSP
                 if PSPFormat == 0:
                     # Use PNG4 for PSP
-                    print("Export as png to 'GameCube' folder")
+                    # Export the image
+                    exportPNG(image, layer, folder, dirname, "GameCube", fileName)
                     # Color mode back to RGB
                     pdb.gimp_image_convert_rgb(image)
                     # Convert to PNG4
                     layer = convertIndexed(image, 16)
-                    print("Export as png to 'PSP' folder")
+                    # Export the image
+                    exportPNG(image, layer, folder, dirname, "PSP", fileName)
                 else:
                     # use PNG8 for PSP
-                    print("Export as png to 'GameCube and PSP' folder")
+                    # Export the image
+                    exportPNG(image, layer, folder, dirname, "GameCube and PSP", fileName)
             else:
                 # Alchemy 5
                 print("export as BGR DXT1 to 'Wii and MUA1 PC' folder")
@@ -212,7 +227,8 @@ def exportSkin(image, layer, console, skinType, texType, charSize, alchemyVersio
                     resizeMax(image, layer, texType)
                 # Convert to PNG8
                 layer = convertIndexed(image, 256)
-                print("Export as png to 'PS2' folder")
+                # Export the image
+                exportPNG(image, layer, folder, dirname, "PS2", fileName)
                 # Color mode back to RGB
                 pdb.gimp_image_convert_rgb(image)
                 # Resize to half size
@@ -226,7 +242,8 @@ def exportSkin(image, layer, console, skinType, texType, charSize, alchemyVersio
                     # use PNG8 for PSP
                     # Convert to PNG8
                     layer = convertIndexed(image, 256)
-                print("Export as png to 'PSP' folder")
+                # Export the image
+                exportPNG(image, layer, folder, dirname, "PSP", fileName)
     else: 
         # The original texture is 256x256 or less for primary textures or 128x128 for secondary textures
         # Choose the console
@@ -235,7 +252,8 @@ def exportSkin(image, layer, console, skinType, texType, charSize, alchemyVersio
             # Alchemy version doesn't matter
             # Convert to PNG8
             layer = convertIndexed(image, 256)
-            print("export as png to 'PC' folder")
+            # Export the image
+            exportPNG(image, layer, folder, dirname, "PC", fileName)
         else:
             # All consoles
             # Pick the version of Alchemy
@@ -247,7 +265,8 @@ def exportSkin(image, layer, console, skinType, texType, charSize, alchemyVersio
                 # Check if it is a primary or secondary skin
                 if skinType == 0:
                     # Primary skin
-                    print("Export as png to 'PC, PS2, and Xbox' folder")
+                    # Export the image
+                    exportPNG(image, layer, folder, dirname, "PC, PS2, and Xbox", fileName)
                     # Color mode back to RGB
                     pdb.gimp_image_convert_rgb(image)
                     # Resize to half size
@@ -257,25 +276,30 @@ def exportSkin(image, layer, console, skinType, texType, charSize, alchemyVersio
                     # Check the texture format used by PSP
                     if PSPFormat == 1:
                         # PSP uses PNG8 format
-                        print("Export as png to 'GameCube and PSP' folder")
+                        # Export the image
+                        exportPNG(image, layer, folder, dirname, "GameCube and PSP", fileName)
                     else:
                         # PSP uses PNG4 format
-                        print("Export as png to 'GameCube' folder")
+                        # Export the image
+                        exportPNG(image, layer, folder, dirname, "GameCube", fileName)
                         # Color mode back to RGB
                         pdb.gimp_image_convert_rgb(image)
                         # Convert to PNG4
                         layer = convertIndexed(image, 16)
-                        print("Export as png to 'PSP' folder")
+                        # Export the image
+                        exportPNG(image, layer, folder, dirname, "PSP", fileName)
                 else:
                     # secondary skin
-                    print("Export as png to 'PC and Xbox' folder")
+                    # Export the image
+                    exportPNG(image, layer, folder, dirname, "PC and Xbox", fileName)
                     # Color mode back to RGB
                     pdb.gimp_image_convert_rgb(image)
                     # Resize to half size
                     resizeHalf(image, layer)
                     # Convert to PNG8
                     layer = convertIndexed(image, 256)
-                    print("export as png to 'PS2' folder")
+                    # Export the image
+                    exportPNG(image, layer, folder, dirname, "PS2", fileName)
                     # Color mode back to RGB
                     pdb.gimp_image_convert_rgb(image)
                     # Resize to half size
@@ -285,15 +309,18 @@ def exportSkin(image, layer, console, skinType, texType, charSize, alchemyVersio
                     # Check the texture format used by PSP
                     if PSPFormat == 1:
                         # PSP uses PNG8 format
-                        print("Export as png to 'GameCube and PSP' folder")
+                        # Export the image
+                        exportPNG(image, layer, folder, dirname, "GameCube and PSP", fileName)
                     else:
                         # PSP uses PNG4 format
-                        print("Export as png to 'GameCube' folder")
+                        # Export the image
+                        exportPNG(image, layer, folder, dirname, "GameCube", fileName)
                         # Color mode back to RGB
                         pdb.gimp_image_convert_rgb(image)
                         # Convert to PNG4
                         layer = convertIndexed(image, 16)
-                        print("Export as png to 'PSP' folder")
+                        # Export the image
+                        exportPNG(image, layer, folder, dirname, "PSP", fileName)
             else:
                 # Alchemy 5
                 print("Export as RGB DXT1 to 'Wii' folder")
@@ -302,7 +329,8 @@ def exportSkin(image, layer, console, skinType, texType, charSize, alchemyVersio
                     # Primary skin
                     # Convert to PNG8
                     layer = convertIndexed(image, 256)
-                    print("Export as png to 'PS2' folder")
+                    # Export the image
+                    exportPNG(image, layer, folder, dirname, "PS2", fileName)
                     # Color mode back to RGB
                     pdb.gimp_image_convert_rgb(image)
                     # Resize to half size
@@ -312,12 +340,12 @@ def exportSkin(image, layer, console, skinType, texType, charSize, alchemyVersio
                         # PSP uses PNG8 format
                         # Convert to PNG8
                         layer = convertIndexed(image, 256)
-                        print("Export as png to 'PSP' folder")
                     else:
                         # PSP uses PNG4 format
                         # Convert to PNG4
                         layer = convertIndexed(image, 16)
-                        print("Export as png to 'PSP' folder")
+                    # Export the image
+                    exportPNG(image, layer, folder, dirname, "PSP", fileName)
                 else:
                     # secondary skin
                     # Color mode back to RGB
@@ -326,7 +354,8 @@ def exportSkin(image, layer, console, skinType, texType, charSize, alchemyVersio
                     resizeHalf(image, layer)
                     # Convert to PNG8
                     layer = convertIndexed(image, 256)
-                    print("export as png to 'PS2' folder")
+                    # Export the image
+                    exportPNG(image, layer, folder, dirname, "PS2", fileName)
                     # Color mode back to RGB
                     pdb.gimp_image_convert_rgb(image)
                     # Resize to half size
@@ -336,12 +365,12 @@ def exportSkin(image, layer, console, skinType, texType, charSize, alchemyVersio
                         # PSP uses PNG8 format
                         # Convert to PNG8
                         layer = convertIndexed(image, 256)
-                        print("Export as png to 'PSP' folder")
                     else:
                         # PSP uses PNG4 format
                         # Convert to PNG4
                         layer = convertIndexed(image, 16)
-                        print("Export as png to 'PSP' folder")
+                    # Export the image
+                    exportPNG(image, layer, folder, dirname, "PSP", fileName)
     # End the undo group
     pdb.gimp_image_undo_group_end(image)
     
