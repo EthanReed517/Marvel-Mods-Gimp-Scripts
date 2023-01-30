@@ -73,6 +73,12 @@ def convertIndexed(image, colors):
     layer = pdb.gimp_image_get_active_layer(image)
     # return the new layer
     return layer
+    
+def RGB_BGR(image, layer):
+    # Perform the swap
+    pdb.plug_in_colors_channel_mixer(image, layer, FALSE, 0, 0, 1, 0, 1, 0, 1, 0, 0)
+    # Display the changes
+    pdb.gimp_displays_flush()
 
 # Define the main operation
 def exportSkin(image, layer, console, skinType, texType, charSize, alchemyVersion, PSPFormat):
@@ -104,11 +110,15 @@ def exportSkin(image, layer, console, skinType, texType, charSize, alchemyVersio
             if alchemyVersion == 0:
                 # Alchemy 2.5
                 print("export as RGB DXT1 to 'XML2 PC' folder")
-                print("RGB-BGR swap")
+                # RGB-BGR swap the image
+                RGB_BGR(image, layer)
                 print("export as BGR DXT1 to 'MUA1 PC' folder")
-                print("BGR-RGB swap")
+                # return from BGR to RGB
+                RGB_BGR(image, layer)
             else:
                 # Alchemy 5
+                # RGB-BGR swap the image
+                RGB_BGR(image, layer)
                 print("export as BGR DXT1 to 'MUA1 PC' folder")                
         else: 
             # All consoles
@@ -116,9 +126,11 @@ def exportSkin(image, layer, console, skinType, texType, charSize, alchemyVersio
             if alchemyVersion == 0:
                 # Alchemy 2.5
                 print("export as RGB DXT1 to 'Wii, Xbox, and XML2 PC' folder")
-                print("RGB-BGR swap")
+                # RGB-BGR swap the image
+                RGB_BGR(image, layer)
                 print("export as BGR DXT1 to 'MUA1 PC' folder")
-                print("BGR-RGB swap")
+                # BGR back to RGB
+                RGB_BGR(image, layer)
                 print("Add more stuff here for PS2, PSP, and GC")
             else:
                 # Alchemy 5
