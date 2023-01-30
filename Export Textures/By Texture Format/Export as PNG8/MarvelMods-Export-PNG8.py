@@ -36,9 +36,21 @@ import os
 from gimpfu import*
 
 
-# ######## #
-# FUNCTION #
-# ######## #
+# ######### #
+# FUNCTIONS #
+# ######### #
+# Define the folder checking operation
+def folderCheck(filePath, newFolder):
+    # Append the paths
+    outFolder = os.path.join(filePath, newFolder)
+    # Check if the path exists
+    outFolderExists = os.path.exists(outFolder)
+    # If the path doesn't exist, create the new folder
+    if outFolderExists == False:
+        os.mkdir(outFolder)
+    # Return the new path
+    return outFolder
+    
 # Define the function for converting to PNG8
 def convertPNG8(image):
     # Start an undo group so that the entire operation can be undone at once
@@ -58,8 +70,10 @@ def convertPNG8(image):
 def exportPNG8(image, layer):
     # Get the file path and file name
     filePath = pdb.gimp_image_get_filename(image)
-    filePathSplit = filePath.split("/")
-    fileName = filePathSplit[-1]
+    dirname = os.path.dirname(filePath)
+    fileName = os.path.basename(filePath)
+    # Get the name of the export folder, check if it exists, and create it if it doesn't
+    outFolder = folderCheck(dirname, "PNG8")
     # Convert to PNG8
     convertPNG8(image)
 
