@@ -67,6 +67,18 @@ def convertDXT1(image, layer, isBGR, flattenChoice):
     layer = pdb.gimp_image_get_active_layer(image)
     # return the new layer
     return layer
+    
+# Define the export operation
+def exportDDS(image, layer, flattenChoice, dirname, newFolder, isBGR, outFileName):
+    # Get the name of the export folder, check if it exists, and create it if it doesn't
+    outFolder = folderCheck(dirname, newFolder)
+    # Prep for export
+    layer = convertDXT1(image, layer, isBGR, flattenChoice)
+    # Get the full save file path
+    outFilePath = os.path.join(outFolder, outFileName)
+    # Export the image
+    pdb.file_dds_save(image, layer, outFilePath, outFilePath, 1, 0, 4, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0)
+    return layer
 
 # Define the main operation
 def exportDXT1(image, layer, exportRGB, exportBGR, flattenChoice):
@@ -79,27 +91,13 @@ def exportDXT1(image, layer, exportRGB, exportBGR, flattenChoice):
     fileName = os.path.basename(filePath)
     # Start an undo group so that the entire operation can be undone at once
     pdb.gimp_image_undo_group_start(image)
-    # Get the name of the export folder, check if it exists, and create it if it doesn't
+    # Get the new file name
+    outFileName = fileName[0:-3] + "dds"
+    # Export the files
     if exportRGB==1:
-        outFolderRGB = folderCheck(dirname, "DXT1 RGB")
-        # Prep for export
-        layer = convertDXT1(image, layer, "no", flattenChoice)
-        # Get the new file name
-        outFileName = fileName[0:-3] + "dds"
-        # Get the full save file path
-        outFilePathRGB = os.path.join(outFolderRGB, outFileName)
-        # Export the image
-        pdb.file_dds_save(image, layer, outFilePathRGB, outFilePathRGB, 1, 0, 4, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0)
+        layer = exportDDS(image, layer, flattenChoice, dirname, "DXT1 RGB", "no", outFileName)
     if exportBGR==1:
-        outFolderBGR = folderCheck(dirname, "DXT1 RGB-BGR Swapped")
-        # Prep for export
-        layer = convertDXT1(image, layer, "yes", flattenChoice)
-        # Get the new file name
-        outFileName = fileName[0:-3] + "dds"
-        # Get the full save file path
-        outFilePathBGR = os.path.join(outFolderBGR, outFileName)
-        # Export the image
-        pdb.file_dds_save(image, layer, outFilePathBGR, outFilePathBGR, 1, 0, 4, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0)
+        layer = exportDDS(image, layer, flattenChoice, dirname, "DXT1 RGB-BGR Swapped", "yes", outFileName)
     # End the undo group
     pdb.gimp_image_undo_group_end(image)
 
