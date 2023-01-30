@@ -10,7 +10,7 @@
 # (c) BaconWizard17 2023
 #
 #   History:
-#   v1.0: 25Jan2023: First published version.
+#   v1.0: 30Jan2023: First published version.
 
 #   This program is free software; you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License as published by
@@ -65,23 +65,28 @@ def convertPNG8(image):
     pdb.gimp_displays_flush()
     # End the undo group
     pdb.gimp_image_undo_group_end(image)
+    # Get the active layer
+    layer = pdb.gimp_image_get_active_layer(image)
+    # return the new layer
+    return layer
 
 # Define the main operation
 def exportPNG8(image, layer):
-    # Get the file path and file name
+    # Get the file path of the original image
     filePath = pdb.gimp_image_get_filename(image)
+    # Save the file in its original format before proceeding
+    pdb.gimp_file_save(image, layer, filePath, filePath)
+    # Get the folder and file name from the file path
     dirname = os.path.dirname(filePath)
     fileName = os.path.basename(filePath)
     # Get the name of the export folder, check if it exists, and create it if it doesn't
     outFolder = folderCheck(dirname, "PNG8")
     # Convert to PNG8
-    convertPNG8(image)
+    layer = convertPNG8(image)
     # Get the new file name
     outFileName = fileName[0:-3] + "png"
     # Get the full save file path
     outFilePath = os.path.join(outFolder, outFileName)
-    # Get the active layer
-    layer = pdb.gimp_image_get_active_layer(image)
     # Export the image
     pdb.file_png_save(image, layer, outFilePath, outFilePath, 0, 9, 0, 0, 0, 0, 0)
 
