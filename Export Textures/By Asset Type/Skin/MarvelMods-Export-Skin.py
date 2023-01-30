@@ -71,7 +71,7 @@ def convertPNG8(image):
     return layer
 
 # Define the main operation
-def exportSkin(image, layer):
+def exportSkin(image, layer, console, skinType, texType, charSize, alchemyVersion, PSPFormat):
     # Get the file path of the original image
     filePath = pdb.gimp_image_get_filename(image)
     # Save the file in its original format before proceeding
@@ -105,7 +105,13 @@ register(
     "*",
     [
         (PF_IMAGE, "image", "Input image", None),
-        (PF_DRAWABLE, 'drawable', 'Layer, mask or channel', None)
+        (PF_DRAWABLE, 'drawable', 'Layer, mask or channel', None),
+        (PF_OPTION,"p1","Console?:", 0, ["All","PC Only"]),
+        (PF_OPTION,"p1","Skin Type?:", 0, ["Primary Skin","Secondary Skin"]),
+        (PF_OPTION,"p1","Texture Type?:", 0, ["Primary Texture","Secondary Texture"]),
+        (PF_OPTION,"p1","Character Size?:", 0, ["Standard","Large"]),
+        (PF_OPTION,"p1","Alchemy Version?:", 0, ["Alchemy 2.5","Alchemy 5"]),
+        (PF_OPTION,"p1","PSP Texture Format?:", 1, ["PNG4","PNG8"])
     ],
     [],
     exportSkin,
