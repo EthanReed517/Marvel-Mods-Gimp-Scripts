@@ -63,12 +63,12 @@ def folderCheck(dirname, newFolder):
     # Return the new path
     return outFolder
     
-# Define the function for converting to PNG8
-def convertPNG8(image):
+# Define the function for indexing colors
+def convertIndexed(image, colors):
     # Clear the selection (This is done just in case there is a selection, but there shouldn't be)
     pdb.gimp_selection_none(image)
     # Index the colors
-    pdb.gimp_image_convert_indexed(image, CONVERT_DITHER_NONE, CONVERT_PALETTE_GENERATE, 256, FALSE, FALSE, "")
+    pdb.gimp_image_convert_indexed(image, CONVERT_DITHER_NONE, CONVERT_PALETTE_GENERATE, colors, FALSE, FALSE, "")
     # Display the changes
     pdb.gimp_displays_flush()
     # Get the active layer
@@ -127,17 +127,20 @@ def exportSkin(image, layer, console, skinType, texType, charSize, alchemyVersio
                 if charSize == 0:
                     # standard size character
                     print("Resize so that max dimension is 256")
-                print("Index colors")
+                # Convert to PNG8
+                layer = convertIndexed(image, 256)
                 print("Export as png to 'PS2' folder")
                 print("Un-index colors")
                 print("resize to half size")
                 # Check which format is being used for PSP
                 if PSPFormat == 0:
                     # Use PNG4 for PSP
-                    print("Index to 16 colors")
+                    # Convert to PNG4
+                    layer = convertIndexed(image, 16)
                 else:
                     # use PNG8 for PSP
-                    print("Index to 256 colors")
+                    # Convert to PNG8
+                    layer = convertIndexed(image, 256)
                 print("Export as png to 'PSP' folder")
     else: 
         # The original texture is 256x256 or less for primary textures or 128x128 for secondary textures
@@ -145,7 +148,8 @@ def exportSkin(image, layer, console, skinType, texType, charSize, alchemyVersio
         if console == 1:
             # PC only
             # Alchemy version doesn't matter
-            print("index to 256 colors")
+            # Convert to PNG8
+            layer = convertIndexed(image, 256)
             print("export as png to 'PC' folder")
         else:
             # All consoles
@@ -153,14 +157,16 @@ def exportSkin(image, layer, console, skinType, texType, charSize, alchemyVersio
             if alchemyVersion == 0:
                 # Alchemy 2.5
                 print("Export as RGB DXT1 to 'Wii' folder")
-                print("Index colors")
+                # Convert to PNG8
+                layer = convertIndexed(image, 256)
                 # Check if it is a primary or secondary skin
                 if skinType == 0:
                     # Primary skin
                     print("Export as png to 'PC, PS2, and Xbox' folder")
                     print("un-index")
                     print("resize to half size")
-                    print("Index to 256 colors")
+                    # Convert to PNG8
+                    layer = convertIndexed(image, 256)
                     # Check the texture format used by PSP
                     if PSPFormat == 1:
                         # PSP uses PNG8 format
@@ -169,18 +175,21 @@ def exportSkin(image, layer, console, skinType, texType, charSize, alchemyVersio
                         # PSP uses PNG4 format
                         print("Export as png to 'GameCube' folder")
                         print("un-index")
-                        print("index to 16 colors")
+                        # Convert to PNG4
+                        layer = convertIndexed(image, 16)
                         print("Export as png to 'PSP' folder")
                 else:
                     # secondary skin
                     print("Export as png to 'PC and Xbox' folder")
                     print("un-index")
                     print("resize to half size")
-                    print("index to 256 colors")
+                    # Convert to PNG8
+                    layer = convertIndexed(image, 256)
                     print("export as png to 'PS2' folder")
                     print("un-index")
                     print("resize to half size")
-                    print("index to 256 colors")
+                    # Convert to PNG8
+                    layer = convertIndexed(image, 256)
                     # Check the texture format used by PSP
                     if PSPFormat == 1:
                         # PSP uses PNG8 format
@@ -189,44 +198,50 @@ def exportSkin(image, layer, console, skinType, texType, charSize, alchemyVersio
                         # PSP uses PNG4 format
                         print("Export as png to 'GameCube' folder")
                         print("un-index")
-                        print("index to 16 colors")
+                        # Convert to PNG4
+                        layer = convertIndexed(image, 16)
                         print("Export as png to 'PSP' folder")
             else:
                 # Alchemy 5
                 print("Export as RGB DXT1 to 'Wii' folder")
-                print("Index colors")
                 # Check if it is a primary or secondary skin
                 if skinType == 0:
                     # Primary skin
+                    # Convert to PNG8
+                    layer = convertIndexed(image, 256)
                     print("Export as png to 'PS2' folder")
                     print("un-index")
                     print("resize to half size")
                     # Check the texture format used by PSP
                     if PSPFormat == 1:
                         # PSP uses PNG8 format
-                        print("Index to 256 colors")
+                        # Convert to PNG8
+                        layer = convertIndexed(image, 256)
                         print("Export as png to 'PSP' folder")
                     else:
                         # PSP uses PNG4 format
-                        print("index to 16 colors")
+                        # Convert to PNG4
+                        layer = convertIndexed(image, 16)
                         print("Export as png to 'PSP' folder")
                 else:
                     # secondary skin
                     print("un-index")
                     print("resize to half size")
-                    print("index to 256 colors")
+                    # Convert to PNG8
+                    layer = convertIndexed(image, 256)
                     print("export as png to 'PS2' folder")
                     print("un-index")
                     print("resize to half size")
-                    print("index to 256 colors")
                     # Check the texture format used by PSP
                     if PSPFormat == 1:
                         # PSP uses PNG8 format
-                        print("Index to 256 colors")
+                        # Convert to PNG8
+                        layer = convertIndexed(image, 256)
                         print("Export as png to 'PSP' folder")
                     else:
                         # PSP uses PNG4 format
-                        print("index to 16 colors")
+                        # Convert to PNG4
+                        layer = convertIndexed(image, 16)
                         print("Export as png to 'PSP' folder")
     # End the undo group
     pdb.gimp_image_undo_group_end(image)
