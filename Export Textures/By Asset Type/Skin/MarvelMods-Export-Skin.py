@@ -39,6 +39,18 @@ from gimpfu import*
 # ######### #
 # FUNCTIONS #
 # ######### #
+# Define the size checking operation
+def sizeCheck(currentWidth, currentHeight, texType):
+    if texType == 0:
+        criteria = 256
+    else:
+        criteria = 128
+    if (currentWidth > criteria) or (currentHeight > criteria):
+        oversized = True
+    else:
+        oversized = False
+    return oversized
+
 # Define the folder checking operation
 def folderCheck(dirname, newFolder):
     # Append the paths
@@ -53,18 +65,12 @@ def folderCheck(dirname, newFolder):
     
 # Define the function for converting to PNG8
 def convertPNG8(image):
-    # Start an undo group so that the entire operation can be undone at once
-    pdb.gimp_image_undo_group_start(image)
     # Clear the selection (This is done just in case there is a selection, but there shouldn't be)
     pdb.gimp_selection_none(image)
-    # Flatten the Image
-    layer = pdb.gimp_image_flatten(image)
     # Index the colors
     pdb.gimp_image_convert_indexed(image, CONVERT_DITHER_NONE, CONVERT_PALETTE_GENERATE, 256, FALSE, FALSE, "")
     # Display the changes
     pdb.gimp_displays_flush()
-    # End the undo group
-    pdb.gimp_image_undo_group_end(image)
     # Get the active layer
     layer = pdb.gimp_image_get_active_layer(image)
     # return the new layer
@@ -79,16 +85,164 @@ def exportSkin(image, layer, console, skinType, texType, charSize, alchemyVersio
     # Get the folder and file name from the file path
     dirname = os.path.dirname(filePath)
     fileName = os.path.basename(filePath)
+    # Get the current dimensions of the image
+    currentWidth = image.width
+    currentHeight = image.height
+    # Start an undo group so that the entire operation can be undone at once
+    pdb.gimp_image_undo_group_start(image)
+    # Flatten the Image
+    layer = pdb.gimp_image_flatten(image)
+    # Determine if the image is oversized
+    oversized = sizeCheck(currentWidth, currentHeight, texType)
+    # Begin the export
+    if oversized == True:
+        # The original texture size is above 256x256 for primary textures of 128x128 for secondary textures
+        # Choose the console
+        if console == 1:
+            # PC only
+            # Pick the version of Alchemy being used for skin creation
+            if alchemyVersion == 0:
+                # Alchemy 2.5
+                print("export as RGB DXT1 to 'XML2 PC' folder")
+                print("RGB-BGR swap")
+                print("export as BGR DXT1 to 'MUA1 PC' folder")
+                print("BGR-RGB swap")
+            else:
+                # Alchemy 5
+                print("export as BGR DXT1 to 'MUA1 PC' folder")                
+        else: 
+            # All consoles
+            # Pick the version of Alchemy
+            if alchemyVersion == 0:
+                # Alchemy 2.5
+                print("export as RGB DXT1 to 'Wii, Xbox, and XML2 PC' folder")
+                print("RGB-BGR swap")
+                print("export as BGR DXT1 to 'MUA1 PC' folder")
+                print("BGR-RGB swap")
+                print("Add more stuff here for PS2, PSP, and GC")
+            else:
+                # Alchemy 5
+                print("export as BGR DXT1 to 'Wii and MUA1 PC' folder")
+                # Check if the character is oversized or standard
+                if charSize == 0:
+                    # standard size character
+                    print("Resize so that max dimension is 256")
+                print("Index colors")
+                print("Export as png to 'PS2' folder")
+                print("Un-index colors")
+                print("resize to half size")
+                # Check which format is being used for PSP
+                if PSPFormat == 0:
+                    # Use PNG4 for PSP
+                    print("Index to 16 colors")
+                else:
+                    # use PNG8 for PSP
+                    print("Index to 256 colors")
+                print("Export as png to 'PSP' folder")
+    else: 
+        # The original texture is 256x256 or less for primary textures or 128x128 for secondary textures
+        # Choose the console
+        if console == 1:
+            # PC only
+            # Alchemy version doesn't matter
+            print("index to 256 colors")
+            print("export as png to 'PC' folder")
+        else:
+            # All consoles
+            # Pick the version of Alchemy
+            if alchemyVersion == 0:
+                # Alchemy 2.5
+                print("Export as RGB DXT1 to 'Wii' folder")
+                print("Index colors")
+                # Check if it is a primary or secondary skin
+                if skinType == 0:
+                    # Primary skin
+                    print("Export as png to 'PC, PS2, and Xbox' folder")
+                    print("un-index")
+                    print("resize to half size")
+                    print("Index to 256 colors")
+                    # Check the texture format used by PSP
+                    if PSPFormat == 1:
+                        # PSP uses PNG8 format
+                        print("Export as png to 'GameCube and PSP' folder")
+                    else:
+                        # PSP uses PNG4 format
+                        print("Export as png to 'GameCube' folder")
+                        print("un-index")
+                        print("index to 16 colors")
+                        print("Export as png to 'PSP' folder")
+                else:
+                    # secondary skin
+                    print("Export as png to 'PC and Xbox' folder")
+                    print("un-index")
+                    print("resize to half size")
+                    print("index to 256 colors")
+                    print("export as png to 'PS2' folder")
+                    print("un-index")
+                    print("resize to half size")
+                    print("index to 256 colors")
+                    # Check the texture format used by PSP
+                    if PSPFormat == 1:
+                        # PSP uses PNG8 format
+                        print("Export as png to 'GameCube and PSP' folder")
+                    else:
+                        # PSP uses PNG4 format
+                        print("Export as png to 'GameCube' folder")
+                        print("un-index")
+                        print("index to 16 colors")
+                        print("Export as png to 'PSP' folder")
+            else:
+                # Alchemy 5
+                print("Export as RGB DXT1 to 'Wii' folder")
+                print("Index colors")
+                # Check if it is a primary or secondary skin
+                if skinType == 0:
+                    # Primary skin
+                    print("Export as png to 'PS2' folder")
+                    print("un-index")
+                    print("resize to half size")
+                    # Check the texture format used by PSP
+                    if PSPFormat == 1:
+                        # PSP uses PNG8 format
+                        print("Index to 256 colors")
+                        print("Export as png to 'PSP' folder")
+                    else:
+                        # PSP uses PNG4 format
+                        print("index to 16 colors")
+                        print("Export as png to 'PSP' folder")
+                else:
+                    # secondary skin
+                    print("un-index")
+                    print("resize to half size")
+                    print("index to 256 colors")
+                    print("export as png to 'PS2' folder")
+                    print("un-index")
+                    print("resize to half size")
+                    print("index to 256 colors")
+                    # Check the texture format used by PSP
+                    if PSPFormat == 1:
+                        # PSP uses PNG8 format
+                        print("Index to 256 colors")
+                        print("Export as png to 'PSP' folder")
+                    else:
+                        # PSP uses PNG4 format
+                        print("index to 16 colors")
+                        print("Export as png to 'PSP' folder")
+    # End the undo group
+    pdb.gimp_image_undo_group_end(image)
+    
+    
+    # Extra Stuff
     # Get the name of the export folder, check if it exists, and create it if it doesn't
-    outFolder = folderCheck(dirname, "PNG8")
+        # outFolder = folderCheck(dirname, "PNG8")
     # Convert to PNG8
-    layer = convertPNG8(image)
+        # layer = convertPNG8(image)
     # Get the new file name
-    outFileName = fileName[0:-3] + "png"
+        # outFileName = fileName[0:-3] + "png"
     # Get the full save file path
-    outFilePath = os.path.join(outFolder, outFileName)
+        # outFilePath = os.path.join(outFolder, outFileName)
     # Export the image
-    pdb.file_png_save(image, layer, outFilePath, outFilePath, 0, 9, 0, 0, 0, 0, 0)
+        # pdb.file_png_save(image, layer, outFilePath, outFilePath, 0, 9, 0, 0, 0, 0, 0)
 
 # ######## #
 # REGISTER #
