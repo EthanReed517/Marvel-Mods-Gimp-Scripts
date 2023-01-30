@@ -40,9 +40,9 @@ from gimpfu import*
 # FUNCTIONS #
 # ######### #
 # Define the folder checking operation
-def folderCheck(filePath, newFolder):
+def folderCheck(dirname, newFolder):
     # Append the paths
-    outFolder = os.path.join(filePath, newFolder)
+    outFolder = os.path.join(dirname, newFolder)
     # Check if the path exists
     outFolderExists = os.path.exists(outFolder)
     # If the path doesn't exist, create the new folder
