@@ -76,6 +76,14 @@ def exportPNG8(image, layer):
     outFolder = folderCheck(dirname, "PNG8")
     # Convert to PNG8
     convertPNG8(image)
+    # Get the new file name
+    outFileName = fileName[0:-3] + "png"
+    # Get the full save file path
+    outFilePath = os.path.join(outFolder, outFileName)
+    # Get the active layer
+    layer = pdb.gimp_image_get_active_layer(image)
+    # Export the image
+    pdb.file_png_save(image, layer, outFilePath, outFilePath, 0, 9, 0, 0, 0, 0, 0)
 
 # ######## #
 # REGISTER #
