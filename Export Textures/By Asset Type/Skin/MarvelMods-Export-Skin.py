@@ -392,19 +392,6 @@ def exportSkin(image, layer, console, skinType, texType, charSize, alchemyVersio
                     exportPNG(image, layer, dirname, "PSP", fileName)
     # End the undo group
     pdb.gimp_image_undo_group_end(image)
-    
-    
-    # Extra Stuff
-    # Get the name of the export folder, check if it exists, and create it if it doesn't
-        # outFolder = folderCheck(dirname, "PNG8")
-    # Convert to PNG8
-        # layer = convertPNG8(image)
-    # Get the new file name
-        # outFileName = fileName[0:-3] + "png"
-    # Get the full save file path
-        # outFilePath = os.path.join(outFolder, outFileName)
-    # Export the image
-        # pdb.file_png_save(image, layer, outFilePath, outFilePath, 0, 9, 0, 0, 0, 0, 0)
 
 # ######## #
 # REGISTER #
