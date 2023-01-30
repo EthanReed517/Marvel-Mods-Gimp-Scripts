@@ -95,6 +95,35 @@ def resizeHalf(image, layer):
     pdb.gimp_layer_resize_to_image_size(layer)
     # Display the changes
     pdb.gimp_displays_flush()
+    
+# Define the function for resizing to the max size for PNG8
+def resizeMax(image, layer, texType):
+    # Determine the max size based on the texture type:
+    if texType == 0:
+        # primary texture
+        maxSize = 256
+    else:
+        # secondary texture
+        maxSize = 128
+    # Get the current dimensions of the image
+    currentWidth = image.width
+    currentHeight = image.height
+    # Check which is bigger
+    if currentWidth >= currentHeight:
+        # Wide image or square
+        scaleFactor = maxSize / currentWidth
+    else:
+        # Tall image
+        scaleFactor = maxSize / currentHeight
+    # Get the new sizes
+    newWidth = scaleFactor * currentWidth
+    newHeight = scaleFactor * currentHeight
+    # scale the image accordingly
+    pdb.gimp_image_scale(image, newWidth, newHeight)
+    # Resize the layer to the image size
+    pdb.gimp_layer_resize_to_image_size(layer)
+    # Display the changes
+    pdb.gimp_displays_flush()
 
 # Define the main operation
 def exportSkin(image, layer, console, skinType, texType, charSize, alchemyVersion, PSPFormat):
@@ -150,7 +179,8 @@ def exportSkin(image, layer, console, skinType, texType, charSize, alchemyVersio
                 # Check if the character is oversized or standard
                 if charSize == 0:
                     # standard size character
-                    print("Resize so that max dimension is 256")
+                    # Resize to max size for texture type
+                    resizeMax(image, layer, texType)
                 # Convert to PNG8
                 layer = convertIndexed(image, 256)
                 print("Export as png to 'PS2' folder")
@@ -178,7 +208,8 @@ def exportSkin(image, layer, console, skinType, texType, charSize, alchemyVersio
                 # Check if the character is oversized or standard
                 if charSize == 0:
                     # standard size character
-                    print("Resize so that max dimension is 256")
+                    # Resize to max size for texture type
+                    resizeMax(image, layer, texType)
                 # Convert to PNG8
                 layer = convertIndexed(image, 256)
                 print("Export as png to 'PS2' folder")
