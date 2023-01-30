@@ -52,11 +52,12 @@ def folderCheck(dirname, newFolder):
     return outFolder
     
 # Define the function for converting to DXT1
-def convertDXT1(image, layer, isBGR):
+def convertDXT1(image, layer, isBGR, flattenChoice):
     # Clear the selection (This is done just in case there is a selection, but there shouldn't be)
     pdb.gimp_selection_none(image)
-    # Flatten the Image
-    layer = pdb.gimp_image_flatten(image)
+    # Flatten the image if chosen
+    if flattenChoice==1:
+        layer = pdb.gimp_image_flatten(image)
     # RGB-BGR swap if needed
     if isBGR=="yes":
         pdb.plug_in_colors_channel_mixer(image, layer, FALSE, 0, 0, 1, 0, 1, 0, 1, 0, 0)
@@ -68,7 +69,7 @@ def convertDXT1(image, layer, isBGR):
     return layer
 
 # Define the main operation
-def exportDXT1(image, layer, exportRGB, exportBGR):
+def exportDXT1(image, layer, exportRGB, exportBGR, flattenChoice):
     # Get the file path of the original image
     filePath = pdb.gimp_image_get_filename(image)
     # Save the file in its original format before proceeding
@@ -82,7 +83,7 @@ def exportDXT1(image, layer, exportRGB, exportBGR):
     if exportRGB==1:
         outFolderRGB = folderCheck(dirname, "DXT1 RGB")
         # Prep for export
-        layer = convertDXT1(image, layer, "no")
+        layer = convertDXT1(image, layer, "no", flattenChoice)
         # Get the new file name
         outFileName = fileName[0:-3] + "dds"
         # Get the full save file path
@@ -92,7 +93,7 @@ def exportDXT1(image, layer, exportRGB, exportBGR):
     if exportBGR==1:
         outFolderBGR = folderCheck(dirname, "DXT1 RGB-BGR Swapped")
         # Prep for export
-        layer = convertDXT1(image, layer, "yes")
+        layer = convertDXT1(image, layer, "yes", flattenChoice)
         # Get the new file name
         outFileName = fileName[0:-3] + "dds"
         # Get the full save file path
@@ -119,7 +120,8 @@ register(
         (PF_IMAGE, "image", "Input image", None),
         (PF_DRAWABLE, 'drawable', 'Layer, mask or channel', None),
         (PF_TOGGLE, "p2", "Export in RGB:", 1),
-        (PF_TOGGLE, "p2", "Export RGB-BGR Swapped:", 1)
+        (PF_TOGGLE, "p2", "Export RGB-BGR Swapped:", 1),
+        (PF_TOGGLE, "p2", "Flatten Image:", 1)
     ],
     [],
     exportDXT1,
