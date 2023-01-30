@@ -130,7 +130,8 @@ def exportSkin(image, layer, console, skinType, texType, charSize, alchemyVersio
                 # Convert to PNG8
                 layer = convertIndexed(image, 256)
                 print("Export as png to 'PS2' folder")
-                print("Un-index colors")
+                # Color mode back to RGB
+                pdb.gimp_image_convert_rgb(image)
                 print("resize to half size")
                 # Check which format is being used for PSP
                 if PSPFormat == 0:
@@ -163,7 +164,8 @@ def exportSkin(image, layer, console, skinType, texType, charSize, alchemyVersio
                 if skinType == 0:
                     # Primary skin
                     print("Export as png to 'PC, PS2, and Xbox' folder")
-                    print("un-index")
+                    # Color mode back to RGB
+                    pdb.gimp_image_convert_rgb(image)
                     print("resize to half size")
                     # Convert to PNG8
                     layer = convertIndexed(image, 256)
@@ -174,19 +176,22 @@ def exportSkin(image, layer, console, skinType, texType, charSize, alchemyVersio
                     else:
                         # PSP uses PNG4 format
                         print("Export as png to 'GameCube' folder")
-                        print("un-index")
+                        # Color mode back to RGB
+                        pdb.gimp_image_convert_rgb(image)
                         # Convert to PNG4
                         layer = convertIndexed(image, 16)
                         print("Export as png to 'PSP' folder")
                 else:
                     # secondary skin
                     print("Export as png to 'PC and Xbox' folder")
-                    print("un-index")
+                    # Color mode back to RGB
+                    pdb.gimp_image_convert_rgb(image)
                     print("resize to half size")
                     # Convert to PNG8
                     layer = convertIndexed(image, 256)
                     print("export as png to 'PS2' folder")
-                    print("un-index")
+                    # Color mode back to RGB
+                    pdb.gimp_image_convert_rgb(image)
                     print("resize to half size")
                     # Convert to PNG8
                     layer = convertIndexed(image, 256)
@@ -197,7 +202,8 @@ def exportSkin(image, layer, console, skinType, texType, charSize, alchemyVersio
                     else:
                         # PSP uses PNG4 format
                         print("Export as png to 'GameCube' folder")
-                        print("un-index")
+                        # Color mode back to RGB
+                        pdb.gimp_image_convert_rgb(image)
                         # Convert to PNG4
                         layer = convertIndexed(image, 16)
                         print("Export as png to 'PSP' folder")
@@ -210,7 +216,8 @@ def exportSkin(image, layer, console, skinType, texType, charSize, alchemyVersio
                     # Convert to PNG8
                     layer = convertIndexed(image, 256)
                     print("Export as png to 'PS2' folder")
-                    print("un-index")
+                    # Color mode back to RGB
+                    pdb.gimp_image_convert_rgb(image)
                     print("resize to half size")
                     # Check the texture format used by PSP
                     if PSPFormat == 1:
@@ -225,12 +232,14 @@ def exportSkin(image, layer, console, skinType, texType, charSize, alchemyVersio
                         print("Export as png to 'PSP' folder")
                 else:
                     # secondary skin
-                    print("un-index")
+                    # Color mode back to RGB
+                    pdb.gimp_image_convert_rgb(image)
                     print("resize to half size")
                     # Convert to PNG8
                     layer = convertIndexed(image, 256)
                     print("export as png to 'PS2' folder")
-                    print("un-index")
+                    # Color mode back to RGB
+                    pdb.gimp_image_convert_rgb(image)
                     print("resize to half size")
                     # Check the texture format used by PSP
                     if PSPFormat == 1:
