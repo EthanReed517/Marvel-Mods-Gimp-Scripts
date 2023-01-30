@@ -8,14 +8,14 @@ GIMP (primarily verified with GIMP 2.10)
 
 ### Installation
  1. Open `update.bat` with Notepad++ or another text editor.
- 2. Edit the file paths in lines 6 and 8 to reflect your GIMP configuration.
+ 2. Edit the file paths in line 6 to reflect your GIMP configuration.
  3. Save `update.bat`
  4. Run `runUpdateAdmin` to run the update script with administrator access, which will allow you to access the necessary folders.
 
 Alternatively, you can manually paste individual scripts into the appropriate folders.
 
 ### Usage
-1. In the toolbar, go to `Marvel Mods` for Python scripts or `Marvel Mods (Legacy)` for Scheme plugins. Certain plugins are repeated in both places while they're being updated.
+1. In the toolbar, go to `Marvel Mods` to find the plugins. 
 2. Each plugin has more detailed information in its own `README.md` file, which is included within this archive.
 
 ## Credits

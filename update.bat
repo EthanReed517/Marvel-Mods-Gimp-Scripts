@@ -4,8 +4,6 @@ REM * Section 0 - User Input *
 REM **************************
 REM enter the path to your plugins folder in AppData:
 set appDataPluginFolder="C:\users\ethan\AppData\Roaming\GIMP\2.10\plug-ins"
-REM enter the path to your scripts folder in your GIMP installation folder:
-set installScriptsFolder="C:\Program Files\GIMP 2\share\gimp\2.0\scripts"
 
 
 REM ******************************
@@ -16,10 +14,10 @@ REM move to the folder of the script
 cd %~dp0
 
 REM copy scheme scripts to the "scripts" folder in GIMP's installation
-echo Copying Scheme plugins . . .
-for /r %%x in (*.scm) do (
-	copy >nul "%%x" %installScriptsFolder%
-)
+REM echo Copying Scheme plugins . . .
+REM for /r %%x in (*.scm) do (
+REM 	copy >nul "%%x" %installScriptsFolder%
+REM )
 
 REM copy python plugins to the "plugins" folder in GIMP's AppData folder
 echo Copying Python plugins . . .
