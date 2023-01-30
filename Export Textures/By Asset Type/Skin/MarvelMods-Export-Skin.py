@@ -65,8 +65,6 @@ def folderCheck(dirname, newFolder):
     
 # Define the function for indexing colors
 def convertIndexed(image, colors):
-    # Clear the selection (This is done just in case there is a selection, but there shouldn't be)
-    pdb.gimp_selection_none(image)
     # Index the colors
     pdb.gimp_image_convert_indexed(image, CONVERT_DITHER_NONE, CONVERT_PALETTE_GENERATE, colors, FALSE, FALSE, "")
     # Display the changes
@@ -90,6 +88,8 @@ def exportSkin(image, layer, console, skinType, texType, charSize, alchemyVersio
     currentHeight = image.height
     # Start an undo group so that the entire operation can be undone at once
     pdb.gimp_image_undo_group_start(image)
+    # Clear the selection (This is done just in case there is a selection, but there shouldn't be)
+    pdb.gimp_selection_none(image)
     # Flatten the Image
     layer = pdb.gimp_image_flatten(image)
     # Determine if the image is oversized
