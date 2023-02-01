@@ -208,6 +208,11 @@ def exportSkin(image, layer, console, skinType, texType, charSize, alchemyVersio
                     # standard size character
                     # Resize to max size for texture type
                     resizeMax(image, layer, texType)
+                # Check if the skin is primary or secondary
+                if skinType == 1:
+                    # secondary skin, resize further
+                    # resize to half size
+                    resizeHalf(image, layer)
                 # Convert to PNG8
                 layer = convertIndexed(image, 256)
                 # Export the image
