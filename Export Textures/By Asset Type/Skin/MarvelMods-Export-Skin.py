@@ -414,12 +414,12 @@ register(
     [
         (PF_IMAGE, "image", "Input image", None),
         (PF_DRAWABLE, 'drawable', 'Layer, mask or channel', None),
-        (PF_OPTION,"p1","Console?:", 0, ["All","PC Only"]),
-        (PF_OPTION,"p1","Skin Type?:", 0, ["Primary Skin","Secondary Skin"]),
-        (PF_OPTION,"p1","Texture Type?:", 0, ["Primary Texture","Secondary Texture"]),
-        (PF_OPTION,"p1","Character Size?:", 0, ["Standard","Large"]),
-        (PF_OPTION,"p1","Alchemy Version?:", 0, ["Alchemy 2.5","Alchemy 5"]),
-        (PF_OPTION,"p1","PSP Texture Format?:", 1, ["PNG4","PNG8"])
+        (PF_OPTION,"p1","Console:", 0, ["All","PC Only"]),
+        (PF_OPTION,"p1","Skin Type:", 0, ["Primary Skin","Secondary Skin"]),
+        (PF_OPTION,"p1","Texture Type:", 0, ["Primary Texture","Secondary Texture"]),
+        (PF_OPTION,"p1","Character Size:", 0, ["Standard","Large"]),
+        (PF_OPTION,"p1","Alchemy Version:", 0, ["Alchemy 2.5","Alchemy 5"]),
+        (PF_OPTION,"p1","PSP Texture Format:", 1, ["PNG4","PNG8"])
     ],
     [],
     exportSkin,
