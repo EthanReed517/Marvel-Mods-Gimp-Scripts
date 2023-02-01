@@ -4,7 +4,7 @@
 # ########### #
 # INFORMATION #
 # ########### #
-# GIMP plugin to export a skin
+# GIMP plugin to export a skin, 3D head, or mannequin texture.
 # This was designed with the intention to use it with modding processes for MarvelMods.com, though it can have other uses. 
 # For detailed instructions, please reference the README.md file included with this download.
 # (c) BaconWizard17 2023
@@ -404,8 +404,8 @@ def exportSkin(image, layer, console, skinType, texType, charSize, alchemyVersio
 # Register the script in GIMP
 register(
     "python_fu_marvelmods_export_skin",
-    "Exports a skin texture in multiple formats.",
-    "Exports a skin texture in multiple formats.",
+    "Exports a skin texture in multiple formats. Also works on 3D head textures and mannequin textures.",
+    "Exports a skin texture in multiple formats. Also works on 3D head textures and mannequin textures.",
     "BaconWizard17",
     "BaconWizard17",
     "January 2023",

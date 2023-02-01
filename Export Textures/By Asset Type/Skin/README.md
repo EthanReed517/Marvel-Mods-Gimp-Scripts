@@ -4,7 +4,7 @@ by BaconWizard17
 This plugin exports a skin texture in several optimized formats.
 
 ### Compatibility
-This script will only work correctly if the image has been saved as a .xcf file. 
+This script will only work correctly if the image has been saved as a .xcf file. The texture can be for a skin, 3D head, or mannequin.
 
 ### Installation
  1. This script can be installed using `runUpdateAdmin.bat` from my scripts, or it can be placed individually in your GIMP plugins directory. The standard location for this is `C:\Users\(your user)\AppData\Roaming\GIMP\2.10\plug-ins`. Check the main `README.md` file in this project for more details on proper installation.
