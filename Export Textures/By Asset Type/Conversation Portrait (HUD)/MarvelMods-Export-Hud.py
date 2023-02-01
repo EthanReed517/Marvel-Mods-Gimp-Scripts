@@ -39,6 +39,40 @@ from gimpfu import*
 # ######### #
 # FUNCTIONS #
 # ######### #
+# Define the folder checking operation
+def folderCheck(dirname, newFolder):
+    # Append the paths
+    outFolder = os.path.join(dirname, newFolder)
+    # Check if the path exists
+    outFolderExists = os.path.exists(outFolder)
+    # If the path doesn't exist, create the new folder
+    if outFolderExists == False:
+        os.mkdir(outFolder)
+    # Return the new path
+    return outFolder
+    
+# Define the function for exporting as a png
+def exportPNG(image, layer, dirname, newFolder, fileName):
+    # Check if the export folder exists and create it if needed
+    outFolder = folderCheck(dirname, newFolder)
+    # Get the new file name
+    outFileName = fileName[0:-3] + "png"
+    # Get the full save file path
+    outFilePath = os.path.join(outFolder, outFileName)
+    # Export the image
+    pdb.file_png_save(image, layer, outFilePath, outFilePath, 0, 9, 0, 0, 0, 0, 0)
+
+# Define the function for exporting as a DXT1 dds
+def exportDXT1(image, layer, dirname, newFolder, fileName):
+    # Check if the export folder exists and create it if needed
+    outFolder = folderCheck(dirname, newFolder)
+    # Get the new file name
+    outFileName = fileName[0:-3] + "dds"
+    # Get the full save file path
+    outFilePath = os.path.join(outFolder, outFileName)
+    # Export the image
+    pdb.file_dds_save(image, layer, outFilePath, outFilePath, 1, 0, 4, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0)
+
 # Define the main operation
 def exportHUD(image, layer, console, outlineType):
     # Get the file path of the original image
@@ -65,11 +99,11 @@ def exportHUD(image, layer, console, outlineType):
     if oversized == True:
         # The texture is oversized
         # Export the image
-        
+        exportDXT1(image, layer, dirname, "XML2 PC", fileName)
         # RGB-BGR Swap
         
         # Export the image
-        
+        exportDXT1(image, layer, dirname, "MUA1 PC", fileName)
         # BGR back to RGB
         
         # Determine if console export needs to happen
@@ -78,11 +112,11 @@ def exportHUD(image, layer, console, outlineType):
             # Resize to 128x128
             
             # Export the image
-            
+            exportDXT1(image, layer, dirname, "Wii", fileName)
             # Convert to PNG8
             
             # Export the image
-            
+            exportPNG(image, layer, dirname, "GC, PS2, Xbox", fileName)
             # Color mode back to RGB
             
             # Resize to half size
@@ -90,37 +124,24 @@ def exportHUD(image, layer, console, outlineType):
             # Convert to PNG8
             
             # Export the image
+            exportPNG(image, layer, dirname, "PSP", fileName)
     else:
         # The texture is not oversized
         # Choose the console
         if console == 1:
             # PC only
-            # Export the image
-            
-            # RGB-BGR Swap
+            # Index the colors
             
             # Export the image
-            
-            # BGR back to RGB
-            
+            exportPNG(image, layer, dirname, "PC", fileName)
         else:
             # All consoles
             # Export the image
-            
-            # RGB-BGR Swap
-            
-            # Export the image
-            
-            # BGR back to RGB
-            
-            # Resize to 128x128
-            
-            # Export the image
-            
+            exportDXT1(image, layer, dirname, "Wii", fileName)
             # Convert to PNG8
             
             # Export the image
-            
+            exportPNG(image, layer, dirname, "PC, GC, PS2, Xbox", fileName)
             # Color mode back to RGB
             
             # Resize to half size
@@ -128,7 +149,7 @@ def exportHUD(image, layer, console, outlineType):
             # Convert to PNG8
             
             # Export the image
-            
+            exportPNG(image, layer, dirname, "PSP", fileName)
     # End the undo group
     pdb.gimp_image_undo_group_end(image)
 
