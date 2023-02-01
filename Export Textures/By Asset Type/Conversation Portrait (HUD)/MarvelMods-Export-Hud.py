@@ -198,10 +198,10 @@ register(
         (PF_IMAGE, "image", "Input image", None),
         (PF_DRAWABLE, 'drawable', 'Layer, mask or channel', None),
         (PF_OPTION,"p1","Console:", 0, ["All","PC Only"]),
-        (PF_OPTION,"p1","Outline Type:", 0, ["Hero Outline","Villain Outline"]),
+        (PF_OPTION,"p1","Outline Type:", 0, ["Hero Outline","Villain Outline"])
     ],
     [],
-    exportSkin,
+    exportHUD,
     menu='<Image>/Marvel Mods/Export Textures/By Asset Type'
 )
 
