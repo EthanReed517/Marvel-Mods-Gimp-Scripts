@@ -45,6 +45,17 @@ def RGB_BGR(image, layer):
     pdb.plug_in_colors_channel_mixer(image, layer, FALSE, 0, 0, 1, 0, 1, 0, 1, 0, 0)
     # Display the changes
     pdb.gimp_displays_flush()
+    
+# Define the function for indexing colors
+def convertIndexed(image, colors):
+    # Index the colors
+    pdb.gimp_image_convert_indexed(image, CONVERT_DITHER_NONE, CONVERT_PALETTE_GENERATE, colors, FALSE, FALSE, "")
+    # Display the changes
+    pdb.gimp_displays_flush()
+    # Get the active layer
+    layer = pdb.gimp_image_get_active_layer(image)
+    # return the new layer
+    return layer
 
 # Define the folder checking operation
 def folderCheck(dirname, newFolder):
@@ -121,15 +132,15 @@ def exportHUD(image, layer, console, outlineType):
             # Export the image
             exportDXT1(image, layer, dirname, "Wii", fileName)
             # Convert to PNG8
-            
+            layer = convertIndexed(image, 256)
             # Export the image
             exportPNG(image, layer, dirname, "GC, PS2, Xbox", fileName)
             # Color mode back to RGB
-            
+            pdb.gimp_image_convert_rgb(image)
             # Resize to half size
             pdb.gimp_image_scale(image, 64, 64)
             # Convert to PNG8
-            
+            layer = convertIndexed(image, 256)
             # Export the image
             exportPNG(image, layer, dirname, "PSP", fileName)
     else:
@@ -138,7 +149,7 @@ def exportHUD(image, layer, console, outlineType):
         if console == 1:
             # PC only
             # Index the colors
-            
+            layer = convertIndexed(image, 256)
             # Export the image
             exportPNG(image, layer, dirname, "PC", fileName)
         else:
@@ -146,15 +157,15 @@ def exportHUD(image, layer, console, outlineType):
             # Export the image
             exportDXT1(image, layer, dirname, "Wii", fileName)
             # Convert to PNG8
-            
+            layer = convertIndexed(image, 256)
             # Export the image
             exportPNG(image, layer, dirname, "PC, GC, PS2, Xbox", fileName)
             # Color mode back to RGB
-            
+            pdb.gimp_image_convert_rgb(image)
             # Resize to half size
             pdb.gimp_image_scale(image, 64, 64)            
             # Convert to PNG8
-            
+            layer = convertIndexed(image, 256)
             # Export the image
             exportPNG(image, layer, dirname, "PSP", fileName)
     # End the undo group
