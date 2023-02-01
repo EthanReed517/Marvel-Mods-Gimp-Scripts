@@ -70,22 +70,32 @@ def folderCheck(dirname, newFolder):
     return outFolder
     
 # Define the function for exporting as a png
-def exportPNG(image, layer, dirname, newFolder, fileName):
+def exportPNG(image, layer, dirname, newFolder, fileName, outlineType):
     # Check if the export folder exists and create it if needed
     outFolder = folderCheck(dirname, newFolder)
     # Get the new file name
-    outFileName = fileName[0:-3] + "png"
+    if outlineType == 0:
+        # Hero outline
+        outFileName = fileName[0:-3] + "png"
+    else:
+        # Villain outline
+        outFileName = "vil_" + fileName[0:-3] + "png"
     # Get the full save file path
     outFilePath = os.path.join(outFolder, outFileName)
     # Export the image
     pdb.file_png_save(image, layer, outFilePath, outFilePath, 0, 9, 0, 0, 0, 0, 0)
 
 # Define the function for exporting as a DXT1 dds
-def exportDXT1(image, layer, dirname, newFolder, fileName):
+def exportDXT1(image, layer, dirname, newFolder, fileName, outlineType):
     # Check if the export folder exists and create it if needed
     outFolder = folderCheck(dirname, newFolder)
     # Get the new file name
-    outFileName = fileName[0:-3] + "dds"
+    if outlineType == 0:
+        # Hero outline
+        outFileName = fileName[0:-3] + "dds"
+    else:
+        # Villain outline
+        outFileName = "vil_" + fileName[0:-3] + "dds"
     # Get the full save file path
     outFilePath = os.path.join(outFolder, outFileName)
     # Export the image
@@ -117,11 +127,11 @@ def exportHUD(image, layer, console, outlineType):
     if oversized == True:
         # The texture is oversized
         # Export the image
-        exportDXT1(image, layer, dirname, "XML2 PC", fileName)
+        exportDXT1(image, layer, dirname, "XML2 PC", fileName, outlineType)
         # RGB-BGR Swap
         RGB_BGR(image, layer)
         # Export the image
-        exportDXT1(image, layer, dirname, "MUA1 PC", fileName)
+        exportDXT1(image, layer, dirname, "MUA1 PC", fileName, outlineType)
         # BGR back to RGB
         RGB_BGR(image, layer)
         # Determine if console export needs to happen
@@ -130,11 +140,11 @@ def exportHUD(image, layer, console, outlineType):
             # Resize to 128x128
             pdb.gimp_image_scale(image, 128, 128)
             # Export the image
-            exportDXT1(image, layer, dirname, "Wii", fileName)
+            exportDXT1(image, layer, dirname, "Wii", fileName, outlineType)
             # Convert to PNG8
             layer = convertIndexed(image, 256)
             # Export the image
-            exportPNG(image, layer, dirname, "GC, PS2, Xbox", fileName)
+            exportPNG(image, layer, dirname, "GC, PS2, Xbox", fileName, outlineType)
             # Color mode back to RGB
             pdb.gimp_image_convert_rgb(image)
             # Resize to half size
@@ -142,7 +152,7 @@ def exportHUD(image, layer, console, outlineType):
             # Convert to PNG8
             layer = convertIndexed(image, 256)
             # Export the image
-            exportPNG(image, layer, dirname, "PSP", fileName)
+            exportPNG(image, layer, dirname, "PSP", fileName, outlineType)
     else:
         # The texture is not oversized
         # Choose the console
@@ -151,15 +161,15 @@ def exportHUD(image, layer, console, outlineType):
             # Index the colors
             layer = convertIndexed(image, 256)
             # Export the image
-            exportPNG(image, layer, dirname, "PC", fileName)
+            exportPNG(image, layer, dirname, "PC", fileName, outlineType)
         else:
             # All consoles
             # Export the image
-            exportDXT1(image, layer, dirname, "Wii", fileName)
+            exportDXT1(image, layer, dirname, "Wii", fileName, outlineType)
             # Convert to PNG8
             layer = convertIndexed(image, 256)
             # Export the image
-            exportPNG(image, layer, dirname, "PC, GC, PS2, Xbox", fileName)
+            exportPNG(image, layer, dirname, "PC, GC, PS2, Xbox", fileName, outlineType)
             # Color mode back to RGB
             pdb.gimp_image_convert_rgb(image)
             # Resize to half size
@@ -167,7 +177,7 @@ def exportHUD(image, layer, console, outlineType):
             # Convert to PNG8
             layer = convertIndexed(image, 256)
             # Export the image
-            exportPNG(image, layer, dirname, "PSP", fileName)
+            exportPNG(image, layer, dirname, "PSP", fileName, outlineType)
     # End the undo group
     pdb.gimp_image_undo_group_end(image)
 
