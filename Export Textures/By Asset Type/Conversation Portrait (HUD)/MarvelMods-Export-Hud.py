@@ -117,7 +117,7 @@ def exportHUD(image, layer, console, outlineType):
         if console == 0:
             # All consoles
             # Resize to 128x128
-            
+            pdb.gimp_image_scale(image, 128, 128)
             # Export the image
             exportDXT1(image, layer, dirname, "Wii", fileName)
             # Convert to PNG8
@@ -127,7 +127,7 @@ def exportHUD(image, layer, console, outlineType):
             # Color mode back to RGB
             
             # Resize to half size
-            
+            pdb.gimp_image_scale(image, 64, 64)
             # Convert to PNG8
             
             # Export the image
@@ -152,7 +152,7 @@ def exportHUD(image, layer, console, outlineType):
             # Color mode back to RGB
             
             # Resize to half size
-            
+            pdb.gimp_image_scale(image, 64, 64)            
             # Convert to PNG8
             
             # Export the image
