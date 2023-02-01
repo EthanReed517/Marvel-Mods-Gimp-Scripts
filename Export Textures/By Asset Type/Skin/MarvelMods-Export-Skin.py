@@ -94,8 +94,8 @@ def resizeMax(image, layer, texType):
         # secondary texture
         maxSize = 128
     # Get the current dimensions of the image
-    currentWidth = image.width
-    currentHeight = image.height
+    currentWidth = float(image.width)
+    currentHeight = float(image.height)
     # Check which is bigger
     if currentWidth >= currentHeight:
         # Wide image or square
