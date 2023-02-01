@@ -39,6 +39,13 @@ from gimpfu import*
 # ######### #
 # FUNCTIONS #
 # ######### #
+# Define the function for RGB-BGR swapping
+def RGB_BGR(image, layer):
+    # Perform the swap
+    pdb.plug_in_colors_channel_mixer(image, layer, FALSE, 0, 0, 1, 0, 1, 0, 1, 0, 0)
+    # Display the changes
+    pdb.gimp_displays_flush()
+
 # Define the folder checking operation
 def folderCheck(dirname, newFolder):
     # Append the paths
@@ -101,11 +108,11 @@ def exportHUD(image, layer, console, outlineType):
         # Export the image
         exportDXT1(image, layer, dirname, "XML2 PC", fileName)
         # RGB-BGR Swap
-        
+        RGB_BGR(image, layer)
         # Export the image
         exportDXT1(image, layer, dirname, "MUA1 PC", fileName)
         # BGR back to RGB
-        
+        RGB_BGR(image, layer)
         # Determine if console export needs to happen
         if console == 0:
             # All consoles
