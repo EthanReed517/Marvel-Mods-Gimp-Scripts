@@ -41,8 +41,93 @@ from gimpfu import*
 # ######### #
 # Define the main operation
 def exportHUD(image, layer, console, outlineType):
-    # Add code here
-    print("temp")
+    # Get the file path of the original image
+    
+    # Save the file in its original format before proceeding
+    
+    # Get the folder and file name from the file path
+    
+    # Get the current dimensions of the image
+    
+    # Determine if the image is oversized
+    
+    # Start an undo group so that the entire operation can be undone at once
+    
+    # Clear the selection (This is done just in case there is a selection, but there shouldn't be)
+    
+    # Flatten the Image
+    
+    # Begin the Export
+    # Pick if the texture is oversized or standard
+    if oversized == True:
+        # The texture is oversized
+        # Export the image
+        
+        # RGB-BGR Swap
+        
+        # Export the image
+        
+        # BGR back to RGB
+        
+        # Determine if console export needs to happen
+        if console == 0:
+            # All consoles
+            # Resize to 128x128
+            
+            # Export the image
+            
+            # Convert to PNG8
+            
+            # Export the image
+            
+            # Color mode back to RGB
+            
+            # Resize to half size
+            
+            # Convert to PNG8
+            
+            # Export the image
+    else:
+        # The texture is not oversized
+        # Choose the console
+        if console == 1:
+            # PC only
+            # Export the image
+            
+            # RGB-BGR Swap
+            
+            # Export the image
+            
+            # BGR back to RGB
+            
+        else:
+            # All consoles
+            # Export the image
+            
+            # RGB-BGR Swap
+            
+            # Export the image
+            
+            # BGR back to RGB
+            
+            # Resize to 128x128
+            
+            # Export the image
+            
+            # Convert to PNG8
+            
+            # Export the image
+            
+            # Color mode back to RGB
+            
+            # Resize to half size
+            
+            # Convert to PNG8
+            
+            # Export the image
+            
+    # End the undo group
+    
 
 # ######## #
 # REGISTER #
