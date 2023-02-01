@@ -56,6 +56,15 @@ def convertIndexed(image, colors):
     layer = pdb.gimp_image_get_active_layer(image)
     # return the new layer
     return layer
+    
+# Define the function for resizing to half size
+def resizeHalf(image, layer, newSize):
+    # scale the image accordingly
+    pdb.gimp_image_scale(image, newSize, newSize)
+    # Resize the layer to the image size
+    pdb.gimp_layer_resize_to_image_size(layer)
+    # Display the changes
+    pdb.gimp_displays_flush()
 
 # Define the folder checking operation
 def folderCheck(dirname, newFolder):
@@ -140,7 +149,7 @@ def exportHUD(image, layer, console, outlineType):
         if console == 0:
             # All consoles
             # Resize to 128x128
-            pdb.gimp_image_scale(image, 128, 128)
+            resizeHalf(image, layer, 128)
             # Export the image
             exportDXT1(image, layer, dirname, "Wii", fileName, outlineType)
             # Convert to PNG8
@@ -150,7 +159,7 @@ def exportHUD(image, layer, console, outlineType):
             # Color mode back to RGB
             pdb.gimp_image_convert_rgb(image)
             # Resize to half size
-            pdb.gimp_image_scale(image, 64, 64)
+            resizeHalf(image, layer, 64)
             # Convert to PNG8
             layer = convertIndexed(image, 256)
             # Export the image
@@ -175,7 +184,7 @@ def exportHUD(image, layer, console, outlineType):
             # Color mode back to RGB
             pdb.gimp_image_convert_rgb(image)
             # Resize to half size
-            pdb.gimp_image_scale(image, 64, 64)            
+            resizeHalf(image, layer, 64)           
             # Convert to PNG8
             layer = convertIndexed(image, 256)
             # Export the image
