@@ -42,21 +42,24 @@ from gimpfu import*
 # Define the main operation
 def exportHUD(image, layer, console, outlineType):
     # Get the file path of the original image
-    
+    filePath = pdb.gimp_image_get_filename(image)    
     # Save the file in its original format before proceeding
-    
+    pdb.gimp_file_save(image, layer, filePath, filePath)
     # Get the folder and file name from the file path
-    
+    dirname = os.path.dirname(filePath)
+    fileName = os.path.basename(filePath)
     # Get the current dimensions of the image
-    
+    currentWidth = image.width
+    currentHeight = image.height
     # Determine if the image is oversized
-    
+    if (currentWidth > 128) or (currentHeight > 128):
+        oversized == True
     # Start an undo group so that the entire operation can be undone at once
-    
+    pdb.gimp_image_undo_group_start(image)
     # Clear the selection (This is done just in case there is a selection, but there shouldn't be)
-    
+    pdb.gimp_selection_none(image)
     # Flatten the Image
-    
+    layer = pdb.gimp_image_flatten(image)
     # Begin the Export
     # Pick if the texture is oversized or standard
     if oversized == True:
@@ -127,7 +130,7 @@ def exportHUD(image, layer, console, outlineType):
             # Export the image
             
     # End the undo group
-    
+    pdb.gimp_image_undo_group_end(image)
 
 # ######## #
 # REGISTER #
