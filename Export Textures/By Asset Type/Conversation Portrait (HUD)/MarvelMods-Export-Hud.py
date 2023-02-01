@@ -115,7 +115,9 @@ def exportHUD(image, layer, console, outlineType):
     currentHeight = image.height
     # Determine if the image is oversized
     if (currentWidth > 128) or (currentHeight > 128):
-        oversized == True
+        oversized = True
+    else:
+        oversized = False
     # Start an undo group so that the entire operation can be undone at once
     pdb.gimp_image_undo_group_start(image)
     # Clear the selection (This is done just in case there is a selection, but there shouldn't be)
