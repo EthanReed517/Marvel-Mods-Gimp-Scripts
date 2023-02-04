@@ -404,7 +404,7 @@ def exportSkin(image, layer, console, skinType, texType, charSize, alchemyVersio
 # Register the script in GIMP
 register(
     "python_fu_marvelmods_export_skin",
-    "Exports a skin texture in multiple formats. Also works on 3D head textures and mannequin textures.",
+    "Exports a skin texture in multiple formats. Also\nworks on 3D head textures and mannequin textures.\n\nCheck the README.md file included with the\ndownload for more clarity on the options.",
     "Exports a skin texture in multiple formats. Also works on 3D head textures and mannequin textures.",
     "BaconWizard17",
     "BaconWizard17",

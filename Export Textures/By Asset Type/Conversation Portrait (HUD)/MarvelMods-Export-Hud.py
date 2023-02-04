@@ -198,7 +198,7 @@ def exportHUD(image, layer, console, outlineType):
 # Register the script in GIMP
 register(
     "python_fu_marvelmods_export_hud",
-    "Exports a conversation portrait (HUD) texture in multiple formats.",
+    "Exports a conversation portrait (HUD) texture in\nmultiple formats.\n\nCheck the README.md file included with the\ndownload for more clarity on the options.",
     "Exports a conversation portrait (HUD) texture in multiple formats.",
     "BaconWizard17",
     "BaconWizard17",

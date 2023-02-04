@@ -181,7 +181,7 @@ def exportCSP(image, layer, console, game):
 # Register the script in GIMP
 register(
     "python_fu_marvelmods_export_csp",
-    "Exports a character select portrait (CSP) texture in multiple formats.",
+    "Exports a character select portrait (CSP) texture\nin multiple formats.\n\nCheck the README.md file included with the\ndownload for more clarity on the options.",
     "Exports a character select portrait (CSP) texture in multiple formats.",
     "BaconWizard17",
     "BaconWizard17",

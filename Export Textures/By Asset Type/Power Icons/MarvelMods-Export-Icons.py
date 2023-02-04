@@ -218,7 +218,7 @@ def exportIcons(image, layer, console, game):
 # Register the script in GIMP
 register(
     "python_fu_marvelmods_export_icons",
-    "Exports a power icons texture in multiple formats.",
+    "Exports a power icons texture in multiple formats.\n\nCheck the README.md file included with the\ndownload for more clarity on the options.",
     "Exports a power icons texture in multiple formats.",
     "BaconWizard17",
     "BaconWizard17",
