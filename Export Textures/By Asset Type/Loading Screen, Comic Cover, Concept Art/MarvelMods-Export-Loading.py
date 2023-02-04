@@ -38,15 +38,15 @@ from gimpfu import*
 # FUNCTION #
 # ######## #
 # Define the operation
-def loadingScreenExport(image, layer, game, console, asset):
-    #fill this out
+def exportLoading(image, layer, game, console, asset):
+    print("Temp")
 
 # ######## #
 # REGISTER #
 # ######## #
 # Register the script in GIMP
 register(
-    "python_fu_marvelmods_common_loadingScreenExport",
+    "python_fu_marvelmods_export_loading",
     "Exports a loading screen, comic book cover, or\n concept art texture to different formats and\n sizes. Check the README.md file included with\n the download for more clarity on the options.",
     "Exports a loading screen, comic book cover, or concept art texture to different formats and sizes.",
     "BaconWizard17",
@@ -62,8 +62,8 @@ register(
         (PF_OPTION,"p1","Asset Type:", 0, ["Loading Screen","Comic Cover","Concept Art"])
     ],
     [],
-    loadingScreenExport,
-    menu='<Image>/Marvel Mods/Export Textures'
+    exportLoading,
+    menu='<Image>/Marvel Mods/Export Textures/By Asset Type'
 )
 
 
