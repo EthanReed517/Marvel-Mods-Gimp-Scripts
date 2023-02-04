@@ -47,7 +47,7 @@ def exportLoading(image, layer, game, console, asset):
 # Register the script in GIMP
 register(
     "python_fu_marvelmods_export_loading",
-    "Exports a loading screen, comic book cover, or\n concept art texture to different formats and\n sizes. Check the README.md file included with\n the download for more clarity on the options.",
+    "Exports a loading screen, comic book cover, or\nconcept art texture to different formats and\nsizes.\n\nCheck the README.md file included with the\ndownload for more clarity on the options.",
     "Exports a loading screen, comic book cover, or concept art texture to different formats and sizes.",
     "BaconWizard17",
     "BaconWizard17",
