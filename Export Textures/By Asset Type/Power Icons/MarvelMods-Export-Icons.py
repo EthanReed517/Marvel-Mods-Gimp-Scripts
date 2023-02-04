@@ -135,7 +135,7 @@ def exportIcons(image, layer, console, game):
         # Index the colors
         layer = convertIndexed(image, 256)
         # Export the image
-        exportPNG(image, layer, dirname, "GC, PS2, XB", fileName, False)
+        exportPNG(image, layer, dirname, "All", fileName, False)
     else:
         # XML2
         # Get the current dimensions of the image
