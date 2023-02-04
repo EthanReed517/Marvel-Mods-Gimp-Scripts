@@ -38,7 +38,7 @@ from gimpfu import*
 # FUNCTION #
 # ######## #
 # Define the operation
-def loadingScreenExport(image, layer, exportOption, alchemyOption):
+def loadingScreenExport(image, layer, game, console, asset):
     #fill this out
 
 # ######## #
@@ -47,18 +47,19 @@ def loadingScreenExport(image, layer, exportOption, alchemyOption):
 # Register the script in GIMP
 register(
     "python_fu_marvelmods_common_loadingScreenExport",
-    "Exports a loading screen texture to different formats and sizes.\nCheck the README.md file included with the download for more\nclarity on the options.",
-    "Exports a loading screen texture to different formats and sizes.",
+    "Exports a loading screen, comic book cover, or\n concept art texture to different formats and\n sizes. Check the README.md file included with\n the download for more clarity on the options.",
+    "Exports a loading screen, comic book cover, or concept art texture to different formats and sizes.",
     "BaconWizard17",
     "BaconWizard17",
     "January 2024",
-    "Export Loading Screen",
+    "Export Loading Screen, Comic, or Concept Art",
     "*",
     [
         (PF_IMAGE, "image", "Input image", None),
         (PF_DRAWABLE, 'drawable', 'Layer, mask or channel', None),
-        (PF_OPTION,"p1","Size:", 0, ["16:9","4:3","Both"]),
-        (PF_OPTION, "p16", "Alchemy Version:", 0, ["Alchemy 2.5","Alchemy 5"])
+        (PF_OPTION,"p1","Game:", 0, ["XML1/XML2","MUA1"]),
+        (PF_OPTION,"p1","Console:", 0, ["All (Except PSP)","PC Only","PSP Only"]),
+        (PF_OPTION,"p1","Asset Type:", 0, ["Loading Screen","Comic Cover","Concept Art"])
     ],
     [],
     loadingScreenExport,
