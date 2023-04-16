@@ -11,6 +11,7 @@
 #
 #   History:
 #   v1.0: 01Feb2023: First published version.
+#   v1.1: 15Apr2023: Rewrote to accommodate for more portrait types and use the duplication function
 
 #   This program is free software; you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License as published by
@@ -79,36 +80,123 @@ def folderCheck(dirname, newFolder):
     return outFolder
     
 # Define the function for exporting as a png
-def exportPNG(image, layer, dirname, newFolder, fileName, outlineType):
+def exportPNG(image, layer, dirname, newFolder, fileName):
     # Check if the export folder exists and create it if needed
     outFolder = folderCheck(dirname, newFolder)
     # Get the new file name
-    if outlineType == 0:
-        # Hero outline
-        outFileName = fileName[0:-3] + "png"
-    else:
-        # Villain outline
-        outFileName = "vil_" + fileName[0:-3] + "png"
+    outFileName = fileName[0:-3] + "png"
     # Get the full save file path
     outFilePath = os.path.join(outFolder, outFileName)
     # Export the image
     pdb.file_png_save(image, layer, outFilePath, outFilePath, 0, 9, 0, 0, 0, 0, 0)
 
 # Define the function for exporting as a DXT1 dds
-def exportDXT1(image, layer, dirname, newFolder, fileName, outlineType):
+def exportDXT1(image, layer, dirname, newFolder, fileName):
     # Check if the export folder exists and create it if needed
     outFolder = folderCheck(dirname, newFolder)
     # Get the new file name
-    if outlineType == 0:
-        # Hero outline
-        outFileName = fileName[0:-3] + "dds"
-    else:
-        # Villain outline
-        outFileName = "vil_" + fileName[0:-3] + "dds"
+    outFileName = fileName[0:-3] + "dds"
     # Get the full save file path
     outFilePath = os.path.join(outFolder, outFileName)
     # Export the image
     pdb.file_dds_save(image, layer, outFilePath, outFilePath, 1, 0, 4, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0)
+
+# Define the function to run on the duplicate image
+def convoPortrait(image, outline, oversized, dirname, fileName, console):
+    # Get the layers to remove
+    layerRemove = pdb.gimp_image_get_layer_by_name(image, outline)
+    # Remove the layer
+    pdb.gimp_image_remove_layer(image, layerRemove)
+    # Clear the selection (This is done just in case there is a selection, but there shouldn't be)
+    pdb.gimp_selection_none(image)
+    # Flatten the Image
+    layer = pdb.gimp_image_flatten(image)
+    # Get the active layer
+    layer = pdb.gimp_image_get_active_layer(image)
+    # Begin the Export
+    # Pick if the texture is oversized or standard
+    if oversized == True:
+        # The texture is oversized
+        # Export the image
+        exportDXT1(image, layer, dirname, "XML2 PC", fileName)
+        # RGB-BGR Swap
+        RGB_BGR(image, layer)
+        # Export the image
+        exportDXT1(image, layer, dirname, "MUA1 PC", fileName)
+        # BGR back to RGB
+        RGB_BGR(image, layer)
+        # Determine if console export needs to happen
+        if console == 0:
+            # All consoles
+            # Resize to 128x128
+            resizeHalf(image, layer, 128)
+            # Export the image
+            exportDXT1(image, layer, dirname, "Wii", fileName)
+            # Convert to PNG8
+            layer = convertIndexed(image, 256)
+            # Export the image
+            exportPNG(image, layer, dirname, "GC, PS2, Xbox", fileName)
+            # Color mode back to RGB
+            pdb.gimp_image_convert_rgb(image)
+            # Resize to half size
+            resizeHalf(image, layer, 64)
+            # Convert to PNG8
+            layer = convertIndexed(image, 256)
+            # Export the image
+            exportPNG(image, layer, dirname, "PSP", fileName)
+    else:
+        # The texture is not oversized
+        # Choose the console
+        if console == 1:
+            # PC only
+            # Index the colors
+            layer = convertIndexed(image, 256)
+            # Export the image
+            exportPNG(image, layer, dirname, "PC", fileName)
+        else:
+            # All consoles
+            # Export the image
+            exportDXT1(image, layer, dirname, "Wii", fileName)
+            # Convert to PNG8
+            layer = convertIndexed(image, 256)
+            # Export the image
+            exportPNG(image, layer, dirname, "Main", fileName)
+            # Color mode back to RGB
+            pdb.gimp_image_convert_rgb(image)
+            # Resize to half size
+            resizeHalf(image, layer, 64)           
+            # Convert to PNG8
+            layer = convertIndexed(image, 256)
+            # Export the image
+            exportPNG(image, layer, dirname, "PSP", fileName)
+
+# Define the function to run on the duplicate image (next-gen portrait)
+def convoPortraitNG(image, outlineType, dirname, fileName):
+    # Get the layers to remove
+    if outlineType == 0:
+        # define the layers to remove
+        layerHero = pdb.gimp_image_get_layer_by_name(image, "Hero Outline")
+        # Remove the layers
+        pdb.gimp_image_remove_layer(image, layerHero)
+    else:
+        # define the layers to remove
+        layerHero = pdb.gimp_image_get_layer_by_name(image, "Hero Outline")
+        layerVillain = pdb.gimp_image_get_layer_by_name(image, "Villain Outline")
+        # Remove the layers
+        pdb.gimp_image_remove_layer(image, layerHero)
+        pdb.gimp_image_remove_layer(image, layerVillain)
+    # define remaining layers to remove
+    layerFrame = pdb.gimp_image_get_layer_by_name(image, "Frame")
+    layerBackground = pdb.gimp_image_get_layer_by_name(image, "Background")
+    # Remove the layers
+    pdb.gimp_image_remove_layer(image, layerFrame)
+    pdb.gimp_image_remove_layer(image, layerBackground)
+    # Clear the selection (This is done just in case there is a selection, but there shouldn't be)
+    pdb.gimp_selection_none(image)
+    # Get the active layer
+    layer = pdb.gimp_image_get_active_layer(image)
+    # Begin the Export
+    exportPNG(image, layer, dirname, "NG", fileName)
 
 # Define the main operation
 def exportHUD(image, layer, console, outlineType):
@@ -127,70 +215,18 @@ def exportHUD(image, layer, console, outlineType):
         oversized = True
     else:
         oversized = False
-    # Start an undo group so that the entire operation can be undone at once
-    pdb.gimp_image_undo_group_start(image)
-    # Clear the selection (This is done just in case there is a selection, but there shouldn't be)
-    pdb.gimp_selection_none(image)
-    # Flatten the Image
-    layer = pdb.gimp_image_flatten(image)
-    # Begin the Export
-    # Pick if the texture is oversized or standard
-    if oversized == True:
-        # The texture is oversized
-        # Export the image
-        exportDXT1(image, layer, dirname, "XML2 PC", fileName, outlineType)
-        # RGB-BGR Swap
-        RGB_BGR(image, layer)
-        # Export the image
-        exportDXT1(image, layer, dirname, "MUA1 PC", fileName, outlineType)
-        # BGR back to RGB
-        RGB_BGR(image, layer)
-        # Determine if console export needs to happen
-        if console == 0:
-            # All consoles
-            # Resize to 128x128
-            resizeHalf(image, layer, 128)
-            # Export the image
-            exportDXT1(image, layer, dirname, "Wii", fileName, outlineType)
-            # Convert to PNG8
-            layer = convertIndexed(image, 256)
-            # Export the image
-            exportPNG(image, layer, dirname, "GC, PS2, Xbox", fileName, outlineType)
-            # Color mode back to RGB
-            pdb.gimp_image_convert_rgb(image)
-            # Resize to half size
-            resizeHalf(image, layer, 64)
-            # Convert to PNG8
-            layer = convertIndexed(image, 256)
-            # Export the image
-            exportPNG(image, layer, dirname, "PSP", fileName, outlineType)
-    else:
-        # The texture is not oversized
-        # Choose the console
-        if console == 1:
-            # PC only
-            # Index the colors
-            layer = convertIndexed(image, 256)
-            # Export the image
-            exportPNG(image, layer, dirname, "PC", fileName, outlineType)
-        else:
-            # All consoles
-            # Export the image
-            exportDXT1(image, layer, dirname, "Wii", fileName, outlineType)
-            # Convert to PNG8
-            layer = convertIndexed(image, 256)
-            # Export the image
-            exportPNG(image, layer, dirname, "PC, GC, PS2, Xbox", fileName, outlineType)
-            # Color mode back to RGB
-            pdb.gimp_image_convert_rgb(image)
-            # Resize to half size
-            resizeHalf(image, layer, 64)           
-            # Convert to PNG8
-            layer = convertIndexed(image, 256)
-            # Export the image
-            exportPNG(image, layer, dirname, "PSP", fileName, outlineType)
-    # End the undo group
-    pdb.gimp_image_undo_group_end(image)
+    # Export the main portrait
+    heroImage = pdb.gimp_image_duplicate(image)
+    convoPortrait(heroImage, "Villain Outline", oversized, dirname, fileName, console)
+    # Export the villain portrait, if applicable
+    if outlineType == 1:
+        villainImage = pdb.gimp_image_duplicate(image)
+        villainFileName = "v_" + fileName
+        convoPortrait(villainImage, "Hero Outline", oversized, dirname, villainFileName, console)
+    # Export the next-gen portrait
+    ngImage = pdb.gimp_image_duplicate(image)
+    ngFileName = "ng_" + fileName
+    convoPortraitNG(ngImage, outlineType, dirname, ngFileName)
 
 # ######## #
 # REGISTER #
@@ -202,14 +238,14 @@ register(
     "Exports a conversation portrait (HUD) texture in multiple formats.",
     "BaconWizard17",
     "BaconWizard17",
-    "February 2023",
+    "April 2023",
     "Export Conversation Portrait (HUD)",
     "*",
     [
         (PF_IMAGE, "image", "Input image", None),
         (PF_DRAWABLE, 'drawable', 'Layer, mask or channel', None),
         (PF_OPTION,"p1","Console:", 0, ["All","PC Only"]),
-        (PF_OPTION,"p1","Outline Type:", 0, ["Hero Outline","Villain Outline"])
+        (PF_OPTION,"p1","Outline Type:", 0, ["Hero Outline Only","Hero and Villain Outline"])
     ],
     [],
     exportHUD,
