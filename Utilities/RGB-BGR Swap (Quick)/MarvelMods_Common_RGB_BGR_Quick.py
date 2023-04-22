@@ -11,6 +11,7 @@
 #
 #   History:
 #   v1.0: 26Jan2023: First published version.
+#   v1.1: 22Apr2023: Correct an error with the inputs
 
 #   This program is free software; you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License as published by
@@ -71,8 +72,7 @@ register(
     "*",
     [
         (PF_IMAGE, "image", "Input image", None),
-        (PF_DRAWABLE, 'drawable', 'Layer, mask or channel', None),
-        (PF_OPTION,"p1","Flatten Image?:", 0, ["Yes","No"])
+        (PF_DRAWABLE, 'drawable', 'Layer, mask or channel', None)
     ],
     [],
     rgb_bgr_quick,
