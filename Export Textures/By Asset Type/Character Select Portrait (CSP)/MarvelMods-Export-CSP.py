@@ -11,6 +11,7 @@
 #
 #   History:
 #   v1.0: 01Feb2023: First published version.
+#   v1.1: 21Apr2023: Updated folder names
 
 #   This program is free software; you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License as published by
@@ -159,11 +160,11 @@ def exportCSP(image, layer, console, game):
             if game == 0: 
                 # XML1
                 # Export the image
-                exportPNG(image, layer, dirname, "GC, PS2, Xbox", fileName)
+                exportPNG(image, layer, dirname, "All", fileName)
             else: 
                 # XML2
                 # Export the image
-                exportPNG(image, layer, dirname, "PC, GC, PS2, XB", fileName)
+                exportPNG(image, layer, dirname, "All", fileName)
                 # Color mode back to RGB
                 pdb.gimp_image_convert_rgb(image)
                 # Resize to half size
@@ -185,7 +186,7 @@ register(
     "Exports a character select portrait (CSP) texture in multiple formats.",
     "BaconWizard17",
     "BaconWizard17",
-    "February 2023",
+    "April 2023",
     "Export Character Select Portrait (CSP)",
     "*",
     [
