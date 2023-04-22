@@ -225,8 +225,7 @@ def exportHUD(image, layer, console, outlineType):
         convoPortrait(villainImage, "Hero Outline", oversized, dirname, villainFileName, console)
     # Export the next-gen portrait
     ngImage = pdb.gimp_image_duplicate(image)
-    ngFileName = "ng_" + fileName
-    convoPortraitNG(ngImage, outlineType, dirname, ngFileName)
+    convoPortraitNG(ngImage, outlineType, dirname, fileName)
 
 # ######## #
 # REGISTER #
