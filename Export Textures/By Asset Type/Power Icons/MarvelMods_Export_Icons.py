@@ -121,16 +121,16 @@ def exportIcons(baseImage, baseLayer, console, game):
     layer = pdb.gimp_image_get_active_layer(image)
     # Clear the selection (This is done just in case there is a selection, but there shouldn't be)
     pdb.gimp_selection_none(image)
-    # Flatten the Image
-    layer = pdb.gimp_image_flatten(image)
+    # Get the current dimensions of the image
+    currentWidth = image.width
+    currentHeight = image.height
     # Begin the Export
     # Pick the console
     if game == 0:
         # XML1
+        # Flatten the Image
+        layer = pdb.gimp_image_flatten(image)
         # Ensure that the image is the proper size
-            # Get the current dimensions of the image
-        currentWidth = image.width
-        currentHeight = image.height
         # Determine if the image is oversized
         if (currentWidth > 128) or (currentHeight > 128):
             resizeHalf(image, layer, 128)
@@ -140,9 +140,8 @@ def exportIcons(baseImage, baseLayer, console, game):
         exportPNG(image, layer, dirname, "All", fileName, False)
     elif game == 1:
         # XML2
-        # Get the current dimensions of the image
-        currentWidth = image.width
-        currentHeight = image.height
+        # Flatten the Image
+        layer = pdb.gimp_image_flatten(image)
         # Determine if an icons2 file is needed
         if (currentWidth > 128) or (currentHeight > 128):
             icons2 = True
@@ -216,6 +215,8 @@ def exportIcons(baseImage, baseLayer, console, game):
         # Determine if the image is oversized
         if (currentWidth > 256) or (currentHeight > 256):
             resizeHalf(image, layer, 256)
+        # merge the layers
+        layer = pdb.gimp_image_merge_visible_layers(image, 1)
         # Determine the console
         if console == 0:
             # All
@@ -234,6 +235,8 @@ def exportIcons(baseImage, baseLayer, console, game):
         # Determine if the image is oversized
         if (currentWidth > 128) or (currentHeight > 128):
             resizeHalf(image, layer, 128)
+        # merge the layers
+        layer = pdb.gimp_image_merge_visible_layers(image, 1)
         # Export the image
         exportPNG(image, layer, dirname, "All", fileName, False)
 
