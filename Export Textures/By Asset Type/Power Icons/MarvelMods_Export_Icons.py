@@ -107,16 +107,18 @@ def exportDXT1(image, layer, dirname, newFolder, fileName, icons2):
     pdb.file_dds_save(image, layer, outFilePath, outFilePath, 1, 0, 4, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0)
 
 # Define the main operation
-def exportIcons(image, layer, console, game):
+def exportIcons(baseImage, baseLayer, console, game):
     # Get the file path of the original image
-    filePath = pdb.gimp_image_get_filename(image)    
+    filePath = pdb.gimp_image_get_filename(baseImage)    
     # Save the file in its original format before proceeding
-    pdb.gimp_file_save(image, layer, filePath, filePath)
+    pdb.gimp_file_save(baseImage, baseLayer, filePath, filePath)
     # Get the folder and file name from the file path
     dirname = os.path.dirname(filePath)
     fileName = os.path.basename(filePath)
-    # Start an undo group so that the entire operation can be undone at once
-    pdb.gimp_image_undo_group_start(image)
+    # Create a duplicate image that can be manipulated
+    image = pdb.gimp_image_duplicate(baseImage)
+    # Get the active layer of the new image
+    layer = pdb.gimp_image_get_active_layer(image)
     # Clear the selection (This is done just in case there is a selection, but there shouldn't be)
     pdb.gimp_selection_none(image)
     # Flatten the Image
@@ -136,7 +138,7 @@ def exportIcons(image, layer, console, game):
         layer = convertIndexed(image, 256)
         # Export the image
         exportPNG(image, layer, dirname, "All", fileName, False)
-    else:
+    elif game == 1:
         # XML2
         # Get the current dimensions of the image
         currentWidth = image.width
@@ -209,8 +211,31 @@ def exportIcons(image, layer, console, game):
                 # All consoles
                 # Export the image
                 exportPNG(image, layer, dirname, "icons1 (All)", fileName, False)
-    # End the undo group
-    pdb.gimp_image_undo_group_end(image)
+    elif game == 2:
+        # MUA1
+        # Determine if the image is oversized
+        if (currentWidth > 256) or (currentHeight > 256):
+            resizeHalf(image, layer, 256)
+        # Determine the console
+        if console == 0:
+            # All
+            # Export the image
+            exportPNG(image, layer, dirname, "NG", fileName, False)
+            # Resize the image
+            resizeHalf(image, layer, 128)
+            # Export the image
+            exportPNG(image, layer, dirname, "LG", fileName, False)
+        if console == 1:
+            # PC only
+            # Export the image
+            exportPNG(image, layer, dirname, "PC", fileName, False)            
+    else:
+        # MUA2
+        # Determine if the image is oversized
+        if (currentWidth > 128) or (currentHeight > 128):
+            resizeHalf(image, layer, 128)
+        # Export the image
+        exportPNG(image, layer, dirname, "All", fileName, False)
 
 # ######## #
 # REGISTER #
@@ -229,7 +254,7 @@ register(
         (PF_IMAGE, "image", "Input image", None),
         (PF_DRAWABLE, 'drawable', 'Layer, mask or channel', None),
         (PF_OPTION,"p1","Console:", 0, ["All","PC Only"]),
-        (PF_OPTION,"p1","Game:", 0, ["XML1","XML2"])
+        (PF_OPTION,"p1","Game:", 0, ["XML1","XML2","MUA1","MUA2"])
     ],
     [],
     exportIcons,

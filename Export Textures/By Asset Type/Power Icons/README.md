@@ -1,7 +1,7 @@
 # Marvel Mods GIMP Plugins
 by BaconWizard17
 ## Export Power Icons
-This plugin exports a power icons texture in several optimized formats. It currently only supports XML1 and XML2 power icons. 
+This plugin exports a power icons texture in several optimized formats. It supports XML1, XML2, MUA1, and MUA2 power icons. 
 
 ### Compatibility
 This script will only work correctly if the image has been saved as a .xcf file. The texture should be square.
@@ -26,6 +26,8 @@ This script will only work correctly if the image has been saved as a .xcf file.
 	 - If the texture size is 256, the **icons2** set will export as a 256x256 PNG8 texture for PC, PSP, and Xbox. 
 	 - Regardless of initial texture size, the texture will then be scaled to 128x128 and exported as a PNG8 for the **icons1** set for all consoles.
    - If the texture size is 128x128, only an **icons1** set will be exported. See above for details.
+ - **MUA1**: A 256x256 plain PNG texture will be exported for the next-gen console versions, and a 128x128 plain PNG texture will be exported for the last-gen console versions
+ - **MUA2**: A 128x128 plain PNG texture will be exported
 
 ## Credits
 - BaconWizard17: Script creation
