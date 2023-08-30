@@ -11,6 +11,7 @@
 #
 #   History:
 #   v1.0: 30Jan2023: First published version.
+#   v1.1: 30Aug2023: Add support for transparency, add support for next-gen MUA1 (Steam, PS3, and Xbox 360), and add support for MUA2 PS2. Improve efficiency
 
 #   This program is free software; you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License as published by
@@ -40,11 +41,20 @@ from gimpfu import*
 # FUNCTIONS #
 # ######### #
 # Define the size checking operation
-def sizeCheck(currentWidth, currentHeight, texType):
-    if texType == 0:
+def sizeCheck(currentWidth, currentHeight, skinType, texType):
+    # Determine how many primaries and secondaries
+    type = skinType + texType
+    # Determine the max size based on the texture type
+    if type == 0:
+        # primary skin and primary texture
         criteria = 256
-    else:
+    elif type == 1:
+        # secondary skin or secondary texture
         criteria = 128
+    else:
+        # secondary skin and secondary texture
+        criteria = 64
+    # compare the criteria to the current texture size
     if (currentWidth > criteria) or (currentHeight > criteria):
         oversized = True
     else:
@@ -55,8 +65,6 @@ def sizeCheck(currentWidth, currentHeight, texType):
 def convertIndexed(image, colors):
     # Index the colors
     pdb.gimp_image_convert_indexed(image, CONVERT_DITHER_NONE, CONVERT_PALETTE_GENERATE, colors, FALSE, FALSE, "")
-    # Display the changes
-    pdb.gimp_displays_flush()
     # Get the active layer
     layer = pdb.gimp_image_get_active_layer(image)
     # return the new layer
@@ -66,8 +74,6 @@ def convertIndexed(image, colors):
 def RGB_BGR(image, layer):
     # Perform the swap
     pdb.plug_in_colors_channel_mixer(image, layer, FALSE, 0, 0, 1, 0, 1, 0, 1, 0, 0)
-    # Display the changes
-    pdb.gimp_displays_flush()
     
 # Define the function for resizing to half size
 def resizeHalf(image, layer):
@@ -81,18 +87,21 @@ def resizeHalf(image, layer):
     pdb.gimp_image_scale(image, newWidth, newHeight)
     # Resize the layer to the image size
     pdb.gimp_layer_resize_to_image_size(layer)
-    # Display the changes
-    pdb.gimp_displays_flush()
     
 # Define the function for resizing to the max size for PNG8
-def resizeMax(image, layer, texType):
-    # Determine the max size based on the texture type:
-    if texType == 0:
-        # primary texture
+def resizeMax(image, layer, skinType, texType):
+    # Determine how many primaries and secondaries
+    type = skinType + texType
+    # Determine the max size based on the texture type
+    if type == 0:
+        # primary skin and primary texture
         maxSize = 256
-    else:
-        # secondary texture
+    elif type == 1:
+        # secondary skin or secondary texture
         maxSize = 128
+    else:
+        # secondary skin and secondary texture
+        maxSize = 64
     # Get the current dimensions of the image
     currentWidth = float(image.width)
     currentHeight = float(image.height)
@@ -110,8 +119,6 @@ def resizeMax(image, layer, texType):
     pdb.gimp_image_scale(image, newWidth, newHeight)
     # Resize the layer to the image size
     pdb.gimp_layer_resize_to_image_size(layer)
-    # Display the changes
-    pdb.gimp_displays_flush()
 
 # Define the folder checking operation
 def folderCheck(dirname, newFolder):
@@ -126,35 +133,66 @@ def folderCheck(dirname, newFolder):
     return outFolder
     
 # Define the function for exporting as a png
-def exportPNG(image, layer, dirname, newFolder, fileName):
+def exportPNG(image, layer, dirname, newFolder, fileName, transparency, colors):
     # Check if the export folder exists and create it if needed
     outFolder = folderCheck(dirname, newFolder)
     # Get the new file name
     outFileName = fileName[0:-3] + "png"
     # Get the full save file path
     outFilePath = os.path.join(outFolder, outFileName)
+    # Create a duplicate image that can be exported
+    exportImage = pdb.gimp_image_duplicate(image)
+    # Get the active layer of the new image
+    exportLayer = pdb.gimp_image_get_active_layer(exportImage)
+    # Determine if the image should be transparent
+    if transparency == 1:
+        # Not transparent
+        # Flatten the Image
+        exportLayer = pdb.gimp_image_flatten(exportImage)
+        # Index the colors
+        exportLayer = convertIndexed(exportImage, colors)
     # Export the image
-    pdb.file_png_save(image, layer, outFilePath, outFilePath, 0, 9, 0, 0, 0, 0, 0)
+    pdb.file_png_save(exportImage, exportLayer, outFilePath, outFilePath, 0, 9, 0, 0, 0, 0, 0)
     
-# Define the function for exporting as a DXT1 dds
-def exportDXT1(image, layer, dirname, newFolder, fileName):
+# Define the function for exporting as a dds
+def exportDDS(image, layer, dirname, newFolder, fileName, transparency, BGR):
     # Check if the export folder exists and create it if needed
     outFolder = folderCheck(dirname, newFolder)
     # Get the new file name
     outFileName = fileName[0:-3] + "dds"
     # Get the full save file path
     outFilePath = os.path.join(outFolder, outFileName)
+    # Create a duplicate image that can be exported
+    exportImage = pdb.gimp_image_duplicate(image)
+    # Get the active layer of the new image
+    exportLayer = pdb.gimp_image_get_active_layer(exportImage)
+    # Determine if the image should be transparent
+    if transparency == 1:
+        # Not transparent
+        # Flatten the Image
+        exportLayer = pdb.gimp_image_flatten(exportImage)
+        # set the compression (DXT1)
+        compression = 1
+    else:
+        # transparent
+        # set the compression (DXT5)
+        compression = 3
+    # Determine if the image needs to be RGB-BGR swapped
+    if BGR == True:
+        # RGB-BGR needed
+        RGB_BGR(exportImage, exportLayer)
     # Export the image
-    pdb.file_dds_save(image, layer, outFilePath, outFilePath, 1, 0, 4, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0)
+    pdb.file_dds_save(exportImage, exportLayer, outFilePath, outFilePath, compression, 0, 4, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0)
 
 # Define the main operation
 def exportSkinQuick(image, layer):
-    # Define the remaining variables
+    # Define the remaining properties
     console = 0
     skinType = 0
     texType = 0
     charSize = 0
     alchemyVersion = 0
+    transparency = 1
     PSPFormat = 1
     # Get the file path of the original image
     filePath = pdb.gimp_image_get_filename(image)
@@ -166,244 +204,150 @@ def exportSkinQuick(image, layer):
     # Get the current dimensions of the image
     currentWidth = image.width
     currentHeight = image.height
-    # Start an undo group so that the entire operation can be undone at once
-    pdb.gimp_image_undo_group_start(image)
     # Clear the selection (This is done just in case there is a selection, but there shouldn't be)
     pdb.gimp_selection_none(image)
-    # Flatten the Image
-    layer = pdb.gimp_image_flatten(image)
     # Determine if the image is oversized
-    oversized = sizeCheck(currentWidth, currentHeight, texType)
+    oversized = sizeCheck(currentWidth, currentHeight, skinType, texType)
+    # Create a duplicate image that can be manipulated
+    modImage = pdb.gimp_image_duplicate(image)
+    # Get the active layer of the new image
+    modLayer = pdb.gimp_image_get_active_layer(modImage)
     # Begin the export
-    if oversized == True:
-        # The original texture size is above 256x256 for primary textures of 128x128 for secondary textures
-        # Choose the console
-        if console == 1:
-            # PC only
-            # Pick the version of Alchemy being used for skin creation
+    # Determine the console
+    if console == 1:
+        # PC
+        # Determine if the image is oversized or transparent
+        if (oversized == True) or (transparency == 0):
+            # The image is oversized or transparent
+            # Determine the version of Alchemy
             if alchemyVersion == 0:
                 # Alchemy 2.5
-                # Export the image
-                exportDXT1(image, layer, dirname, "XML2 PC", fileName)
-                # RGB-BGR swap the image
-                RGB_BGR(image, layer)
-                # Export the image
-                exportDXT1(image, layer, dirname, "MUA1 PC", fileName)
-                # return from BGR to RGB
-                RGB_BGR(image, layer)
+                # Export for XML2 PC
+                exportDDS(modImage, modLayer, dirname, "XML2 PC", fileName, transparency, False)
+                # Export for MUA1 PC and Steam
+                exportDDS(modImage, modLayer, dirname, "MUA1 PC and Steam", fileName, transparency, True)
             else:
                 # Alchemy 5
-                # RGB-BGR swap the image
-                RGB_BGR(image, layer)
-                # Export the image
-                exportDXT1(image, layer, dirname, "MUA1 PC", fileName)           
-        else: 
-            # All consoles
-            # Pick the version of Alchemy
-            if alchemyVersion == 0:
-                # Alchemy 2.5
-                # Export the image
-                exportDXT1(image, layer, dirname, "Wii, Xbox, and XML2 PC", fileName)
-                # RGB-BGR swap the image
-                RGB_BGR(image, layer)
-                # Export the image
-                exportDXT1(image, layer, dirname, "MUA1 PC", fileName)
-                # BGR back to RGB
-                RGB_BGR(image, layer)
-                # Check if the character is oversized or standard
-                if charSize == 0:
-                    # standard size character
-                    # Resize to max size for texture type
-                    resizeMax(image, layer, texType)
-                # Check if the skin is primary or secondary
-                if skinType == 1:
-                    # secondary skin, resize further
-                    # resize to half size
-                    resizeHalf(image, layer)
-                # Convert to PNG8
-                layer = convertIndexed(image, 256)
-                # Export the image
-                exportPNG(image, layer, dirname, "PS2", fileName)
-                # Color mode back to RGB
-                pdb.gimp_image_convert_rgb(image)
-                # Resize to half size
-                resizeHalf(image, layer)
-                # Convert to PNG8
-                layer = convertIndexed(image, 256)
-                # Check which format is being used for PSP
-                if PSPFormat == 0:
-                    # Use PNG4 for PSP
-                    # Export the image
-                    exportPNG(image, layer, dirname, "GameCube", fileName)
-                    # Color mode back to RGB
-                    pdb.gimp_image_convert_rgb(image)
-                    # Convert to PNG4
-                    layer = convertIndexed(image, 16)
-                    # Export the image
-                    exportPNG(image, layer, dirname, "PSP", fileName)
-                else:
-                    # use PNG8 for PSP
-                    # Export the image
-                    exportPNG(image, layer, dirname, "GameCube and PSP", fileName)
-            else:
-                # Alchemy 5
-                # Export the image
-                exportDXT1(image, layer, dirname, "Wii and MUA1 PC", fileName)
-                # Check if the character is oversized or standard
-                if charSize == 0:
-                    # standard size character
-                    # Resize to max size for texture type
-                    resizeMax(image, layer, texType)
-                # Convert to PNG8
-                layer = convertIndexed(image, 256)
-                # Export the image
-                exportPNG(image, layer, dirname, "PS2", fileName)
-                # Color mode back to RGB
-                pdb.gimp_image_convert_rgb(image)
-                # Resize to half size
-                resizeHalf(image, layer)
-                # Check which format is being used for PSP
-                if PSPFormat == 0:
-                    # Use PNG4 for PSP
-                    # Convert to PNG4
-                    layer = convertIndexed(image, 16)
-                else:
-                    # use PNG8 for PSP
-                    # Convert to PNG8
-                    layer = convertIndexed(image, 256)
-                # Export the image
-                exportPNG(image, layer, dirname, "PSP", fileName)
-    else: 
-        # The original texture is 256x256 or less for primary textures or 128x128 for secondary textures
-        # Choose the console
-        if console == 1:
-            # PC only
-            # Alchemy version doesn't matter
-            # Convert to PNG8
-            layer = convertIndexed(image, 256)
-            # Export the image
-            exportPNG(image, layer, dirname, "PC", fileName)
+                # Export for MUA1 PC and Steam
+                exportDDS(modImage, modLayer, dirname, "MUA1 PC and Steam", fileName, transparency, False)
         else:
-            # All consoles
-            # Pick the version of Alchemy
+            # The image is neither oversized nor transparent
+            # Export for PC (same folder name regardless of Alchemy version because it'll work for XML2 and MUA1 PC no matter what)
+            exportPNG(modImage, modLayer, dirname, "PC", fileName, transparency, 256)
+            # Determine the version of Alchemy
             if alchemyVersion == 0:
                 # Alchemy 2.5
-                # Export the image
-                exportDXT1(image, layer, dirname, "Wii", fileName)
-                # Convert to PNG8
-                layer = convertIndexed(image, 256)
-                # Check if it is a primary or secondary skin
-                if skinType == 0:
-                    # Primary skin
-                    # Export the image
-                    exportPNG(image, layer, dirname, "PC, PS2, and Xbox", fileName)
-                    # Color mode back to RGB
-                    pdb.gimp_image_convert_rgb(image)
-                    # Resize to half size
-                    resizeHalf(image, layer)
-                    # Convert to PNG8
-                    layer = convertIndexed(image, 256)
-                    # Check the texture format used by PSP
-                    if PSPFormat == 1:
-                        # PSP uses PNG8 format
-                        # Export the image
-                        exportPNG(image, layer, dirname, "GameCube and PSP", fileName)
-                    else:
-                        # PSP uses PNG4 format
-                        # Export the image
-                        exportPNG(image, layer, dirname, "GameCube", fileName)
-                        # Color mode back to RGB
-                        pdb.gimp_image_convert_rgb(image)
-                        # Convert to PNG4
-                        layer = convertIndexed(image, 16)
-                        # Export the image
-                        exportPNG(image, layer, dirname, "PSP", fileName)
-                else:
-                    # secondary skin
-                    # Export the image
-                    exportPNG(image, layer, dirname, "PC and Xbox", fileName)
-                    # Color mode back to RGB
-                    pdb.gimp_image_convert_rgb(image)
-                    # Resize to half size
-                    resizeHalf(image, layer)
-                    # Convert to PNG8
-                    layer = convertIndexed(image, 256)
-                    # Export the image
-                    exportPNG(image, layer, dirname, "PS2", fileName)
-                    # Color mode back to RGB
-                    pdb.gimp_image_convert_rgb(image)
-                    # Resize to half size
-                    resizeHalf(image, layer)
-                    # Convert to PNG8
-                    layer = convertIndexed(image, 256)
-                    # Check the texture format used by PSP
-                    if PSPFormat == 1:
-                        # PSP uses PNG8 format
-                        # Export the image
-                        exportPNG(image, layer, dirname, "GameCube and PSP", fileName)
-                    else:
-                        # PSP uses PNG4 format
-                        # Export the image
-                        exportPNG(image, layer, dirname, "GameCube", fileName)
-                        # Color mode back to RGB
-                        pdb.gimp_image_convert_rgb(image)
-                        # Convert to PNG4
-                        layer = convertIndexed(image, 16)
-                        # Export the image
-                        exportPNG(image, layer, dirname, "PSP", fileName)
+                # Export for MUA1 Steam
+                exportDDS(modImage, modLayer, dirname, "MUA1 Steam", fileName, transparency, True)
             else:
                 # Alchemy 5
-                # Export the image
-                exportDXT1(image, layer, dirname, "Wii", fileName)
-                # Check if it is a primary or secondary skin
-                if skinType == 0:
-                    # Primary skin
-                    # Convert to PNG8
-                    layer = convertIndexed(image, 256)
-                    # Export the image
-                    exportPNG(image, layer, dirname, "PS2", fileName)
-                    # Color mode back to RGB
-                    pdb.gimp_image_convert_rgb(image)
-                    # Resize to half size
-                    resizeHalf(image, layer)
-                    # Check the texture format used by PSP
-                    if PSPFormat == 1:
-                        # PSP uses PNG8 format
-                        # Convert to PNG8
-                        layer = convertIndexed(image, 256)
-                    else:
-                        # PSP uses PNG4 format
-                        # Convert to PNG4
-                        layer = convertIndexed(image, 16)
-                    # Export the image
-                    exportPNG(image, layer, dirname, "PSP", fileName)
-                else:
+                # Export for MUA1 Steam
+                exportDDS(modImage, modLayer, dirname, "MUA1 Steam", fileName, transparency, False)
+    else:
+        # all consoles
+        # Determine if the image is oversized or transparent
+        if (oversized == True) or (transparency == 0):
+            # The image is oversized or transparent
+            # Determine the version of Alchemy
+            if alchemyVersion == 0:
+                # Alchemy 2.5
+                # The secondary skin property should not reduce the threshold for png vs dds on PC, Xbox, and 360.
+                if skinType == 1:
                     # secondary skin
-                    # Color mode back to RGB
-                    pdb.gimp_image_convert_rgb(image)
-                    # Resize to half size
-                    resizeHalf(image, layer)
-                    # Convert to PNG8
-                    layer = convertIndexed(image, 256)
-                    # Export the image
-                    exportPNG(image, layer, dirname, "PS2", fileName)
-                    # Color mode back to RGB
-                    pdb.gimp_image_convert_rgb(image)
-                    # Resize to half size
-                    resizeHalf(image, layer)
-                    # Check the texture format used by PSP
-                    if PSPFormat == 1:
-                        # PSP uses PNG8 format
-                        # Convert to PNG8
-                        layer = convertIndexed(image, 256)
+                    oversized2 = sizeCheck(currentWidth, currentHeight, 0, texType)
+                    # check if oversized under new conditions
+                    if oversized2 == True:
+                        # Export for Wii, Xbox, and XML2 PC
+                        exportDDS(modImage, modLayer, dirname, "Wii, Xbox, and XML2 PC", fileName, transparency, False)
+                        # Export for MUA1 PC, Steam, PS3, and 360
+                        exportDDS(modImage, modLayer, dirname, "MUA1 PC, Steam, PS3, and 360", fileName, transparency, True)
                     else:
-                        # PSP uses PNG4 format
-                        # Convert to PNG4
-                        layer = convertIndexed(image, 16)
-                    # Export the image
-                    exportPNG(image, layer, dirname, "PSP", fileName)
-    # End the undo group
-    pdb.gimp_image_undo_group_end(image)
+                        # export for PC, Xbox, and 360
+                        exportPNG(modImage, modLayer, dirname, "PC, Xbox, and MUA1 360", fileName, transparency, 256)
+                        # Export for Wii
+                        exportDDS(modImage, modLayer, dirname, "Wii", fileName, transparency, False)
+                        # Export for Steam and PS3
+                        exportDDS(modImage, modLayer, dirname, "MUA1 Steam and PS3", fileName, transparency, True)
+                else:
+                    # Export for Wii, Xbox, and XML2 PC
+                    exportDDS(modImage, modLayer, dirname, "Wii, Xbox, and XML2 PC", fileName, transparency, False)
+                    # Export for MUA1 PC, Steam, PS3, and 360
+                    exportDDS(modImage, modLayer, dirname, "MUA1 PC, Steam, PS3, and 360", fileName, transparency, True)
+            else:
+                # Alchemy 5
+                # The secondary skin property should not reduce the threshold for png vs dds on PC, Xbox, and 360.
+                if skinType == 1:
+                    # secondary skin
+                    oversized2 = sizeCheck(currentWidth, currentHeight, 0, texType)
+                    # check if oversized under new conditions
+                    if oversized2 == True:
+                        # Export for Wii
+                        exportDDS(modImage, modLayer, dirname, "Wii", fileName, transparency, False)
+                        # Export for MUA1 PC, Steam, PS3, and 360
+                        exportDDS(modImage, modLayer, dirname, "MUA1 PC, Steam, PS3, and 360", fileName, transparency, True)
+                    else:
+                        # export for PC and 360
+                        exportPNG(modImage, modLayer, dirname, "PC, and MUA1 360", fileName, transparency, 256)
+                        # Export for Wii
+                        exportDDS(modImage, modLayer, dirname, "Wii", fileName, transparency, False)
+                        # Export for Steam and PS3
+                        exportDDS(modImage, modLayer, dirname, "MUA1 Steam and PS3", fileName, transparency, True)
+                else:
+                    # Export for Wii, MUA1 PC, Steam, PS3, and 360
+                    exportDDS(modImage, modLayer, dirname, "Wii, MUA1 PC, Steam, PS3, and 360", fileName, transparency, False)
+            # resizing should only apply to oversized images
+            if oversized == True:
+                # image is oversized
+                # Determine the character size
+                if charSize == 0:
+                    # standard size character
+                    # Resize to max size for texture type
+                    resizeMax(modImage, modLayer, skinType, texType)
+            # In the case of oversized or transparent textures, PS2 needs to be exported separately
+            exportPNG(modImage, modLayer, dirname, "PS2", fileName, transparency, 256)
+        else:
+            # The image is neither oversized nor transparent
+            # Determine the version of Alchemy
+            if alchemyVersion == 0:
+                # Alchemy 2.5
+                # Export for PC, PS2, Xbox, and 360
+                exportPNG(modImage, modLayer, dirname, "PC, PS2, Xbox, and MUA1 360", fileName, transparency, 256)
+                # Export for Wii
+                exportDDS(modImage, modLayer, dirname, "Wii", fileName, transparency, False)
+                # Export for MUA1 Steam and PS3
+                exportDDS(modImage, modLayer, dirname, "MUA1 Steam and PS3", fileName, transparency, True)
+            else:
+                # Alchemy 5
+                # Export for PC and 360
+                exportPNG(modImage, modLayer, dirname, "PC, PS2, and MUA1 360", fileName, transparency, 256)
+                # Export for Wii, MUA1 Steam and PS3
+                exportDDS(modImage, modLayer, dirname, "Wii, MUA1 Steam and PS3", fileName, transparency, False)
+        # Based on previous steps, image is now at ideal size for PS2. Resize to half size for remaining consoles
+        resizeHalf(modImage, modLayer)
+        # Non-transparent PNG4 will always have PSP separate
+        if (PSPFormat == 0) and (transparency == 1):
+            # PSP is separate
+            # export PSP
+            exportPNG(modImage, modLayer, dirname, "PSP", fileName, transparency, 16)
+            # Determine the version of Alchemy
+            if alchemyVersion == 0:
+                # Alchemy 2.5
+                # Export for GameCube and MUA2 PS2
+                exportPNG(modImage, modLayer, dirname, "GameCube and MUA2 PS2", fileName, transparency, 256)
+            else:
+                # Alchemy 5
+                # Export for MUA2 PS2
+                exportPNG(modImage, modLayer, dirname, "MUA2 PS2", fileName, transparency, 256)
+        else:
+            # Transparent textures or PSP is PNG8
+            if alchemyVersion == 0:
+                # Alchemy 2.5
+                # Export for GameCube, PSP, and MUA2 PS2
+                exportPNG(modImage, modLayer, dirname, "GameCube, PSP, and MUA2 PS2", fileName, transparency, 256)
+            else:
+                # Alchemy 5
+                # Export for PSP and MUA2 PS2
+                exportPNG(modImage, modLayer, dirname, "PSP and MUA2 PS2", fileName, transparency, 256)
 
 # ######## #
 # REGISTER #
@@ -415,7 +359,7 @@ register(
     "Exports a skin texture in multiple formats. Also works on 3D head textures and mannequin textures.",
     "BaconWizard17",
     "BaconWizard17",
-    "January 2023",
+    "August 2023",
     "Export Skin (Quick)",
     "*",
     [
