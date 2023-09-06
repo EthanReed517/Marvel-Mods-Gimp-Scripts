@@ -12,6 +12,7 @@
 #   History:
 #   v1.0: 30Jan2023: First published version.
 #   v1.1: 30Aug2023: Add support for transparency, add support for next-gen MUA1 (Steam, PS3, and Xbox 360), and add support for MUA2 PS2. Improve efficiency
+#   v1.2: 06Sep2023: Now checks if image dimensions are a power of 2 and gives an error if not.
 
 #   This program is free software; you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License as published by
@@ -35,11 +36,21 @@
 import os
 # Import the gimpfu module so that scripts can be executed
 from gimpfu import*
+# Import the math module to be able to perform log operations
+import math
 
 
 # ######### #
 # FUNCTIONS #
 # ######### #
+# Define the log base 2 operation
+def Log2(x):
+    return (math.log10(x) / math.log10(2))
+    
+# Define the function to check if a number is a power of 2
+def isPowerOfTwo(n):
+    return (math.ceil(Log2(n)) == math.floor(Log2(n)))
+
 # Define the size checking operation
 def sizeCheck(currentWidth, currentHeight, skinType, texType):
     # Determine how many primaries and secondaries
@@ -196,150 +207,156 @@ def exportSkin(image, layer, console, skinType, texType, charSize, alchemyVersio
     # Get the current dimensions of the image
     currentWidth = image.width
     currentHeight = image.height
-    # Clear the selection (This is done just in case there is a selection, but there shouldn't be)
-    pdb.gimp_selection_none(image)
-    # Determine if the image is oversized
-    oversized = sizeCheck(currentWidth, currentHeight, skinType, texType)
-    # Create a duplicate image that can be manipulated
-    modImage = pdb.gimp_image_duplicate(image)
-    # Get the active layer of the new image
-    modLayer = pdb.gimp_image_get_active_layer(modImage)
-    # Begin the export
-    # Determine the console
-    if console == 1:
-        # PC
-        # Determine if the image is oversized or transparent
-        if (oversized == True) or (transparency == 0):
-            # The image is oversized or transparent
-            # Determine the version of Alchemy
-            if alchemyVersion == 0:
-                # Alchemy 2.5
-                # Export for XML2 PC
-                exportDDS(modImage, modLayer, dirname, "XML2 PC", fileName, transparency, False)
-                # Export for MUA1 PC and Steam
-                exportDDS(modImage, modLayer, dirname, "MUA1 PC and Steam", fileName, transparency, True)
+    # Check if the dimensions are powers of 2
+    if (isPowerOfTwo(currentWidth) and isPowerOfTwo(currentHeight)):
+        # Both dimensions are powers of 2
+        # Clear the selection (This is done just in case there is a selection, but there shouldn't be)
+        pdb.gimp_selection_none(image)
+        # Determine if the image is oversized
+        oversized = sizeCheck(currentWidth, currentHeight, skinType, texType)
+        # Create a duplicate image that can be manipulated
+        modImage = pdb.gimp_image_duplicate(image)
+        # Get the active layer of the new image
+        modLayer = pdb.gimp_image_get_active_layer(modImage)
+        # Begin the export
+        # Determine the console
+        if console == 1:
+            # PC
+            # Determine if the image is oversized or transparent
+            if (oversized == True) or (transparency == 0):
+                # The image is oversized or transparent
+                # Determine the version of Alchemy
+                if alchemyVersion == 0:
+                    # Alchemy 2.5
+                    # Export for XML2 PC
+                    exportDDS(modImage, modLayer, dirname, "XML2 PC", fileName, transparency, False)
+                    # Export for MUA1 PC and Steam
+                    exportDDS(modImage, modLayer, dirname, "MUA1 PC and Steam", fileName, transparency, True)
+                else:
+                    # Alchemy 5
+                    # Export for MUA1 PC and Steam
+                    exportDDS(modImage, modLayer, dirname, "MUA1 PC and Steam", fileName, transparency, False)
             else:
-                # Alchemy 5
-                # Export for MUA1 PC and Steam
-                exportDDS(modImage, modLayer, dirname, "MUA1 PC and Steam", fileName, transparency, False)
+                # The image is neither oversized nor transparent
+                # Export for PC (same folder name regardless of Alchemy version because it'll work for XML2 and MUA1 PC no matter what)
+                exportPNG(modImage, modLayer, dirname, "PC", fileName, transparency, 256)
+                # Determine the version of Alchemy
+                if alchemyVersion == 0:
+                    # Alchemy 2.5
+                    # Export for MUA1 Steam
+                    exportDDS(modImage, modLayer, dirname, "MUA1 Steam", fileName, transparency, True)
+                else:
+                    # Alchemy 5
+                    # Export for MUA1 Steam
+                    exportDDS(modImage, modLayer, dirname, "MUA1 Steam", fileName, transparency, False)
         else:
-            # The image is neither oversized nor transparent
-            # Export for PC (same folder name regardless of Alchemy version because it'll work for XML2 and MUA1 PC no matter what)
-            exportPNG(modImage, modLayer, dirname, "PC", fileName, transparency, 256)
-            # Determine the version of Alchemy
-            if alchemyVersion == 0:
-                # Alchemy 2.5
-                # Export for MUA1 Steam
-                exportDDS(modImage, modLayer, dirname, "MUA1 Steam", fileName, transparency, True)
-            else:
-                # Alchemy 5
-                # Export for MUA1 Steam
-                exportDDS(modImage, modLayer, dirname, "MUA1 Steam", fileName, transparency, False)
-    else:
-        # all consoles
-        # Determine if the image is oversized or transparent
-        if (oversized == True) or (transparency == 0):
-            # The image is oversized or transparent
-            # Determine the version of Alchemy
-            if alchemyVersion == 0:
-                # Alchemy 2.5
-                # The secondary skin property should not reduce the threshold for png vs dds on PC, Xbox, and 360.
-                if skinType == 1:
-                    # secondary skin
-                    oversized2 = sizeCheck(currentWidth, currentHeight, 0, texType)
-                    # check if oversized under new conditions
-                    if oversized2 == True:
+            # all consoles
+            # Determine if the image is oversized or transparent
+            if (oversized == True) or (transparency == 0):
+                # The image is oversized or transparent
+                # Determine the version of Alchemy
+                if alchemyVersion == 0:
+                    # Alchemy 2.5
+                    # The secondary skin property should not reduce the threshold for png vs dds on PC, Xbox, and 360.
+                    if skinType == 1:
+                        # secondary skin
+                        oversized2 = sizeCheck(currentWidth, currentHeight, 0, texType)
+                        # check if oversized under new conditions
+                        if oversized2 == True:
+                            # Export for Wii, Xbox, and XML2 PC
+                            exportDDS(modImage, modLayer, dirname, "Wii, Xbox, and XML2 PC", fileName, transparency, False)
+                            # Export for MUA1 PC, Steam, PS3, and 360
+                            exportDDS(modImage, modLayer, dirname, "MUA1 PC, Steam, PS3, and 360", fileName, transparency, True)
+                        else:
+                            # export for PC, Xbox, and 360
+                            exportPNG(modImage, modLayer, dirname, "PC, Xbox, and MUA1 360", fileName, transparency, 256)
+                            # Export for Wii
+                            exportDDS(modImage, modLayer, dirname, "Wii", fileName, transparency, False)
+                            # Export for Steam and PS3
+                            exportDDS(modImage, modLayer, dirname, "MUA1 Steam and PS3", fileName, transparency, True)
+                    else:
                         # Export for Wii, Xbox, and XML2 PC
                         exportDDS(modImage, modLayer, dirname, "Wii, Xbox, and XML2 PC", fileName, transparency, False)
                         # Export for MUA1 PC, Steam, PS3, and 360
                         exportDDS(modImage, modLayer, dirname, "MUA1 PC, Steam, PS3, and 360", fileName, transparency, True)
-                    else:
-                        # export for PC, Xbox, and 360
-                        exportPNG(modImage, modLayer, dirname, "PC, Xbox, and MUA1 360", fileName, transparency, 256)
-                        # Export for Wii
-                        exportDDS(modImage, modLayer, dirname, "Wii", fileName, transparency, False)
-                        # Export for Steam and PS3
-                        exportDDS(modImage, modLayer, dirname, "MUA1 Steam and PS3", fileName, transparency, True)
                 else:
-                    # Export for Wii, Xbox, and XML2 PC
-                    exportDDS(modImage, modLayer, dirname, "Wii, Xbox, and XML2 PC", fileName, transparency, False)
-                    # Export for MUA1 PC, Steam, PS3, and 360
-                    exportDDS(modImage, modLayer, dirname, "MUA1 PC, Steam, PS3, and 360", fileName, transparency, True)
-            else:
-                # Alchemy 5
-                # The secondary skin property should not reduce the threshold for png vs dds on PC, Xbox, and 360.
-                if skinType == 1:
-                    # secondary skin
-                    oversized2 = sizeCheck(currentWidth, currentHeight, 0, texType)
-                    # check if oversized under new conditions
-                    if oversized2 == True:
-                        # Export for Wii
-                        exportDDS(modImage, modLayer, dirname, "Wii", fileName, transparency, False)
-                        # Export for MUA1 PC, Steam, PS3, and 360
-                        exportDDS(modImage, modLayer, dirname, "MUA1 PC, Steam, PS3, and 360", fileName, transparency, True)
+                    # Alchemy 5
+                    # The secondary skin property should not reduce the threshold for png vs dds on PC, Xbox, and 360.
+                    if skinType == 1:
+                        # secondary skin
+                        oversized2 = sizeCheck(currentWidth, currentHeight, 0, texType)
+                        # check if oversized under new conditions
+                        if oversized2 == True:
+                            # Export for Wii
+                            exportDDS(modImage, modLayer, dirname, "Wii", fileName, transparency, False)
+                            # Export for MUA1 PC, Steam, PS3, and 360
+                            exportDDS(modImage, modLayer, dirname, "MUA1 PC, Steam, PS3, and 360", fileName, transparency, True)
+                        else:
+                            # export for PC and 360
+                            exportPNG(modImage, modLayer, dirname, "PC, and MUA1 360", fileName, transparency, 256)
+                            # Export for Wii
+                            exportDDS(modImage, modLayer, dirname, "Wii", fileName, transparency, False)
+                            # Export for Steam and PS3
+                            exportDDS(modImage, modLayer, dirname, "MUA1 Steam and PS3", fileName, transparency, True)
                     else:
-                        # export for PC and 360
-                        exportPNG(modImage, modLayer, dirname, "PC, and MUA1 360", fileName, transparency, 256)
-                        # Export for Wii
-                        exportDDS(modImage, modLayer, dirname, "Wii", fileName, transparency, False)
-                        # Export for Steam and PS3
-                        exportDDS(modImage, modLayer, dirname, "MUA1 Steam and PS3", fileName, transparency, True)
+                        # Export for Wii, MUA1 PC, Steam, PS3, and 360
+                        exportDDS(modImage, modLayer, dirname, "Wii, MUA1 PC, Steam, PS3, and 360", fileName, transparency, False)
+                # resizing should only apply to oversized images
+                if oversized == True:
+                    # image is oversized
+                    # Determine the character size
+                    if charSize == 0:
+                        # standard size character
+                        # Resize to max size for texture type
+                        resizeMax(modImage, modLayer, skinType, texType)
+                # In the case of oversized or transparent textures, PS2 needs to be exported separately
+                exportPNG(modImage, modLayer, dirname, "PS2", fileName, transparency, 256)
+            else:
+                # The image is neither oversized nor transparent
+                # Determine the version of Alchemy
+                if alchemyVersion == 0:
+                    # Alchemy 2.5
+                    # Export for PC, PS2, Xbox, and 360
+                    exportPNG(modImage, modLayer, dirname, "PC, PS2, Xbox, and MUA1 360", fileName, transparency, 256)
+                    # Export for Wii
+                    exportDDS(modImage, modLayer, dirname, "Wii", fileName, transparency, False)
+                    # Export for MUA1 Steam and PS3
+                    exportDDS(modImage, modLayer, dirname, "MUA1 Steam and PS3", fileName, transparency, True)
                 else:
-                    # Export for Wii, MUA1 PC, Steam, PS3, and 360
-                    exportDDS(modImage, modLayer, dirname, "Wii, MUA1 PC, Steam, PS3, and 360", fileName, transparency, False)
-            # resizing should only apply to oversized images
-            if oversized == True:
-                # image is oversized
-                # Determine the character size
-                if charSize == 0:
-                    # standard size character
-                    # Resize to max size for texture type
-                    resizeMax(modImage, modLayer, skinType, texType)
-            # In the case of oversized or transparent textures, PS2 needs to be exported separately
-            exportPNG(modImage, modLayer, dirname, "PS2", fileName, transparency, 256)
-        else:
-            # The image is neither oversized nor transparent
-            # Determine the version of Alchemy
-            if alchemyVersion == 0:
-                # Alchemy 2.5
-                # Export for PC, PS2, Xbox, and 360
-                exportPNG(modImage, modLayer, dirname, "PC, PS2, Xbox, and MUA1 360", fileName, transparency, 256)
-                # Export for Wii
-                exportDDS(modImage, modLayer, dirname, "Wii", fileName, transparency, False)
-                # Export for MUA1 Steam and PS3
-                exportDDS(modImage, modLayer, dirname, "MUA1 Steam and PS3", fileName, transparency, True)
+                    # Alchemy 5
+                    # Export for PC and 360
+                    exportPNG(modImage, modLayer, dirname, "PC, PS2, and MUA1 360", fileName, transparency, 256)
+                    # Export for Wii, MUA1 Steam and PS3
+                    exportDDS(modImage, modLayer, dirname, "Wii, MUA1 Steam and PS3", fileName, transparency, False)
+            # Based on previous steps, image is now at ideal size for PS2. Resize to half size for remaining consoles
+            resizeHalf(modImage, modLayer)
+            # Non-transparent PNG4 will always have PSP separate
+            if (PSPFormat == 0) and (transparency == 1):
+                # PSP is separate
+                # export PSP
+                exportPNG(modImage, modLayer, dirname, "PSP", fileName, transparency, 16)
+                # Determine the version of Alchemy
+                if alchemyVersion == 0:
+                    # Alchemy 2.5
+                    # Export for GameCube and MUA2 PS2
+                    exportPNG(modImage, modLayer, dirname, "GameCube and MUA2 PS2", fileName, transparency, 256)
+                else:
+                    # Alchemy 5
+                    # Export for MUA2 PS2
+                    exportPNG(modImage, modLayer, dirname, "MUA2 PS2", fileName, transparency, 256)
             else:
-                # Alchemy 5
-                # Export for PC and 360
-                exportPNG(modImage, modLayer, dirname, "PC, PS2, and MUA1 360", fileName, transparency, 256)
-                # Export for Wii, MUA1 Steam and PS3
-                exportDDS(modImage, modLayer, dirname, "Wii, MUA1 Steam and PS3", fileName, transparency, False)
-        # Based on previous steps, image is now at ideal size for PS2. Resize to half size for remaining consoles
-        resizeHalf(modImage, modLayer)
-        # Non-transparent PNG4 will always have PSP separate
-        if (PSPFormat == 0) and (transparency == 1):
-            # PSP is separate
-            # export PSP
-            exportPNG(modImage, modLayer, dirname, "PSP", fileName, transparency, 16)
-            # Determine the version of Alchemy
-            if alchemyVersion == 0:
-                # Alchemy 2.5
-                # Export for GameCube and MUA2 PS2
-                exportPNG(modImage, modLayer, dirname, "GameCube and MUA2 PS2", fileName, transparency, 256)
-            else:
-                # Alchemy 5
-                # Export for MUA2 PS2
-                exportPNG(modImage, modLayer, dirname, "MUA2 PS2", fileName, transparency, 256)
-        else:
-            # Transparent textures or PSP is PNG8
-            if alchemyVersion == 0:
-                # Alchemy 2.5
-                # Export for GameCube, PSP, and MUA2 PS2
-                exportPNG(modImage, modLayer, dirname, "GameCube, PSP, and MUA2 PS2", fileName, transparency, 256)
-            else:
-                # Alchemy 5
-                # Export for PSP and MUA2 PS2
-                exportPNG(modImage, modLayer, dirname, "PSP and MUA2 PS2", fileName, transparency, 256)
+                # Transparent textures or PSP is PNG8
+                if alchemyVersion == 0:
+                    # Alchemy 2.5
+                    # Export for GameCube, PSP, and MUA2 PS2
+                    exportPNG(modImage, modLayer, dirname, "GameCube, PSP, and MUA2 PS2", fileName, transparency, 256)
+                else:
+                    # Alchemy 5
+                    # Export for PSP and MUA2 PS2
+                    exportPNG(modImage, modLayer, dirname, "PSP and MUA2 PS2", fileName, transparency, 256)
+    else:
+        # One or both image dimensions are not powers of 2
+        pdb.gimp_message("One or both image dimensions are not a power of 2. Alchemy only supports image dimensions that are powers of 2.\n\nPowers of 2: 1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048, 4096, and so on.")
 
 # ######## #
 # REGISTER #
@@ -351,7 +368,7 @@ register(
     "Exports a skin texture in multiple formats. Also works on 3D head textures and mannequin textures.",
     "BaconWizard17",
     "BaconWizard17",
-    "August 2023",
+    "September 2023",
     "Export Skin",
     "*",
     [
