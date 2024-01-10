@@ -13,6 +13,7 @@
 #   v1.0: 30Jan2023: First published version.
 #   v1.1: 30Aug2023: Add support for transparency, add support for next-gen MUA1 (Steam, PS3, and Xbox 360), and add support for MUA2 PS2. Improve efficiency
 #   v1.2: 06Sep2023: Now checks if image dimensions are a power of 2 and gives an error if not.
+#   v1.3: 10Jan2024: Removed some functions and replaced them with common/basic processes
 
 #   This program is free software; you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License as published by
@@ -36,21 +37,11 @@
 import os
 # Import the gimpfu module so that scripts can be executed
 from gimpfu import*
-# Import the math module to be able to perform log operations
-import math
 
 
 # ######### #
 # FUNCTIONS #
 # ######### #
-# Define the log base 2 operation
-def Log2(x):
-    return (math.log10(x) / math.log10(2))
-    
-# Define the function to check if a number is a power of 2
-def isPowerOfTwo(n):
-    return (math.ceil(Log2(n)) == math.floor(Log2(n)))
-
 # Define the size checking operation
 def sizeCheck(currentWidth, currentHeight, skinType, texType):
     # Determine how many primaries and secondaries
@@ -71,15 +62,6 @@ def sizeCheck(currentWidth, currentHeight, skinType, texType):
     else:
         oversized = False
     return oversized
-    
-# Define the function for indexing colors
-def convertIndexed(image, colors):
-    # Index the colors
-    pdb.gimp_image_convert_indexed(image, CONVERT_DITHER_NONE, CONVERT_PALETTE_GENERATE, colors, FALSE, FALSE, "")
-    # Get the active layer
-    layer = pdb.gimp_image_get_active_layer(image)
-    # return the new layer
-    return layer
 
 # Define the function for RGB-BGR swapping
 def RGB_BGR(image, layer):
@@ -130,23 +112,11 @@ def resizeMax(image, layer, skinType, texType):
     pdb.gimp_image_scale(image, newWidth, newHeight)
     # Resize the layer to the image size
     pdb.gimp_layer_resize_to_image_size(layer)
-
-# Define the folder checking operation
-def folderCheck(dirname, newFolder):
-    # Append the paths
-    outFolder = os.path.join(dirname, newFolder)
-    # Check if the path exists
-    outFolderExists = os.path.exists(outFolder)
-    # If the path doesn't exist, create the new folder
-    if outFolderExists == False:
-        os.mkdir(outFolder)
-    # Return the new path
-    return outFolder
     
 # Define the function for exporting as a png
 def exportPNG(image, layer, dirname, newFolder, fileName, transparency, colors):
     # Check if the export folder exists and create it if needed
-    outFolder = folderCheck(dirname, newFolder)
+    outFolder = pdb.python_fu_marvelmods_basic_folderCheck(dirname, newFolder)
     # Get the new file name
     outFileName = fileName[0:-3] + "png"
     # Get the full save file path
@@ -161,14 +131,14 @@ def exportPNG(image, layer, dirname, newFolder, fileName, transparency, colors):
         # Flatten the Image
         exportLayer = pdb.gimp_image_flatten(exportImage)
         # Index the colors
-        exportLayer = convertIndexed(exportImage, colors)
+        exportLayer = pdb.python_fu_marvelmods_basic_indexcolors(exportImage, colors)
     # Export the image
     pdb.file_png_save(exportImage, exportLayer, outFilePath, outFilePath, 0, 9, 0, 0, 0, 0, 0)
     
 # Define the function for exporting as a dds
 def exportDDS(image, layer, dirname, newFolder, fileName, transparency, BGR):
     # Check if the export folder exists and create it if needed
-    outFolder = folderCheck(dirname, newFolder)
+    outFolder = pdb.python_fu_marvelmods_basic_folderCheck(dirname, newFolder)
     # Get the new file name
     outFileName = fileName[0:-3] + "dds"
     # Get the full save file path
@@ -208,7 +178,8 @@ def exportSkin(image, layer, console, skinType, texType, charSize, alchemyVersio
     currentWidth = image.width
     currentHeight = image.height
     # Check if the dimensions are powers of 2
-    if (isPowerOfTwo(currentWidth) and isPowerOfTwo(currentHeight)):
+    powerOf2 = pdb.python_fu_marvelmods_basic_p02check(image, layer)
+    if powerOf2 == True:
         # Both dimensions are powers of 2
         # Clear the selection (This is done just in case there is a selection, but there shouldn't be)
         pdb.gimp_selection_none(image)
