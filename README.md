@@ -6,6 +6,9 @@ These plugins can be used with GIMP to perform a variety of functions. These are
 ### Compatibility
 GIMP (primarily verified with GIMP 2.10)
 
+### Prerequisites
+You must have (	gegl-python-fu & gegl_graph Ver.3.0.zip)[http://gimpchat.com/viewtopic.php?f=9&t=20613&start=80#p285476] by MareroQ installed for certain scripts to function.
+
 ### Installation
  1. Open `update.bat` with Notepad++ or another text editor.
  2. Edit the file paths in line 6 to reflect your GIMP configuration.
