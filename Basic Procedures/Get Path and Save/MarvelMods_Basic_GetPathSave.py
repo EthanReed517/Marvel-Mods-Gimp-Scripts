@@ -4,13 +4,13 @@
 # ########### #
 # INFORMATION #
 # ########### #
-# GIMP plugin to reduce the size of an image by a factor of 4. 
+# GIMP plugin to save a file and collect its file path information.
 # This was designed with the intention to use it with modding processes for MarvelMods.com, though it can have other uses. 
 # For detailed instructions, please reference the README.md file included with this download.
 # (c) BaconWizard17 2023
 #
 #   History:
-#   v1.0: 23Jan2023: First published version.
+#   v1.0: 17Jan2024: First published version.
 
 #   This program is free software; you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License as published by
@@ -30,33 +30,26 @@
 # ####### #
 # IMPORTS #
 # ####### #
-# Import the gimpfu module so that scripts can be executed
+# To be able to check file paths
+import os
+# So that scripts can be executed
 from gimpfu import*
 
 
-# ######## #
-# FUNCTION #
-# ######## #
-# Define the operation
-def scale_quarter (image, layer):
-    # Start an undo group so that the entire operation can be undone at once
-    pdb.gimp_image_undo_group_start(image)
-    # Clear the selection (This is done just in case there is a selection, but there shouldn't be)
-    pdb.gimp_selection_none(image)
-    # Get the current dimensions of the image
-    currentWidth = image.width
-    currentHeight = image.height
-    # Get the new dimensions by dividing old dimensions by 4
-    newWidth = currentWidth/4
-    newHeight = currentHeight/4
-    # scale the image accordingly
-    pdb.gimp_image_scale(image, newWidth, newHeight)
-    # Resize the layer to the image size
-    pdb.gimp_layer_resize_to_image_size(layer)
-    # Display the changes
-    pdb.gimp_displays_flush()
-    # End the undo group
-    pdb.gimp_image_undo_group_end(image)
+# ######### #
+# FUNCTIONS #
+# ######### #
+# Define the main operation
+def getPathSave(image, layer):
+    # Get the file path of the original image
+    filePath = pdb.gimp_image_get_filename(image)  
+    # Save the file in its original format before proceeding
+    pdb.gimp_file_save(image, layer, filePath, filePath)
+    # Get the folder and file name from the file path
+    folderName = os.path.dirname(filePath)  
+    fileName = os.path.splitext(os.path.basename(filePath))[0]
+    # Return the collected information
+    return folderName, fileName
 
 
 # ######## #
@@ -64,21 +57,24 @@ def scale_quarter (image, layer):
 # ######## #
 # Register the script in GIMP
 register(
-    "python_fu_marvelmods_common_scale_quarter",
-    "Scale image to a quarter of its original size.",
-    "Scale image to a quarter of its original size.",
+    "python_fu_marvelmods_basic_get_path_save",
+    "Saves the file and collects file path information. Returns the folder that the file is in, as well as its name (without the extension).",
+    "Saves the file and collects file path information. Returns the folder that the file is in, as well as its name (without the extension).",
     "BaconWizard17",
     "BaconWizard17",
-    "January 2023",
-    "Scale to Quarter Size",
+    "January 2024",
+    "Get File Path and Save",
     "*",
     [
         (PF_IMAGE, "image", "Input image", None),
-        (PF_DRAWABLE, 'drawable', 'Layer, mask or channel', None)
+        (PF_DRAWABLE, "layer", "Layer, mask, or channel", None)
     ],
-    [],
-    scale_quarter,
-    menu='<Image>/Marvel Mods/Image Scaling'
+    [
+        (PF_STRING, "folderName", "The folder that the file is in"),
+        (PF_STRING, "fileName", "The file name")
+    ],
+    getPathSave,
+    menu='<Image>/Marvel Mods/Basic Procedures'
 )
 
 

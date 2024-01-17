@@ -4,13 +4,14 @@
 # ########### #
 # INFORMATION #
 # ########### #
-# GIMP plugin to reduce the size of an image by a factor of 2. 
+# GIMP plugin to reduce the size of an image by a factor of 4. 
 # This was designed with the intention to use it with modding processes for MarvelMods.com, though it can have other uses. 
 # For detailed instructions, please reference the README.md file included with this download.
 # (c) BaconWizard17 2023
 #
 #   History:
 #   v1.0: 23Jan2023: First published version.
+#   v1.1: 17Jan2024: minor updates for compatibility.
 
 #   This program is free software; you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License as published by
@@ -38,7 +39,7 @@ from gimpfu import*
 # FUNCTION #
 # ######## #
 # Define the operation
-def scale_half (image, layer):
+def scaleQuarter(image, layer):
     # Start an undo group so that the entire operation can be undone at once
     pdb.gimp_image_undo_group_start(image)
     # Clear the selection (This is done just in case there is a selection, but there shouldn't be)
@@ -46,9 +47,9 @@ def scale_half (image, layer):
     # Get the current dimensions of the image
     currentWidth = image.width
     currentHeight = image.height
-    # Get the new dimensions by dividing old dimensions by 2
-    newWidth = currentWidth/2
-    newHeight = currentHeight/2
+    # Get the new dimensions by dividing old dimensions by 4
+    newWidth = currentWidth/4
+    newHeight = currentHeight/4
     # scale the image accordingly
     pdb.gimp_image_scale(image, newWidth, newHeight)
     # Resize the layer to the image size
@@ -64,20 +65,20 @@ def scale_half (image, layer):
 # ######## #
 # Register the script in GIMP
 register(
-    "python_fu_marvelmods_common_scale_half",
-    "Scale image to half its original size.",
-    "Scale image to half its original size.",
+    "python_fu_marvelmods_scaling_scaleQuarter",
+    "Scale image to a quarter of its original size.",
+    "Scale image to a quarter of its original size.",
     "BaconWizard17",
     "BaconWizard17",
     "January 2023",
-    "Scale to Half Size",
+    "Scale to Quarter Size",
     "*",
     [
         (PF_IMAGE, "image", "Input image", None),
-        (PF_DRAWABLE, 'drawable', 'Layer, mask or channel', None)
+        (PF_DRAWABLE, "Layer", "Layer, mask or channel", None)
     ],
     [],
-    scale_half,
+    scaleQuarter,
     menu='<Image>/Marvel Mods/Image Scaling'
 )
 

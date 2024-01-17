@@ -40,9 +40,9 @@ from gimpfu import*
 # FUNCTIONS #
 # ######### #
 # Define the main operation
-def folderCheck(dirname, newFolder):
+def folderCheck(folderName, newFolder):
     # Append the paths
-    outFolder = os.path.join(dirname, newFolder)
+    outFolder = os.path.join(folderName, newFolder)
     # Check if the path exists
     outFolderExists = os.path.exists(outFolder)
     # If the path doesn't exist, create the new folder
@@ -66,8 +66,8 @@ register(
     "Folder Check",
     "*",
     [
-        (PF_STRING, "dirname", "Directory of the xcf file", None),
-        (PF_STRING, "newFolder", "New folder where the image will be saved", None)
+        (PF_STRING, "folderName", "Directory of the xcf file", None),
+        (PF_STRING, "newFolder", "New subfolder where the image will be saved", None)
     ],
     [
         (PF_STRING, "outFolder", "Full folder path")

@@ -12,6 +12,7 @@
 #   History:
 #   v1.0: 01Feb2023: First published version.
 #   v1.1: 15Apr2023: Rewrote to accommodate for more portrait types and use the duplication function
+#   v2.0: 15Jan2024: Full rewrite. Added more portrait types, changed basic operations to common procedures.
 
 #   This program is free software; you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License as published by
@@ -31,201 +32,251 @@
 # ####### #
 # IMPORTS #
 # ####### #
-# Import the OS module to be able to check file paths
-import os
-# Import the gimpfu module so that scripts can be executed
+# To be able to run the script
 from gimpfu import*
 
 
 # ######### #
 # FUNCTIONS #
 # ######### #
-# Define the function for RGB-BGR swapping
-def RGB_BGR(image, layer):
-    # Perform the swap
-    pdb.plug_in_colors_channel_mixer(image, layer, FALSE, 0, 0, 1, 0, 1, 0, 1, 0, 0)
-    # Display the changes
-    pdb.gimp_displays_flush()
-    
-# Define the function for indexing colors
-def convertIndexed(image, colors):
-    # Index the colors
-    pdb.gimp_image_convert_indexed(image, CONVERT_DITHER_NONE, CONVERT_PALETTE_GENERATE, colors, FALSE, FALSE, "")
-    # Display the changes
-    pdb.gimp_displays_flush()
-    # Get the active layer
-    layer = pdb.gimp_image_get_active_layer(image)
-    # return the new layer
-    return layer
-    
-# Define the function for resizing to half size
-def resizeHalf(image, layer, newSize):
-    # scale the image accordingly
-    pdb.gimp_image_scale(image, newSize, newSize)
-    # Resize the layer to the image size
-    pdb.gimp_layer_resize_to_image_size(layer)
-    # Display the changes
-    pdb.gimp_displays_flush()
-
-# Define the folder checking operation
-def folderCheck(dirname, newFolder):
-    # Append the paths
-    outFolder = os.path.join(dirname, newFolder)
-    # Check if the path exists
-    outFolderExists = os.path.exists(outFolder)
-    # If the path doesn't exist, create the new folder
-    if outFolderExists == False:
-        os.mkdir(outFolder)
-    # Return the new path
-    return outFolder
-    
-# Define the function for exporting as a png
-def exportPNG(image, layer, dirname, newFolder, fileName):
-    # Check if the export folder exists and create it if needed
-    outFolder = folderCheck(dirname, newFolder)
-    # Get the new file name
-    outFileName = fileName[0:-3] + "png"
-    # Get the full save file path
-    outFilePath = os.path.join(outFolder, outFileName)
-    # Export the image
-    pdb.file_png_save(image, layer, outFilePath, outFilePath, 0, 9, 0, 0, 0, 0, 0)
-
-# Define the function for exporting as a DXT1 dds
-def exportDXT1(image, layer, dirname, newFolder, fileName):
-    # Check if the export folder exists and create it if needed
-    outFolder = folderCheck(dirname, newFolder)
-    # Get the new file name
-    outFileName = fileName[0:-3] + "dds"
-    # Get the full save file path
-    outFilePath = os.path.join(outFolder, outFileName)
-    # Export the image
-    pdb.file_dds_save(image, layer, outFilePath, outFilePath, 1, 0, 4, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0)
-
-# Define the function to run on the duplicate image
-def convoPortrait(image, outline, oversized, dirname, fileName, console):
-    # Get the layers to remove
-    layerRemove = pdb.gimp_image_get_layer_by_name(image, outline)
-    # Remove the layer
-    pdb.gimp_image_remove_layer(image, layerRemove)
-    # Clear the selection (This is done just in case there is a selection, but there shouldn't be)
-    pdb.gimp_selection_none(image)
-    # Flatten the Image
-    layer = pdb.gimp_image_flatten(image)
-    # Get the active layer
-    layer = pdb.gimp_image_get_active_layer(image)
-    # Begin the Export
-    # Pick if the texture is oversized or standard
-    if oversized == True:
-        # The texture is oversized
-        # Export the image
-        exportDXT1(image, layer, dirname, "XML2 PC", fileName)
-        # RGB-BGR Swap
-        RGB_BGR(image, layer)
-        # Export the image
-        exportDXT1(image, layer, dirname, "MUA1 PC", fileName)
-        # BGR back to RGB
-        RGB_BGR(image, layer)
-        # Determine if console export needs to happen
-        if console == 0:
-            # All consoles
-            # Resize to 128x128
-            resizeHalf(image, layer, 128)
-            # Export the image
-            exportDXT1(image, layer, dirname, "Wii", fileName)
-            # Convert to PNG8
-            layer = convertIndexed(image, 256)
-            # Export the image
-            exportPNG(image, layer, dirname, "GC, PS2, Xbox", fileName)
-            # Color mode back to RGB
-            pdb.gimp_image_convert_rgb(image)
-            # Resize to half size
-            resizeHalf(image, layer, 64)
-            # Convert to PNG8
-            layer = convertIndexed(image, 256)
-            # Export the image
-            exportPNG(image, layer, dirname, "PSP", fileName)
-    else:
-        # The texture is not oversized
-        # Choose the console
-        if console == 1:
-            # PC only
-            # Index the colors
-            layer = convertIndexed(image, 256)
-            # Export the image
-            exportPNG(image, layer, dirname, "PC", fileName)
-        else:
-            # All consoles
-            # Export the image
-            exportDXT1(image, layer, dirname, "Wii", fileName)
-            # Convert to PNG8
-            layer = convertIndexed(image, 256)
-            # Export the image
-            exportPNG(image, layer, dirname, "Main", fileName)
-            # Color mode back to RGB
-            pdb.gimp_image_convert_rgb(image)
-            # Resize to half size
-            resizeHalf(image, layer, 64)           
-            # Convert to PNG8
-            layer = convertIndexed(image, 256)
-            # Export the image
-            exportPNG(image, layer, dirname, "PSP", fileName)
-
-# Define the function to run on the duplicate image (next-gen portrait)
-def convoPortraitNG(image, outlineType, dirname, fileName):
-    # Get the layers to remove
-    if outlineType == 0:
-        # define the layers to remove
-        layerHero = pdb.gimp_image_get_layer_by_name(image, "Hero Outline")
-        # Remove the layers
-        pdb.gimp_image_remove_layer(image, layerHero)
-    else:
-        # define the layers to remove
-        layerHero = pdb.gimp_image_get_layer_by_name(image, "Hero Outline")
-        layerVillain = pdb.gimp_image_get_layer_by_name(image, "Villain Outline")
-        # Remove the layers
-        pdb.gimp_image_remove_layer(image, layerHero)
-        pdb.gimp_image_remove_layer(image, layerVillain)
-    # define remaining layers to remove
-    layerFrame = pdb.gimp_image_get_layer_by_name(image, "Frame")
-    layerBackground = pdb.gimp_image_get_layer_by_name(image, "Background")
-    # Remove the layers
-    pdb.gimp_image_remove_layer(image, layerFrame)
-    pdb.gimp_image_remove_layer(image, layerBackground)
-    # Clear the selection (This is done just in case there is a selection, but there shouldn't be)
-    pdb.gimp_selection_none(image)
-    # Get the active layer
-    layer = pdb.gimp_image_get_active_layer(image)
-    # Begin the Export
-    exportPNG(image, layer, dirname, "NG", fileName)
-
-# Define the main operation
-def exportHUD(image, layer, console, outlineType):
-    # Get the file path of the original image
-    filePath = pdb.gimp_image_get_filename(image)    
-    # Save the file in its original format before proceeding
-    pdb.gimp_file_save(image, layer, filePath, filePath)
-    # Get the folder and file name from the file path
-    dirname = os.path.dirname(filePath)
-    fileName = os.path.basename(filePath)
+# Define the function to check for image errors
+def errorCheck(image, layer):
     # Get the current dimensions of the image
     currentWidth = image.width
     currentHeight = image.height
-    # Determine if the image is oversized
-    if (currentWidth > 128) or (currentHeight > 128):
-        oversized = True
+    # Set the initial error state
+    canProceed = False
+    # Check if the dimensions are powers of 2
+    powerOf2 = pdb.python_fu_marvelmods_basic_p02check(image, layer)
+    # Determine next steps based on power of 2 check
+    if powerOf2 == True:
+        # Image dimensions are powers of 2, can proceed
+        # Check if the image dimensions are the same
+        if currentWidth == currentHeight:
+            # Dimensions are the same, can proceed
+            # Check if the image is too small
+            if currentWidth >= 64:
+                # Image is not too small, can proceed
+                # Initialize a variable to keep track of the number of correctly named layers
+                goodLayers = 0
+                # List the layers to check
+                for layerName in ["Frame", "Character", "Background"]:
+                    # Look for layers based on name
+                    testLayer = pdb.gimp_image_get_layer_by_name(image, layerName)
+                    # Check if the layer exists
+                    if testLayer == None:
+                        # The layer does not exist
+                        # Announce the error
+                        pdb.gimp_message("ERROR: There is no layer named \"" + layerName + "\".")
+                    else:
+                        # The layer exists
+                        # Increase the count of good layers
+                        goodLayers += 1
+                # Check the number of layers that are named correctly
+                if goodLayers == 3:
+                    # Layers with all 3 names are present
+                    # Allow the user to proceed
+                    canProceed = True
+                canProceed = True
+            else:
+                # Image is too small
+                # Give error message
+                pdb.gimp_message("ERROR: The image dimensions are 32x32 or less. This size is not recommended because the image will not be clear.")
+        else:
+            # Dimensions are not the same
+            # Give error message
+            pdb.gimp_message("ERROR: Image dimensions are not equal. 3ds Max templates only support equal image dimensions for portraits.")
     else:
-        oversized = False
-    # Export the main portrait
-    heroImage = pdb.gimp_image_duplicate(image)
-    convoPortrait(heroImage, "Villain Outline", oversized, dirname, fileName, console)
-    # Export the villain portrait, if applicable
-    if outlineType == 1:
-        villainImage = pdb.gimp_image_duplicate(image)
-        villainFileName = "v_" + fileName
-        convoPortrait(villainImage, "Hero Outline", oversized, dirname, villainFileName, console)
-    # Export the next-gen portrait
-    ngImage = pdb.gimp_image_duplicate(image)
-    convoPortraitNG(ngImage, outlineType, dirname, fileName)
+        # Image dimensions are not powers of 2
+        # Give error message
+        pdb.gimp_message("ERROR: One or both image dimensions are not a power of 2. Alchemy only supports image dimensions that are powers of 2.\n\nPowers of 2: 1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048, 4096, and so on.")
+    # Return whether or not the script can proceed, as well as the width and height
+    return canProceed, currentWidth
+
+# Define the standard exporting operation
+def exportStandardHUD(image, console, folderName, fileName, currentWidth, outlineColor, namePrefix):
+    # Create a duplicate image for the export
+    exportImage = pdb.gimp_image_duplicate(image)
+    # Determine if an outline is needed
+    if not(outlineColor == "None"):
+        # An outline is needed
+        # Get the layer to add the outline to
+        outlineLayer = pdb.gimp_image_get_layer_by_name(exportImage, "Character")
+        # Generate an outline
+        pdb.python_fu_marvelmods_utilities_generate_hud_outline(exportImage, outlineLayer, currentWidth, outlineColor)
+    # Flatten the image
+    exportLayer = pdb.gimp_image_flatten(exportImage)
+    # Set up the file name
+    outFileName = namePrefix + fileName
+    # Do a test export
+    #pdb.python_fu_marvelmods_basic_exportPNG(exportImage, exportLayer, folderName, "Test", outFileName)
+    # Filter remaining options based on the image size
+    if currentWidth == 64:
+        # Console resolution
+        # Filter remaining export options based on console selection
+        if console == 1:
+            # PC Only
+            # Export for PC
+            pdb.python_fu_marvelmods_basic_exportPNG(exportImage, exportLayer, folderName, "PC", outFileName, 2)
+            # Export for Steam
+            pdb.python_fu_marvelmods_basic_exportDDS(exportImage, exportLayer, folderName, "Steam", outFileName, 0, 1)
+        else:
+            # All consoles
+            # Export the cross-compatible version
+            pdb.python_fu_marvelmods_basic_exportPNG(exportImage, exportLayer, folderName, "Main", outFileName, 2)
+            # Export the Wii version
+            pdb.python_fu_marvelmods_basic_exportDDS(exportImage, exportLayer, folderName, "Wii", outFileName, 0, 0)
+            # Export the PS3 and Steam version
+            pdb.python_fu_marvelmods_basic_exportDDS(exportImage, exportLayer, folderName, "PS3 and Steam", outFileName, 0, 1)
+    elif currentWidth == 128:
+        # Standard resolution
+        # Filter remaining export options based on console selection
+        if console == 1:
+            # PC only
+            # Export for PC
+            pdb.python_fu_marvelmods_basic_exportPNG(exportImage, exportLayer, folderName, "PC", outFileName, 2)
+            # Export for Steam
+            pdb.python_fu_marvelmods_basic_exportDDS(exportImage, exportLayer, folderName, "Steam", outFileName, 0, 1)
+        else:
+            # All consoles
+            # Export the cross-compatible version
+            pdb.python_fu_marvelmods_basic_exportPNG(exportImage, exportLayer, folderName, "Main", outFileName, 2)
+            # Export the Wii version
+            pdb.python_fu_marvelmods_basic_exportDDS(exportImage, exportLayer, folderName, "Wii", outFileName, 0, 0)
+            # Export the PS3 and Steam version
+            pdb.python_fu_marvelmods_basic_exportDDS(exportImage, exportLayer, folderName, "PS3 and Steam", outFileName, 0, 1)
+            # Resize to half size
+            pdb.python_fu_marvelmods_scaling_scaleHalf(exportImage, exportLayer)
+            # Export the PSP version
+            pdb.python_fu_marvelmods_basic_exportPNG(exportImage, exportLayer, folderName, "PSP", outFileName, 2)
+    else:
+        # HD resolution and higher
+        # Export for XML2 PC (same option regardless of console choice)
+        pdb.python_fu_marvelmods_basic_exportDDS(exportImage, exportLayer, folderName, "XML2 PC", outFileName, 0, 0)
+        # Filter based on console selection
+        if console == 1:
+            # PC only
+            # Export for MUA1 PC and Steam
+            pdb.python_fu_marvelmods_basic_exportDDS(exportImage, exportLayer, folderName, "MUA1 PC and Steam", outFileName, 0, 1)
+        else:
+            # All consoles
+            # Export for MUA1 PC and Next-Gen consoles
+            pdb.python_fu_marvelmods_basic_exportDDS(exportImage, exportLayer, folderName, "MUA1 PC and Next-Gen", outFileName, 0, 1)
+            # Get the updated width
+            reducedWidth = currentWidth / 128
+            # Resize to 128x128
+            pdb.python_fu_marvelmods_scaling_scaleAny(exportImage, exportLayer, reducedWidth)
+            # Export the Wii and Xbox version
+            pdb.python_fu_marvelmods_basic_exportDDS(exportImage, exportLayer, folderName, "Wii and Xbox", outFileName, 0, 0)
+            # Export the PS2 and GameCube version
+            pdb.python_fu_marvelmods_basic_exportPNG(exportImage, exportLayer, folderName, "PS2 and GC", outFileName, 2)
+            # Resize to half size
+            pdb.python_fu_marvelmods_scaling_scaleHalf(exportImage, exportLayer)
+            # Export the PSP version
+            pdb.python_fu_marvelmods_basic_exportPNG(exportImage, exportLayer, folderName, "PSP", outFileName, 2)
+
+# Define the next-gen exporting operation
+def exportNGHUD(image, console, folderName, fileName, currentWidth):
+    # Create a duplicate image for the export
+    exportImage = pdb.gimp_image_duplicate(image)
+    # List the layers that need to be removed
+    for layerName in ["Frame", "Background"]:
+        # Get the layer by the name
+        layerToRemove = pdb.gimp_image_get_layer_by_name(exportImage, layerName)
+        # Remove the layer
+        pdb.gimp_image_remove_layer(exportImage, layerToRemove)
+    # Get the active layer of the new image
+    exportLayer = pdb.gimp_image_get_active_layer(exportImage)
+    # Set up the file name
+    outFileName = "ng_" + fileName
+    # Filter remaining options based on the image size
+    if currentWidth == 64:
+        # Console resolution
+        # Filter remaining export options based on console selection
+        if console == 1:
+            # PC Only
+            # Export for PC
+            pdb.python_fu_marvelmods_basic_exportPNG(exportImage, exportLayer, folderName, "PC and Steam", outFileName, 0)
+        else:
+            # All consoles
+            # Export the cross-compatible version
+            pdb.python_fu_marvelmods_basic_exportPNG(exportImage, exportLayer, folderName, "All", outFileName, 0)
+    elif currentWidth == 128:
+        # Standard resolution
+        # Filter remaining export options based on console selection
+        if console == 1:
+            # PC only
+            # Export for PC
+            pdb.python_fu_marvelmods_basic_exportPNG(exportImage, exportLayer, folderName, "PC and Steam", outFileName, 0)
+        else:
+            # All consoles
+            # Export the cross-compatible version
+            pdb.python_fu_marvelmods_basic_exportPNG(exportImage, exportLayer, folderName, "All", outFileName, 0)
+            # Resize to half size
+            pdb.python_fu_marvelmods_scaling_scaleHalf(exportImage, exportLayer)
+            # Export the PSP version
+            pdb.python_fu_marvelmods_basic_exportPNG(exportImage, exportLayer, folderName, "PSP", outFileName, 0)
+    else:
+        # HD resolution and higher
+        # Filter based on console selection
+        if console == 1:
+            # PC only
+            # Export for PC and Steam
+            pdb.python_fu_marvelmods_basic_exportPNG(exportImage, exportLayer, folderName, "PC and Steam", outFileName, 0)
+        else:
+            # All consoles
+            # Export for PC and Next-Gen consoles
+            pdb.python_fu_marvelmods_basic_exportPNG(exportImage, exportLayer, folderName, "PC and Next-Gen", outFileName, 0)
+            # Get the updated width
+            reducedWidth = currentWidth / 128
+            # Resize to 128x128
+            pdb.python_fu_marvelmods_scaling_scaleAny(exportImage, exportLayer, reducedWidth)
+            # Export the Wii and Xbox version
+            pdb.python_fu_marvelmods_basic_exportPNG(exportImage, exportLayer, folderName, "Last-Gen", outFileName, 0)
+            # Resize to half size
+            pdb.python_fu_marvelmods_scaling_scaleHalf(exportImage, exportLayer)
+            # Export the PSP version
+            pdb.python_fu_marvelmods_basic_exportPNG(exportImage, exportLayer, folderName, "PSP", outFileName, 0)
+
+# Define the main operation
+def exportHUD(image, layer, console, plainChoice, nextGenChoice, heroOutlineChoice, redVillainOutlineChoice, greenVillainOutlineChoice):
+    # Save the file and get its path and name
+    (folderName, fileName) = pdb.python_fu_marvelmods_basic_get_path_save(image, layer)
+    # Check for errors
+    (canProceed, currentWidth) = errorCheck(image, layer)
+    # Determine if it's okay to proceed
+    if canProceed == True:
+        # No errors, can proceed
+        # Determine if a plain portrait needs to be exported
+        if plainChoice == 1:
+            # A plain portrait is needed
+            # Export a plain portrait
+            exportStandardHUD(image, console, folderName, fileName, currentWidth, "None", "")
+        # Determine if a portrait with a hero outline needs to be exported
+        if heroOutlineChoice == 1:
+            # A portrait with a hero outline is needed
+            # Export a portrait with a hero outline
+            exportStandardHUD(image, console, folderName, fileName, currentWidth, 0, "b_")
+        # Determine if a portrait with a red villain outline needs to be exported
+        if redVillainOutlineChoice == 1:
+            # A portrait with a red villain outline is needed
+            # Export a portrait with a hero outline
+            exportStandardHUD(image, console, folderName, fileName, currentWidth, 1, "r_")
+        # Determine if a portrait with a green villain outline needs to be exported
+        if greenVillainOutlineChoice == 1:
+            # A portrait with a green villain outline is needed
+            # Export a portrait with a green outline
+            exportStandardHUD(image, console, folderName, fileName, currentWidth, 2, "g_")
+        # Determine if a next-gen-style portrait needs to be exported
+        if nextGenChoice == 1:
+            # A next-gen-style portrait is needed
+            # Export a next-gen-style portrait
+            exportNGHUD(image, console, folderName, fileName, currentWidth)
+    else:
+        # Errors, cannot proceed
+        # Display an error message
+        pdb.gimp_message("The image was not exported.")
+
 
 # ######## #
 # REGISTER #
@@ -237,14 +288,18 @@ register(
     "Exports a conversation portrait (HUD) texture in multiple formats.",
     "BaconWizard17",
     "BaconWizard17",
-    "April 2023",
+    "January 2024",
     "Export Conversation Portrait (HUD)",
     "*",
     [
         (PF_IMAGE, "image", "Input image", None),
-        (PF_DRAWABLE, 'drawable', 'Layer, mask or channel', None),
-        (PF_OPTION,"p1","Console:", 0, ["All","PC Only"]),
-        (PF_OPTION,"p1","Outline Type:", 0, ["Hero Outline Only","Hero and Villain Outline"])
+        (PF_DRAWABLE, "layer", "Layer, mask or channel", None),
+        (PF_OPTION, "console", "Console:", 0, ["All","PC Only"]),
+        (PF_TOGGLE, "plainChoice", "Export a plain portrait?", 0),
+        (PF_TOGGLE, "nextGenChoice", "Export an MUA1 next-gen\nstyle portrait?", 1),
+        (PF_TOGGLE, "heroOutlineChoice", "Export a portrait with a\nhero outline?", 1),
+        (PF_TOGGLE, "redVillainOutlineChoice", "Export a portrait with a\nred villain outline?", 0),
+        (PF_TOGGLE, "greenVillainOutlineChoice", "Export a portrait with a\ngreen villain outline?", 0)
     ],
     [],
     exportHUD,
