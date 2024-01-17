@@ -73,7 +73,7 @@ register(
         (PF_STRING, "outFolder", "Full folder path")
     ],
     folderCheck,
-    menu='<Image>/Marvel Mods/Basic Procedures'
+    menu="<Image>/Marvel Mods/Basic Procedures"
 )
 
 

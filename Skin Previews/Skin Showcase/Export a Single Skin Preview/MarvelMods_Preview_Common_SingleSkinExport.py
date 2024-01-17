@@ -4,14 +4,13 @@
 # ########### #
 # INFORMATION #
 # ########### #
-# GIMP plugin to reduce the size of an image by a factor of 2. 
+# GIMP plugin to export a single skin preview in 3 different formats.
 # This was designed with the intention to use it with modding processes for MarvelMods.com, though it can have other uses. 
 # For detailed instructions, please reference the README.md file included with this download.
 # (c) BaconWizard17 2023
 #
 #   History:
-#   v1.0: 23Jan2023: First published version.
-#   v1.1: 17Jan2024:minor updates for compatibility.
+#   v1.0: 25Jan2023: First published version.
 
 #   This program is free software; you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License as published by
@@ -39,23 +38,38 @@ from gimpfu import*
 # FUNCTION #
 # ######## #
 # Define the operation
-def scaleHalf (image, layer):
+def singleSkinPreviewExport(image, layer):
+    # Get the current file name and path
+    fileName = pdb.gimp_image_get_filename(image)
+    # Change the path's extension to .png
+    fileNameOutHalfSmall = fileName[:-4] + "_1HalfSmall.png"
+    fileNameOutHalfLarge = fileName[:-4] + "_2HalfLarge.png"
+    fileNameOutFull = fileName[:-4] + "_3Full.png"
+    
     # Start an undo group so that the entire operation can be undone at once
     pdb.gimp_image_undo_group_start(image)
     # Clear the selection (This is done just in case there is a selection, but there shouldn't be)
     pdb.gimp_selection_none(image)
-    # Get the current dimensions of the image
-    currentWidth = image.width
-    currentHeight = image.height
-    # Get the new dimensions by dividing old dimensions by 2
-    newWidth = currentWidth/2
-    newHeight = currentHeight/2
-    # scale the image accordingly
-    pdb.gimp_image_scale(image, newWidth, newHeight)
+    # Flatten the image
+    layer = pdb.gimp_image_flatten(image)
+    # Export the full preview
+    pdb.file_png_save(image, layer, fileNameOutFull, fileNameOutFull, FALSE, 9, FALSE, FALSE, FALSE, FALSE, FALSE)
+    # Crop the image for the half preview
+    pdb.gimp_image_resize(image, 543, 1080, 0, 0)
     # Resize the layer to the image size
     pdb.gimp_layer_resize_to_image_size(layer)
     # Display the changes
     pdb.gimp_displays_flush()
+    # Export the large half preview
+    pdb.file_png_save(image, layer, fileNameOutHalfLarge, fileNameOutHalfLarge, FALSE, 9, FALSE, FALSE, FALSE, FALSE, FALSE)
+    # Scale the image for the small half preview
+    pdb.gimp_image_scale(image, 251, 500)
+    # Resize the layer to the image size
+    pdb.gimp_layer_resize_to_image_size(layer)
+    # Display the changes
+    pdb.gimp_displays_flush()
+    # Export the small half preview
+    pdb.file_png_save(image, layer, fileNameOutHalfSmall, fileNameOutHalfSmall, FALSE, 9, FALSE, FALSE, FALSE, FALSE, FALSE)
     # End the undo group
     pdb.gimp_image_undo_group_end(image)
 
@@ -65,21 +79,21 @@ def scaleHalf (image, layer):
 # ######## #
 # Register the script in GIMP
 register(
-    "python_fu_marvelmods_scaling_scaleHalf",
-    "Scale image to half its original size.",
-    "Scale image to half its original size.",
+    "python_fu_marvelmods_common_singleSkinPreviewExport",
+    "Exports a single skin preview in the necessary sizes.",
+    "Exports a single skin preview in the necessary sizes.",
     "BaconWizard17",
     "BaconWizard17",
-    "January 2024",
-    "Scale to Half Size",
+    "December 2022",
+    "Export Single Skin Preview",
     "*",
     [
         (PF_IMAGE, "image", "Input image", None),
-        (PF_DRAWABLE, "Layer", "Layer, mask or channel", None)
+        (PF_DRAWABLE, "layer", "Layer, mask or channel", None)
     ],
     [],
-    scaleHalf,
-    menu="<Image>/Marvel Mods/Image Scaling"
+    singleSkinPreviewExport,
+    menu="<Image>/Marvel Mods/Skin Previews/Skin Showcase"
 )
 
 

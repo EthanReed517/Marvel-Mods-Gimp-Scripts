@@ -4,13 +4,13 @@
 # ########### #
 # INFORMATION #
 # ########### #
-# GIMP plugin to convert an image to PNG8 format by flattening the image and indexing to 256 colors.
+# GIMP plugin to export an image in PNG8 format.
 # This was designed with the intention to use it with modding processes for MarvelMods.com, though it can have other uses. 
 # For detailed instructions, please reference the README.md file included with this download.
 # (c) BaconWizard17 2023
 #
 #   History:
-#   v1.0: 26Jan2023: First published version.
+#   v1.0: 30Jan2023: First published version.
 
 #   This program is free software; you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License as published by
@@ -30,15 +30,29 @@
 # ####### #
 # IMPORTS #
 # ####### #
+# To be able to check file paths
+import os
 # To be able to execute GIMP scripts
 from gimpfu import*
 
 
-# ######## #
-# FUNCTION #
-# ######## #
-# Define the operation
-def convert_png8(image, layer):
+# ######### #
+# FUNCTIONS #
+# ######### #
+# Define the folder checking operation
+def folderCheck(dirname, newFolder):
+    # Append the paths
+    outFolder = os.path.join(dirname, newFolder)
+    # Check if the path exists
+    outFolderExists = os.path.exists(outFolder)
+    # If the path doesn't exist, create the new folder
+    if outFolderExists == False:
+        os.mkdir(outFolder)
+    # Return the new path
+    return outFolder
+    
+# Define the function for converting to PNG8
+def convertPNG8(image):
     # Start an undo group so that the entire operation can be undone at once
     pdb.gimp_image_undo_group_start(image)
     # Clear the selection (This is done just in case there is a selection, but there shouldn't be)
@@ -51,6 +65,30 @@ def convert_png8(image, layer):
     pdb.gimp_displays_flush()
     # End the undo group
     pdb.gimp_image_undo_group_end(image)
+    # Get the active layer
+    layer = pdb.gimp_image_get_active_layer(image)
+    # return the new layer
+    return layer
+
+# Define the main operation
+def exportPNG8(image, layer):
+    # Get the file path of the original image
+    filePath = pdb.gimp_image_get_filename(image)
+    # Save the file in its original format before proceeding
+    pdb.gimp_file_save(image, layer, filePath, filePath)
+    # Get the folder and file name from the file path
+    dirname = os.path.dirname(filePath)
+    fileName = os.path.basename(filePath)
+    # Get the name of the export folder, check if it exists, and create it if it doesn't
+    outFolder = folderCheck(dirname, "PNG8")
+    # Convert to PNG8
+    layer = convertPNG8(image)
+    # Get the new file name
+    outFileName = fileName[0:-3] + "png"
+    # Get the full save file path
+    outFilePath = os.path.join(outFolder, outFileName)
+    # Export the image
+    pdb.file_png_save(image, layer, outFilePath, outFilePath, 0, 9, 0, 0, 0, 0, 0)
 
 
 # ######## #
@@ -58,21 +96,21 @@ def convert_png8(image, layer):
 # ######## #
 # Register the script in GIMP
 register(
-    "python_fu_marvelmods_utilities_convert_png8",
-    "Flatten image, convert to indexed palette with 256 colors.",
-    "Flatten image, convert to indexed palette with 256 colors.",
+    "python_fu_marvelmods_export_format_png8",
+    "Exports a texture to PNG8 format.",
+    "Exports a texture to PNG8 format.",
     "BaconWizard17",
     "BaconWizard17",
     "January 2023",
-    "Convert to PNG8",
+    "Export as PNG8",
     "*",
     [
         (PF_IMAGE, "image", "Input image", None),
-        (PF_DRAWABLE, "layer", "Layer, mask or channel", None)
+        (PF_DRAWABLE, "drawable", "Layer, mask or channel", None)
     ],
     [],
-    convert_png8,
-    menu="<Image>/Marvel Mods/Utilities"
+    exportPNG8,
+    menu="<Image>/Marvel Mods/Export Textures/By Texture Format"
 )
 
 

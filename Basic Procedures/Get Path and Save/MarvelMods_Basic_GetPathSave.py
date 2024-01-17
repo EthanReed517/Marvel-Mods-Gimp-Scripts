@@ -32,7 +32,7 @@
 # ####### #
 # To be able to check file paths
 import os
-# So that scripts can be executed
+# To be able to execute GIMP scripts
 from gimpfu import*
 
 
@@ -74,7 +74,7 @@ register(
         (PF_STRING, "fileName", "The file name")
     ],
     getPathSave,
-    menu='<Image>/Marvel Mods/Basic Procedures'
+    menu="<Image>/Marvel Mods/Basic Procedures"
 )
 
 

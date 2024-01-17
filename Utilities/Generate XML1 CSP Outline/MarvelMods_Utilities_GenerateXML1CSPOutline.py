@@ -30,7 +30,7 @@
 # ####### #
 # IMPORTS #
 # ####### #
-# Import the gimpfu module so that scripts can be executed
+# To be able to execute GIMP scripts
 from gimpfu import*
 
 
@@ -71,7 +71,7 @@ register(
     "*",
     [
         (PF_IMAGE, "image", "Input image", None),
-        (PF_DRAWABLE, "drawable", "Layer, mask, or channel", None)
+        (PF_DRAWABLE, "layer", "Layer, mask or channel", None)
     ],
     [],
     generateXML1CSPOutline,

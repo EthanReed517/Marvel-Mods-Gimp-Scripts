@@ -30,7 +30,7 @@
 # ####### #
 # IMPORTS #
 # ####### #
-# Import the gimpfu module so that scripts can be executed
+# To be able to execute GIMP scripts
 from gimpfu import*
 
 
@@ -88,7 +88,7 @@ register(
     ],
     [],
     generateHudOutline,
-    menu='<Image>/Marvel Mods/Utilities'
+    menu="<Image>/Marvel Mods/Utilities"
 )
 
 

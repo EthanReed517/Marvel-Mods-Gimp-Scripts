@@ -102,7 +102,7 @@ register(
     ],
     [],
     exportDDS,
-    menu='<Image>/Marvel Mods/Basic Procedures'
+    menu="<Image>/Marvel Mods/Basic Procedures"
 )
 
 

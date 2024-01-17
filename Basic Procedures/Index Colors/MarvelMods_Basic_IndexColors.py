@@ -68,7 +68,7 @@ register(
         (PF_DRAWABLE, "layer", "Layer, mask, or channel")
     ],
     indexColors,
-    menu='<Image>/Marvel Mods/Basic Procedures'
+    menu="<Image>/Marvel Mods/Basic Procedures"
 )
 
 

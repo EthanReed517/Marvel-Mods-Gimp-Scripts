@@ -4,13 +4,16 @@
 # ########### #
 # INFORMATION #
 # ########### #
-# GIMP plugin to check if the dimensions of an image are powers of 2.
+# GIMP plugin to export a skin, 3D head, or mannequin texture.
 # This was designed with the intention to use it with modding processes for MarvelMods.com, though it can have other uses. 
 # For detailed instructions, please reference the README.md file included with this download.
 # (c) BaconWizard17 2023
 #
 #   History:
-#   v1.0: 10Jan2023: First published version.
+#   v1.0: 30Jan2023: First published version.
+#   v1.1: 30Aug2023: Add support for transparency, add support for next-gen MUA1 (Steam, PS3, and Xbox 360), and add support for MUA2 PS2. Improve efficiency
+#   v1.2: 06Sep2023: Now checks if image dimensions are a power of 2 and gives an error if not.
+#   v2.0: 10Jan2024: Simplified to call the main script but with pre-selected parameters
 
 #   This program is free software; you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License as published by
@@ -32,37 +35,23 @@
 # ####### #
 # To be able to execute GIMP scripts
 from gimpfu import*
-# To be able to perform log operations
-import math
 
 
 # ######### #
 # FUNCTIONS #
 # ######### #
-# Define the log base 2 operation
-def Log2(x):
-    return (math.log10(x) / math.log10(2))
-    
-# Define the function to check if a number is a power of 2
-def isPowerOfTwo(n):
-    return (math.ceil(Log2(n)) == math.floor(Log2(n)))
-
 # Define the main operation
-def po2Check(image, layer):
-    # Get the current dimensions of the image
-    currentWidth = image.width
-    currentHeight = image.height
-    # Check if the dimensions are powers of 2
-    if (isPowerOfTwo(currentWidth) and isPowerOfTwo(currentHeight)):
-        # Both dimensions are powers of 2
-        # return true
-        po2Value = True
-    else:
-        # One or neither dimension is a power of 2
-        # return false
-        po2Value = False
-    # Return the value
-    return po2Value
+def exportSkin(image, layer):
+    # Define the remaining properties
+    console = 0
+    skinType = 0
+    texType = 0
+    charSize = 0
+    alchemyVersion = 0
+    transparency = 1
+    PSPFormat = 1
+    # Call the main script
+    pdb.python_fu_marvelmods_export_asset_skin(image, layer, console, skinType, texType, charSize, alchemyVersion, transparency, PSPFormat)
 
 
 # ######## #
@@ -70,23 +59,21 @@ def po2Check(image, layer):
 # ######## #
 # Register the script in GIMP
 register(
-    "python_fu_marvelmods_basic_p02check",
-    "Checks is the dimensions of a texture are powers of 2. Returns True if both are and False if one or neither are.",
-    "Checks is the dimensions of a texture are powers of 2. Returns True if both are and False if one or neither are.",
+    "python_fu_marvelmods_export_quick_skin",
+    "Exports a skin texture in multiple formats. Also\nworks on 3D head textures and mannequin textures.\nThis is an optimized version that runs without\noptions and with my preferred settings.\n\nCheck the README.md file included with the\ndownload for more clarity on the options.",
+    "Exports a skin texture in multiple formats. Also works on 3D head textures and mannequin textures.",
     "BaconWizard17",
     "BaconWizard17",
     "January 2024",
-    "Power of 2 Check",
+    "Export Skin (Quick)",
     "*",
     [
         (PF_IMAGE, "image", "Input image", None),
         (PF_DRAWABLE, "layer", "Layer, mask, or channel", None)
     ],
-    [
-        (PF_BOOL, "po2Value", "Power of 2 Status")
-    ],
-    po2Check,
-    menu="<Image>/Marvel Mods/Basic Procedures"
+    [],
+    exportSkin,
+    menu="<Image>/Marvel Mods/Export Textures/Quick Exporters"
 )
 
 

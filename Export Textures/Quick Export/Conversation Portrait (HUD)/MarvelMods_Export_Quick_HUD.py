@@ -30,7 +30,7 @@
 # ####### #
 # IMPORTS #
 # ####### #
-# Import the gimpfu module so that scripts can be executed
+# To be able to execute GIMP scripts
 from gimpfu import*
 
 
@@ -47,7 +47,7 @@ def exportHUD(image, layer):
     redVillainOutlineChoice = 0
     greenVillainOutlineChoice = 0
     # Call the main script
-    pdb.python_fu_marvelmods_export_hud(image, layer, console, plainChoice, nextGenChoice, heroOutlineChoice, redVillainOutlineChoice, greenVillainOutlineChoice)
+    pdb.python_fu_marvelmods_export_asset_hud(image, layer, console, plainChoice, nextGenChoice, heroOutlineChoice, redVillainOutlineChoice, greenVillainOutlineChoice)
 
 
 # ######## #
@@ -69,7 +69,7 @@ register(
     ],
     [],
     exportHUD,
-    menu='<Image>/Marvel Mods/Export Textures/Quick Exporters'
+    menu="<Image>/Marvel Mods/Export Textures/Quick Exporters"
 )
 
 

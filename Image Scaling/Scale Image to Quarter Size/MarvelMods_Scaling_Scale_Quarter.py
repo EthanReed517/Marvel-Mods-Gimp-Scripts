@@ -31,7 +31,7 @@
 # ####### #
 # IMPORTS #
 # ####### #
-# Import the gimpfu module so that scripts can be executed
+# To be able to execute GIMP scripts
 from gimpfu import*
 
 
@@ -79,7 +79,7 @@ register(
     ],
     [],
     scaleQuarter,
-    menu='<Image>/Marvel Mods/Image Scaling'
+    menu="<Image>/Marvel Mods/Image Scaling"
 )
 
 
