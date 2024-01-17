@@ -1,7 +1,7 @@
 # Marvel Mods GIMP Plugins
 by BaconWizard17
 ## Export Power Icons
-This plugin exports a power icons texture in several optimized formats. It supports XML1, XML2, MUA1, and MUA2 power icons. If you're using Alchemy 5, it's recommended to use the (Alchemy 5 Texture Replacement Method)[https://marvelmods.com/forum/index.php/topic,11009.0.html] instead.
+This plugin exports a power icons texture in several optimized formats. It supports XML1, XML2, MUA1, and MUA2 power icons. If you're using Alchemy 5, it's recommended to use the [Alchemy 5 Texture Replacement Method](https://marvelmods.com/forum/index.php/topic,11009.0.html) instead.
 
 ### Compatibility
 This script will only work correctly if the image has been saved as a .xcf file. The texture should be square.
