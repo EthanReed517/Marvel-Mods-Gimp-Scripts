@@ -12,6 +12,7 @@
 #   History:
 #   v1.0: 01Feb2023: First published version.
 #   v1.1: 21Apr2023: Updated folder names
+#   v2.0: 19Jan2024: Full rewrite. Now uses common procedures, generates the CSP outline in process, and can do both portraits at the same time.    
 
 #   This program is free software; you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License as published by
@@ -40,141 +41,172 @@ from gimpfu import*
 # ######### #
 # FUNCTIONS #
 # ######### #    
-# Define the function for indexing colors
-def convertIndexed(image, colors):
-    # Index the colors
-    pdb.gimp_image_convert_indexed(image, CONVERT_DITHER_NONE, CONVERT_PALETTE_GENERATE, colors, FALSE, FALSE, "")
-    # Display the changes
-    pdb.gimp_displays_flush()
-    # Get the active layer
-    layer = pdb.gimp_image_get_active_layer(image)
-    # return the new layer
-    return layer
-    
-# Define the function for resizing to half size
-def resizeHalf(image, layer, newSize):
-    # scale the image accordingly
-    pdb.gimp_image_scale(image, newSize, newSize)
-    # Resize the layer to the image size
-    pdb.gimp_layer_resize_to_image_size(layer)
-    # Display the changes
-    pdb.gimp_displays_flush()
-
-# Define the folder checking operation
-def folderCheck(dirname, newFolder):
-    # Append the paths
-    outFolder = os.path.join(dirname, newFolder)
-    # Check if the path exists
-    outFolderExists = os.path.exists(outFolder)
-    # If the path doesn't exist, create the new folder
-    if outFolderExists == False:
-        os.mkdir(outFolder)
-    # Return the new path
-    return outFolder
-    
-# Define the function for exporting as a png
-def exportPNG(image, layer, dirname, newFolder, fileName):
-    # Check if the export folder exists and create it if needed
-    outFolder = folderCheck(dirname, newFolder)
-    # Get the new file name
-    outFileName = fileName[0:-3] + "png"
-    # Get the full save file path
-    outFilePath = os.path.join(outFolder, outFileName)
-    # Export the image
-    pdb.file_png_save(image, layer, outFilePath, outFilePath, 0, 9, 0, 0, 0, 0, 0)
-
-# Define the function for exporting as a DXT1 dds
-def exportDXT1(image, layer, dirname, newFolder, fileName):
-    # Check if the export folder exists and create it if needed
-    outFolder = folderCheck(dirname, newFolder)
-    # Get the new file name
-    outFileName = fileName[0:-3] + "dds"
-    # Get the full save file path
-    outFilePath = os.path.join(outFolder, outFileName)
-    # Export the image
-    pdb.file_dds_save(image, layer, outFilePath, outFilePath, 1, 0, 4, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0)
-
-# Define the main operation
-def exportCSP(image, layer, console, game):
-    # Get the file path of the original image
-    filePath = pdb.gimp_image_get_filename(image)    
-    # Save the file in its original format before proceeding
-    pdb.gimp_file_save(image, layer, filePath, filePath)
-    # Get the folder and file name from the file path
-    dirname = os.path.dirname(filePath)
-    fileName = os.path.basename(filePath)
+# Define the function to check for image errors
+def errorCheck(image, layer):
     # Get the current dimensions of the image
     currentWidth = image.width
     currentHeight = image.height
-    # Determine if the image is oversized
-    if (currentWidth > 128) or (currentHeight > 128):
-        oversized = True
+    # Set the initial error state
+    canProceed = False
+    # Check if the dimensions are powers of 2
+    powerOf2 = pdb.python_fu_marvelmods_basic_p02check(image, layer)
+    # Determine next steps based on power of 2 check
+    if powerOf2 == True:
+        # Image dimensions are powers of 2, can proceed
+        # Check if the image dimensions are the same
+        if currentWidth == currentHeight:
+            # Dimensions are the same, can proceed
+            # Check if the image is too small
+            if currentWidth >= 64:
+                # Image is not too small, can proceed
+                # Initialize a variable to keep track of the number of correctly named layers
+                goodLayers = 0
+                # List the layers to check
+                for layerName in ["Frame", "Character", "XML1 Background", "XML2 Background"]:
+                    # Look for layers based on name
+                    testLayer = pdb.gimp_image_get_layer_by_name(image, layerName)
+                    # Check if the layer exists
+                    if testLayer == None:
+                        # The layer does not exist
+                        # Announce the error
+                        pdb.gimp_message("ERROR: There is no layer named \"" + layerName + "\".")
+                    else:
+                        # The layer exists
+                        # Increase the count of good layers
+                        goodLayers += 1
+                # Check the number of layers that are named correctly
+                if goodLayers == 3:
+                    # Layers with all 3 names are present
+                    # Allow the user to proceed
+                    canProceed = True
+                canProceed = True
+            else:
+                # Image is too small
+                # Give error message
+                pdb.gimp_message("ERROR: The image dimensions are 32x32 or less. This size is not recommended because the image will not be clear.")
+        else:
+            # Dimensions are not the same
+            # Give error message
+            pdb.gimp_message("ERROR: Image dimensions are not equal. 3ds Max templates only support equal image dimensions for portraits.")
     else:
-        oversized = False
-    # Start an undo group so that the entire operation can be undone at once
-    pdb.gimp_image_undo_group_start(image)
-    # Clear the selection (This is done just in case there is a selection, but there shouldn't be)
-    pdb.gimp_selection_none(image)
-    # Flatten the Image
-    layer = pdb.gimp_image_flatten(image)
-    # Begin the Export
-    # Pick if the texture is oversized or standard
-    if oversized == True:
-        # The texture is oversized
-        # Export the image, but only if it's for XML2
-        if game == 1:
-            exportDXT1(image, layer, dirname, "PC", fileName)
-        # Determine if console export needs to happen
-        if console == 0:
-            # All consoles
+        # Image dimensions are not powers of 2
+        # Give error message
+        pdb.gimp_message("ERROR: One or both image dimensions are not a power of 2. Alchemy only supports image dimensions that are powers of 2.\n\nPowers of 2: 1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048, 4096, and so on.")
+    # Return whether or not the script can proceed, as well as the width and height
+    return canProceed, currentWidth
+
+# Define the XML1 exporting operation
+def exportXML1CSP(image, console, folderName, fileName, currentWidth):
+    # Create a duplicate image for the export
+    exportImage = pdb.gimp_image_duplicate(image)
+    # Get the layer to remove
+    layerToRemove = pdb.gimp_image_get_layer_by_name(exportImage, "XML2 Background")
+    # Remove the layer
+    pdb.gimp_image_remove_layer(exportImage, layerToRemove)
+    # Get the layer to add the outline to
+    outlineLayer = pdb.gimp_image_get_layer_by_name(exportImage, "Character")
+    # Generate an outline
+    pdb.python_fu_marvelmods_utilities_generate_xml1_csp_outline(exportImage, outlineLayer, currentWidth)
+    # Flatten the image
+    exportLayer = pdb.gimp_image_flatten(exportImage)
+    # Set up the file name
+    outFileName = "x1c_" + fileName
+    # Filter remaining options based on the console
+    if console == 1:
+        # PC Only
+        # Do nothing
+        pdb.gimp_message("No XML1 portrait is exported when \"PC Only\" is selected")
+    else:
+        # Consoles
+        if currentWidth <= 128:
+            # Console resolution or standard resolution
+            # Export the cross-compatible version
+            pdb.python_fu_marvelmods_basic_exportPNG(exportImage, exportLayer, folderName, "All", outFileName, 2)
+        else:
+            # HD resolution and higher
+            # Get the updated width
+            reducedWidth = currentWidth / 128
             # Resize to 128x128
-            resizeHalf(image, layer, 128)
-            # Convert to PNG8
-            layer = convertIndexed(image, 256)
-            # Export the image
-            exportPNG(image, layer, dirname, "GC, PS2, XB", fileName)
-            # Only export for PSP for XML2
-            if game == 1:
-                # Color mode back to RGB
-                pdb.gimp_image_convert_rgb(image)
-                # Resize to half size
-                resizeHalf(image, layer, 64)
-                # Convert to PNG8
-                layer = convertIndexed(image, 256)
-                # Export the image
-                exportPNG(image, layer, dirname, "PSP", fileName)
-    else:
-        # The texture is not oversized
-        # Choose the console
-        if (console == 1) and (game == 1):
-            # PC only (only for XML2)
-            # Index the colors
-            layer = convertIndexed(image, 256)
-            # Export the image
-            exportPNG(image, layer, dirname, "PC", fileName)
+            pdb.python_fu_marvelmods_scaling_scaleAny(exportImage, exportLayer, reducedWidth)
+            # Export the Xbox version
+            pdb.python_fu_marvelmods_basic_exportDDS(exportImage, exportLayer, folderName, "Xbox", outFileName, 0, 0)
+            # Export the PS2 and GameCube version
+            pdb.python_fu_marvelmods_basic_exportPNG(exportImage, exportLayer, folderName, "GC and PS2", outFileName, 2)
+
+# Define the XML2 exporting operation
+def exportXML2CSP(image, console, folderName, fileName, currentWidth):
+    # Create a duplicate image for the export
+    exportImage = pdb.gimp_image_duplicate(image)
+    # List the layers that need to be removed
+    for layerName in ["Frame", "XML1 Background"]:
+        # Get the layer by the name
+        layerToRemove = pdb.gimp_image_get_layer_by_name(exportImage, layerName)
+        # Remove the layer
+        pdb.gimp_image_remove_layer(exportImage, layerToRemove)
+    # Flatten the image
+    exportLayer = pdb.gimp_image_flatten(exportImage)
+    # Set up the file name
+    outFileName = "x2c_" + fileName
+    # Filter remaining options based on the image size
+    if currentWidth <= 128:
+        # Console resolution or standard resolution
+        # Filter remaining export options based on console selection
+        if console == 1:
+            # PC Only
+            # Export for PC
+            pdb.python_fu_marvelmods_basic_exportPNG(exportImage, exportLayer, folderName, "PC", outFileName, 2)
         else:
             # All consoles
-            # Convert to PNG8
-            layer = convertIndexed(image, 256)
-            # Pick the game
-            if game == 0: 
-                # XML1
-                # Export the image
-                exportPNG(image, layer, dirname, "All", fileName)
-            else: 
-                # XML2
-                # Export the image
-                exportPNG(image, layer, dirname, "All", fileName)
-                # Color mode back to RGB
-                pdb.gimp_image_convert_rgb(image)
-                # Resize to half size
-                resizeHalf(image, layer, 64)           
-                # Convert to PNG8
-                layer = convertIndexed(image, 256)
-                # Export the image
-                exportPNG(image, layer, dirname, "PSP", fileName)
-    # End the undo group
-    pdb.gimp_image_undo_group_end(image)
+            # Export the cross-compatible version
+            pdb.python_fu_marvelmods_basic_exportPNG(exportImage, exportLayer, folderName, "All", outFileName, 2)
+    else:
+        # HD resolution and higher
+        # Filter based on console selection
+        if console == 1:
+            # PC only
+            # Export for PC
+            pdb.python_fu_marvelmods_basic_exportDDS(exportImage, exportLayer, folderName, "PC", outFileName, 0, 0)
+        else:
+            # All consoles
+            # Export for PC
+            pdb.python_fu_marvelmods_basic_exportDDS(exportImage, exportLayer, folderName, "PC", outFileName, 0, 0)
+            # Get the updated width
+            reducedWidth = currentWidth / 128
+            # Resize to 128x128
+            pdb.python_fu_marvelmods_scaling_scaleAny(exportImage, exportLayer, reducedWidth)
+            # Export the Xbox version
+            pdb.python_fu_marvelmods_basic_exportDDS(exportImage, exportLayer, folderName, "Xbox", outFileName, 0, 0)
+            # Export the PS2 and GameCube version
+            pdb.python_fu_marvelmods_basic_exportPNG(exportImage, exportLayer, folderName, "GC and PS2", outFileName, 2)
+
+# Define the main operation
+def exportCSP(image, layer, console, xml1Choice, xml2Choice):
+    # Save the file and get its path and name
+    (folderName, fileName) = pdb.python_fu_marvelmods_basic_get_path_save(image, layer) 
+    # Check for errors
+    (canProceed, currentWidth) = errorCheck(image, layer)
+    # Determine if it's okay to proceed
+    if canProceed == True:
+        # No errors, can proceed
+        # Determine if an XML1 portrait should be exported
+        if xml1Choice == 1:
+            # XML1 portrait needed
+            # Export for XML1
+            exportXML1CSP(image, console, folderName, fileName, currentWidth)
+        # Determine if an XML2 portrait should be exported
+        if xml2Choice == 1:
+            # XML2 portrait needed
+            # Export for XML2
+            exportXML2CSP(image, console, folderName, fileName, currentWidth)
+        # Determine if no portrait was exported
+        if (xml1Choice == 0) and (xml2Choice == 0):
+            # No portrait was exported
+            # Display an error message
+            pdb.gimp_message("Nothing was exported. Choose at least one export type.")
+    else:
+        # Errors, cannot proceed
+        # Display an error message
+        pdb.gimp_message("The image was not exported.")
 
 
 # ######## #
@@ -187,14 +219,15 @@ register(
     "Exports a character select portrait (CSP) texture in multiple formats.",
     "BaconWizard17",
     "BaconWizard17",
-    "April 2023",
+    "January 2024",
     "Export Character Select Portrait (CSP)",
     "*",
     [
         (PF_IMAGE, "image", "Input image", None),
         (PF_DRAWABLE, "layer", "Layer, mask or channel", None),
         (PF_OPTION, "console", "Console:", 0, ["All","PC Only"]),
-        (PF_OPTION, "game", "Game:", 1, ["XML1","XML2"])
+        (PF_TOGGLE, "xml1Choice", "Export a CSP for XML1?", 0),
+        (PF_TOGGLE, "xml2Choice", "Export a CSP for XML2?", 1)
     ],
     [],
     exportCSP,

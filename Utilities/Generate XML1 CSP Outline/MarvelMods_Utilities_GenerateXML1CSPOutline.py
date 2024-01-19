@@ -11,6 +11,7 @@
 #
 #   History:
 #   v1.0: 10Jan2024: First published version.
+#   v1.1: 19Jan2024: Adjust parameters
 
 #   This program is free software; you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License as published by
@@ -38,9 +39,7 @@ from gimpfu import*
 # FUNCTION #
 # ######## #
 # Define the operation
-def generateXML1CSPOutline(image, layer):
-    # Get the width of the image (only 1 dimension needed because it's square)
-    currentWidth = image.width
+def generateXML1CSPOutline(image, layer, currentWidth):
     # Determine values based on size
     blurRadius = currentWidth / 256
     growRadius = currentWidth / 64
@@ -71,7 +70,8 @@ register(
     "*",
     [
         (PF_IMAGE, "image", "Input image", None),
-        (PF_DRAWABLE, "layer", "Layer, mask or channel", None)
+        (PF_DRAWABLE, "layer", "Layer, mask or channel", None),
+        (PF_INT, "currentWidth", "The current width of the image", 1)
     ],
     [],
     generateXML1CSPOutline,
