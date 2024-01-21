@@ -13,6 +13,7 @@
 #   v1.0: 01Feb2023: First published version.
 #   v1.1: 15Apr2023: Rewrote to accommodate for more portrait types and use the duplication function
 #   v2.0: 15Jan2024: Full rewrite. Added more portrait types, changed basic operations to common procedures.
+#   v2.1: 21Jan2024: Add support for Alchemy 5
 
 #   This program is free software; you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License as published by
@@ -94,7 +95,7 @@ def errorCheck(image, layer):
     return canProceed, currentWidth
 
 # Define the standard exporting operation
-def exportStandardHUD(image, console, folderName, fileName, currentWidth, outlineColor, namePrefix):
+def exportStandardHUD(image, console, folderName, fileName, currentWidth, outlineColor, namePrefix, alchemyVersion):
     # Create a duplicate image for the export
     exportImage = pdb.gimp_image_duplicate(image)
     # Determine if an outline is needed
@@ -113,70 +114,126 @@ def exportStandardHUD(image, console, folderName, fileName, currentWidth, outlin
     # Filter remaining options based on the image size
     if currentWidth == 64:
         # Console resolution
-        # Filter remaining export options based on console selection
-        if console == 1:
-            # PC Only
-            # Export for PC
-            pdb.python_fu_marvelmods_basic_exportPNG(exportImage, exportLayer, folderName, "PC", outFileName, 2)
-            # Export for Steam
-            pdb.python_fu_marvelmods_basic_exportDDS(exportImage, exportLayer, folderName, "Steam", outFileName, 0, 1)
+        # Determine the alchemy version
+        if alchemyVersion == 0:
+            # Alchemy 2.5
+            # Filter remaining export options based on console selection
+            if console == 1:
+                # PC Only
+                # Export for PC
+                pdb.python_fu_marvelmods_basic_exportPNG(exportImage, exportLayer, folderName, "PC", outFileName, 2)
+                # Export for Steam
+                pdb.python_fu_marvelmods_basic_exportDDS(exportImage, exportLayer, folderName, "Steam", outFileName, 0, 1)
+            else:
+                # All consoles
+                # Export the cross-compatible version
+                pdb.python_fu_marvelmods_basic_exportPNG(exportImage, exportLayer, folderName, "Main", outFileName, 2)
+                # Export the Wii version
+                pdb.python_fu_marvelmods_basic_exportDDS(exportImage, exportLayer, folderName, "Wii", outFileName, 0, 0)
+                # Export the PS3 and Steam version
+                pdb.python_fu_marvelmods_basic_exportDDS(exportImage, exportLayer, folderName, "PS3 and Steam", outFileName, 0, 1)
         else:
-            # All consoles
-            # Export the cross-compatible version
-            pdb.python_fu_marvelmods_basic_exportPNG(exportImage, exportLayer, folderName, "Main", outFileName, 2)
-            # Export the Wii version
-            pdb.python_fu_marvelmods_basic_exportDDS(exportImage, exportLayer, folderName, "Wii", outFileName, 0, 0)
-            # Export the PS3 and Steam version
-            pdb.python_fu_marvelmods_basic_exportDDS(exportImage, exportLayer, folderName, "PS3 and Steam", outFileName, 0, 1)
+            # Alchemy 5
+            # Filter remaining export options based on console selection
+            if console == 1:
+                # PC Only
+                # Export for PC and Steam
+                pdb.python_fu_marvelmods_basic_exportTGA(exportImage, exportLayer, folderName, "PC and Steam", outFileName)
+            else:
+                # All consoles
+                # Export the cross-compatible version
+                pdb.python_fu_marvelmods_basic_exportTGA(exportImage, exportLayer, folderName, "All", outFileName)         
     elif currentWidth == 128:
         # Standard resolution
-        # Filter remaining export options based on console selection
-        if console == 1:
-            # PC only
-            # Export for PC
-            pdb.python_fu_marvelmods_basic_exportPNG(exportImage, exportLayer, folderName, "PC", outFileName, 2)
-            # Export for Steam
-            pdb.python_fu_marvelmods_basic_exportDDS(exportImage, exportLayer, folderName, "Steam", outFileName, 0, 1)
+        # Determine the alchemy version
+        if alchemyVersion == 0:
+            # Alchemy 2.5
+            # Filter remaining export options based on console selection
+            if console == 1:
+                # PC only
+                # Export for PC
+                pdb.python_fu_marvelmods_basic_exportPNG(exportImage, exportLayer, folderName, "PC", outFileName, 2)
+                # Export for Steam
+                pdb.python_fu_marvelmods_basic_exportDDS(exportImage, exportLayer, folderName, "Steam", outFileName, 0, 1)
+            else:
+                # All consoles
+                # Export the cross-compatible version
+                pdb.python_fu_marvelmods_basic_exportPNG(exportImage, exportLayer, folderName, "Main", outFileName, 2)
+                # Export the Wii version
+                pdb.python_fu_marvelmods_basic_exportDDS(exportImage, exportLayer, folderName, "Wii", outFileName, 0, 0)
+                # Export the PS3 and Steam version
+                pdb.python_fu_marvelmods_basic_exportDDS(exportImage, exportLayer, folderName, "PS3 and Steam", outFileName, 0, 1)
+                # Resize to half size
+                pdb.python_fu_marvelmods_scaling_scaleHalf(exportImage, exportLayer)
+                # Export the PSP version
+                pdb.python_fu_marvelmods_basic_exportPNG(exportImage, exportLayer, folderName, "PSP", outFileName, 2)
         else:
-            # All consoles
-            # Export the cross-compatible version
-            pdb.python_fu_marvelmods_basic_exportPNG(exportImage, exportLayer, folderName, "Main", outFileName, 2)
-            # Export the Wii version
-            pdb.python_fu_marvelmods_basic_exportDDS(exportImage, exportLayer, folderName, "Wii", outFileName, 0, 0)
-            # Export the PS3 and Steam version
-            pdb.python_fu_marvelmods_basic_exportDDS(exportImage, exportLayer, folderName, "PS3 and Steam", outFileName, 0, 1)
-            # Resize to half size
-            pdb.python_fu_marvelmods_scaling_scaleHalf(exportImage, exportLayer)
-            # Export the PSP version
-            pdb.python_fu_marvelmods_basic_exportPNG(exportImage, exportLayer, folderName, "PSP", outFileName, 2)
+            # Alchemy 5
+            # Filter remaining export options based on console selection
+            if console == 1:
+                # PC Only
+                # Export for PC and Steam
+                pdb.python_fu_marvelmods_basic_exportTGA(exportImage, exportLayer, folderName, "PC and Steam", outFileName)
+            else:
+                # All consoles
+                # Export the cross-compatible version
+                pdb.python_fu_marvelmods_basic_exportTGA(exportImage, exportLayer, folderName, "Main", outFileName)   
+                # Resize to half size
+                pdb.python_fu_marvelmods_scaling_scaleHalf(exportImage, exportLayer)
+                # Export the PSP version
+                pdb.python_fu_marvelmods_basic_exportTGA(exportImage, exportLayer, folderName, "PSP", outFileName)  
     else:
         # HD resolution and higher
-        # Export for XML2 PC (same option regardless of console choice)
-        pdb.python_fu_marvelmods_basic_exportDDS(exportImage, exportLayer, folderName, "XML2 PC", outFileName, 0, 0)
-        # Filter based on console selection
-        if console == 1:
-            # PC only
-            # Export for MUA1 PC and Steam
-            pdb.python_fu_marvelmods_basic_exportDDS(exportImage, exportLayer, folderName, "MUA1 PC and Steam", outFileName, 0, 1)
+        # Determine the alchemy version
+        if alchemyVersion == 0:
+            # Alchemy 2.5
+            # Export for XML2 PC (same option regardless of console choice)
+            pdb.python_fu_marvelmods_basic_exportDDS(exportImage, exportLayer, folderName, "XML2 PC", outFileName, 0, 0)
+            # Filter based on console selection
+            if console == 1:
+                # PC only
+                # Export for MUA1 PC and Steam
+                pdb.python_fu_marvelmods_basic_exportDDS(exportImage, exportLayer, folderName, "MUA1 PC and Steam", outFileName, 0, 1)
+            else:
+                # All consoles
+                # Export for MUA1 PC and Next-Gen consoles
+                pdb.python_fu_marvelmods_basic_exportDDS(exportImage, exportLayer, folderName, "MUA1 PC and Next-Gen", outFileName, 0, 1)
+                # Get the updated width
+                reducedWidth = currentWidth / 128
+                # Resize to 128x128
+                pdb.python_fu_marvelmods_scaling_scaleAny(exportImage, exportLayer, reducedWidth)
+                # Export the Wii and Xbox version
+                pdb.python_fu_marvelmods_basic_exportDDS(exportImage, exportLayer, folderName, "Wii and Xbox", outFileName, 0, 0)
+                # Export the PS2 and GameCube version
+                pdb.python_fu_marvelmods_basic_exportPNG(exportImage, exportLayer, folderName, "PS2 and GC", outFileName, 2)
+                # Resize to half size
+                pdb.python_fu_marvelmods_scaling_scaleHalf(exportImage, exportLayer)
+                # Export the PSP version
+                pdb.python_fu_marvelmods_basic_exportPNG(exportImage, exportLayer, folderName, "PSP", outFileName, 2)
         else:
-            # All consoles
-            # Export for MUA1 PC and Next-Gen consoles
-            pdb.python_fu_marvelmods_basic_exportDDS(exportImage, exportLayer, folderName, "MUA1 PC and Next-Gen", outFileName, 0, 1)
-            # Get the updated width
-            reducedWidth = currentWidth / 128
-            # Resize to 128x128
-            pdb.python_fu_marvelmods_scaling_scaleAny(exportImage, exportLayer, reducedWidth)
-            # Export the Wii and Xbox version
-            pdb.python_fu_marvelmods_basic_exportDDS(exportImage, exportLayer, folderName, "Wii and Xbox", outFileName, 0, 0)
-            # Export the PS2 and GameCube version
-            pdb.python_fu_marvelmods_basic_exportPNG(exportImage, exportLayer, folderName, "PS2 and GC", outFileName, 2)
-            # Resize to half size
-            pdb.python_fu_marvelmods_scaling_scaleHalf(exportImage, exportLayer)
-            # Export the PSP version
-            pdb.python_fu_marvelmods_basic_exportPNG(exportImage, exportLayer, folderName, "PSP", outFileName, 2)
+            # Alchemy 5
+            # Filter remaining export options based on console selection
+            if console == 1:
+                # PC Only
+                # Export for PC and Steam
+                pdb.python_fu_marvelmods_basic_exportTGA(exportImage, exportLayer, folderName, "PC and Steam", outFileName)
+            else:
+                # All consoles
+                # Export the cross-compatible version
+                pdb.python_fu_marvelmods_basic_exportTGA(exportImage, exportLayer, folderName, "Main", outFileName)  
+                # Get the updated width
+                reducedWidth = currentWidth / 128
+                # Resize to 128x128
+                pdb.python_fu_marvelmods_scaling_scaleAny(exportImage, exportLayer, reducedWidth) 
+                # Export the Wii version
+                pdb.python_fu_marvelmods_basic_exportTGA(exportImage, exportLayer, folderName, "Wii", outFileName)  
+                # Resize to half size
+                pdb.python_fu_marvelmods_scaling_scaleHalf(exportImage, exportLayer)
+                # Export the PSP version
+                pdb.python_fu_marvelmods_basic_exportTGA(exportImage, exportLayer, folderName, "PSP", outFileName)  
 
 # Define the next-gen exporting operation
-def exportNGHUD(image, console, folderName, fileName, currentWidth):
+def exportNGHUD(image, console, folderName, fileName, currentWidth, alchemyVersion):
     # Create a duplicate image for the export
     exportImage = pdb.gimp_image_duplicate(image)
     # List the layers that need to be removed
@@ -192,54 +249,110 @@ def exportNGHUD(image, console, folderName, fileName, currentWidth):
     # Filter remaining options based on the image size
     if currentWidth == 64:
         # Console resolution
-        # Filter remaining export options based on console selection
-        if console == 1:
-            # PC Only
-            # Export for PC
-            pdb.python_fu_marvelmods_basic_exportPNG(exportImage, exportLayer, folderName, "PC and Steam", outFileName, 0)
+        # Determine the alchemy version
+        if alchemyVersion == 0:
+            # Alchemy 2.5
+            # Filter remaining export options based on console selection
+            if console == 1:
+                # PC Only
+                # Export for PC
+                pdb.python_fu_marvelmods_basic_exportPNG(exportImage, exportLayer, folderName, "PC and Steam", outFileName, 0)
+            else:
+                # All consoles
+                # Export the cross-compatible version
+                pdb.python_fu_marvelmods_basic_exportPNG(exportImage, exportLayer, folderName, "All", outFileName, 0)
         else:
-            # All consoles
-            # Export the cross-compatible version
-            pdb.python_fu_marvelmods_basic_exportPNG(exportImage, exportLayer, folderName, "All", outFileName, 0)
+            # Alchemy 5
+            # Filter remaining export options based on console selection
+            if console == 1:
+                # PC Only
+                # Export for PC and Steam
+                pdb.python_fu_marvelmods_basic_exportTGA(exportImage, exportLayer, folderName, "PC and Steam", outFileName)
+            else:
+                # All consoles
+                # Export the cross-compatible version
+                pdb.python_fu_marvelmods_basic_exportTGA(exportImage, exportLayer, folderName, "All", outFileName)
     elif currentWidth == 128:
         # Standard resolution
-        # Filter remaining export options based on console selection
-        if console == 1:
-            # PC only
-            # Export for PC
-            pdb.python_fu_marvelmods_basic_exportPNG(exportImage, exportLayer, folderName, "PC and Steam", outFileName, 0)
+        # Determine the alchemy version
+        if alchemyVersion == 0:
+            # Alchemy 2.5
+            # Filter remaining export options based on console selection
+            if console == 1:
+                # PC only
+                # Export for PC
+                pdb.python_fu_marvelmods_basic_exportPNG(exportImage, exportLayer, folderName, "PC and Steam", outFileName, 0)
+            else:
+                # All consoles
+                # Export the cross-compatible version
+                pdb.python_fu_marvelmods_basic_exportPNG(exportImage, exportLayer, folderName, "All", outFileName, 0)
+                # Resize to half size
+                pdb.python_fu_marvelmods_scaling_scaleHalf(exportImage, exportLayer)
+                # Export the PSP version
+                pdb.python_fu_marvelmods_basic_exportPNG(exportImage, exportLayer, folderName, "PSP", outFileName, 0)
         else:
-            # All consoles
-            # Export the cross-compatible version
-            pdb.python_fu_marvelmods_basic_exportPNG(exportImage, exportLayer, folderName, "All", outFileName, 0)
-            # Resize to half size
-            pdb.python_fu_marvelmods_scaling_scaleHalf(exportImage, exportLayer)
-            # Export the PSP version
-            pdb.python_fu_marvelmods_basic_exportPNG(exportImage, exportLayer, folderName, "PSP", outFileName, 0)
+            # Alchemy 5
+            # Filter remaining export options based on console selection
+            if console == 1:
+                # PC Only
+                # Export for PC and Steam
+                pdb.python_fu_marvelmods_basic_exportTGA(exportImage, exportLayer, folderName, "PC and Steam", outFileName)
+            else:
+                # All consoles
+                # Export the cross-compatible version
+                pdb.python_fu_marvelmods_basic_exportTGA(exportImage, exportLayer, folderName, "Main", outFileName)   
+                # Resize to half size
+                pdb.python_fu_marvelmods_scaling_scaleHalf(exportImage, exportLayer)
+                # Export the PSP version
+                pdb.python_fu_marvelmods_basic_exportTGA(exportImage, exportLayer, folderName, "PSP", outFileName)  
     else:
         # HD resolution and higher
-        # Filter based on console selection
-        if console == 1:
-            # PC only
-            # Export for PC and Steam
-            pdb.python_fu_marvelmods_basic_exportPNG(exportImage, exportLayer, folderName, "PC and Steam", outFileName, 0)
+        # Determine the alchemy version
+        if alchemyVersion == 0:
+            # Alchemy 2.5
+            # Filter based on console selection
+            if console == 1:
+                # PC only
+                # Export for PC and Steam
+                pdb.python_fu_marvelmods_basic_exportPNG(exportImage, exportLayer, folderName, "PC and Steam", outFileName, 0)
+            else:
+                # All consoles
+                # Export for PC and Next-Gen consoles
+                pdb.python_fu_marvelmods_basic_exportPNG(exportImage, exportLayer, folderName, "PC and Next-Gen", outFileName, 0)
+                # Get the updated width
+                reducedWidth = currentWidth / 128
+                # Resize to 128x128
+                pdb.python_fu_marvelmods_scaling_scaleAny(exportImage, exportLayer, reducedWidth)
+                # Export the Wii and Xbox version
+                pdb.python_fu_marvelmods_basic_exportPNG(exportImage, exportLayer, folderName, "Last-Gen", outFileName, 0)
+                # Resize to half size
+                pdb.python_fu_marvelmods_scaling_scaleHalf(exportImage, exportLayer)
+                # Export the PSP version
+                pdb.python_fu_marvelmods_basic_exportPNG(exportImage, exportLayer, folderName, "PSP", outFileName, 0)
         else:
-            # All consoles
-            # Export for PC and Next-Gen consoles
-            pdb.python_fu_marvelmods_basic_exportPNG(exportImage, exportLayer, folderName, "PC and Next-Gen", outFileName, 0)
-            # Get the updated width
-            reducedWidth = currentWidth / 128
-            # Resize to 128x128
-            pdb.python_fu_marvelmods_scaling_scaleAny(exportImage, exportLayer, reducedWidth)
-            # Export the Wii and Xbox version
-            pdb.python_fu_marvelmods_basic_exportPNG(exportImage, exportLayer, folderName, "Last-Gen", outFileName, 0)
-            # Resize to half size
-            pdb.python_fu_marvelmods_scaling_scaleHalf(exportImage, exportLayer)
-            # Export the PSP version
-            pdb.python_fu_marvelmods_basic_exportPNG(exportImage, exportLayer, folderName, "PSP", outFileName, 0)
+            # Alchemy 5
+            # Filter remaining export options based on console selection
+            if console == 1:
+                # PC Only
+                # Export for PC and Steam
+                pdb.python_fu_marvelmods_basic_exportTGA(exportImage, exportLayer, folderName, "PC and Steam", outFileName)
+            else:
+                # All consoles
+                # Export the cross-compatible version
+                pdb.python_fu_marvelmods_basic_exportTGA(exportImage, exportLayer, folderName, "Main", outFileName)  
+                # Get the updated width
+                reducedWidth = currentWidth / 128
+                # Resize to 128x128
+                pdb.python_fu_marvelmods_scaling_scaleAny(exportImage, exportLayer, reducedWidth) 
+                # Export the Wii version
+                pdb.python_fu_marvelmods_basic_exportTGA(exportImage, exportLayer, folderName, "Wii", outFileName)  
+                # Resize to half size
+                pdb.python_fu_marvelmods_scaling_scaleHalf(exportImage, exportLayer)
+                # Export the PSP version
+                pdb.python_fu_marvelmods_basic_exportTGA(exportImage, exportLayer, folderName, "PSP", outFileName)  
 
 # Define the main operation
-def exportHUD(image, layer, console, plainChoice, nextGenChoice, heroOutlineChoice, redVillainOutlineChoice, greenVillainOutlineChoice):
+def exportHUD(image, layer, console, plainChoice, nextGenChoice, heroOutlineChoice, redVillainOutlineChoice, greenVillainOutlineChoice, alchemyVersion):
     # Save the file and get its path and name
     (folderName, fileName) = pdb.python_fu_marvelmods_basic_get_path_save(image, layer)
     # Check for errors
@@ -251,27 +364,27 @@ def exportHUD(image, layer, console, plainChoice, nextGenChoice, heroOutlineChoi
         if plainChoice == 1:
             # A plain portrait is needed
             # Export a plain portrait
-            exportStandardHUD(image, console, folderName, fileName, currentWidth, "None", "")
+            exportStandardHUD(image, console, folderName, fileName, currentWidth, "None", "", alchemyVersion)
         # Determine if a portrait with a hero outline needs to be exported
         if heroOutlineChoice == 1:
             # A portrait with a hero outline is needed
             # Export a portrait with a hero outline
-            exportStandardHUD(image, console, folderName, fileName, currentWidth, 0, "b_")
+            exportStandardHUD(image, console, folderName, fileName, currentWidth, 0, "b_", alchemyVersion)
         # Determine if a portrait with a red villain outline needs to be exported
         if redVillainOutlineChoice == 1:
             # A portrait with a red villain outline is needed
             # Export a portrait with a hero outline
-            exportStandardHUD(image, console, folderName, fileName, currentWidth, 1, "r_")
+            exportStandardHUD(image, console, folderName, fileName, currentWidth, 1, "r_", alchemyVersion)
         # Determine if a portrait with a green villain outline needs to be exported
         if greenVillainOutlineChoice == 1:
             # A portrait with a green villain outline is needed
             # Export a portrait with a green outline
-            exportStandardHUD(image, console, folderName, fileName, currentWidth, 2, "g_")
+            exportStandardHUD(image, console, folderName, fileName, currentWidth, 2, "g_", alchemyVersion)
         # Determine if a next-gen-style portrait needs to be exported
         if nextGenChoice == 1:
             # A next-gen-style portrait is needed
             # Export a next-gen-style portrait
-            exportNGHUD(image, console, folderName, fileName, currentWidth)
+            exportNGHUD(image, console, folderName, fileName, currentWidth, alchemyVersion)
     else:
         # Errors, cannot proceed
         # Display an error message
@@ -299,7 +412,8 @@ register(
         (PF_TOGGLE, "nextGenChoice", "Export an MUA1 next-gen\nstyle portrait?", 1),
         (PF_TOGGLE, "heroOutlineChoice", "Export a portrait with a\nhero outline?", 1),
         (PF_TOGGLE, "redVillainOutlineChoice", "Export a portrait with a\nred villain outline?", 0),
-        (PF_TOGGLE, "greenVillainOutlineChoice", "Export a portrait with a\ngreen villain outline?", 0)
+        (PF_TOGGLE, "greenVillainOutlineChoice", "Export a portrait with a\ngreen villain outline?", 0),
+        (PF_OPTION, "alchemyVersion", "Alchemy Version:", 0, ["Alchemy 2.5","Alchemy 5"])
     ],
     [],
     exportHUD,
