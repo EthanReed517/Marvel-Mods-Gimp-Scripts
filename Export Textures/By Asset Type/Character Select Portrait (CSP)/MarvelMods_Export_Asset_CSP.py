@@ -174,10 +174,8 @@ def exportXML2CSP(image, console, folderName, fileName, currentWidth):
             reducedWidth = currentWidth / 128
             # Resize to 128x128
             pdb.python_fu_marvelmods_scaling_scaleAny(exportImage, exportLayer, reducedWidth)
-            # Export the Xbox version
-            pdb.python_fu_marvelmods_basic_exportDDS(exportImage, exportLayer, folderName, "Xbox", outFileName, 0, 0)
-            # Export the PS2 and GameCube version
-            pdb.python_fu_marvelmods_basic_exportPNG(exportImage, exportLayer, folderName, "GC and PS2", outFileName, 2)
+            # Export the console version
+            pdb.python_fu_marvelmods_basic_exportPNG(exportImage, exportLayer, folderName, "Consoles", outFileName, 2)
 
 # Define the main operation
 def exportCSP(image, layer, console, xml1Choice, xml2Choice):

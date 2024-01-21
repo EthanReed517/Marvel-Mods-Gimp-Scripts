@@ -202,10 +202,10 @@ def exportStandardHUD(image, console, folderName, fileName, currentWidth, outlin
                 reducedWidth = currentWidth / 128
                 # Resize to 128x128
                 pdb.python_fu_marvelmods_scaling_scaleAny(exportImage, exportLayer, reducedWidth)
-                # Export the Wii and Xbox version
-                pdb.python_fu_marvelmods_basic_exportDDS(exportImage, exportLayer, folderName, "Wii and Xbox", outFileName, 0, 0)
-                # Export the PS2 and GameCube version
-                pdb.python_fu_marvelmods_basic_exportPNG(exportImage, exportLayer, folderName, "PS2 and GC", outFileName, 2)
+                # Export the Wii version
+                pdb.python_fu_marvelmods_basic_exportDDS(exportImage, exportLayer, folderName, "Wii", outFileName, 0, 0)
+                # Export the GameCube, PS2, and Xbox version
+                pdb.python_fu_marvelmods_basic_exportPNG(exportImage, exportLayer, folderName, "GC, PS2, and Xbox", outFileName, 2)
                 # Resize to half size
                 pdb.python_fu_marvelmods_scaling_scaleHalf(exportImage, exportLayer)
                 # Export the PSP version
