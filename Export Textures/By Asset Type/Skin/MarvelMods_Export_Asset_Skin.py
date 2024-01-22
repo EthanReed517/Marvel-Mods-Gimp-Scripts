@@ -325,6 +325,8 @@ def exportSkin(image, layer, console, skinType, texType, charSize, alchemyVersio
                     # Alchemy 5
                     # Export for PSP and MUA2 PS2
                     exportPNG(modImage, modLayer, dirname, "PSP and MUA2 PS2", fileName, transparency, 256)
+        # Announce completion
+        pdb.gimp_message("Export complete.")
     else:
         # One or both image dimensions are not powers of 2
         pdb.gimp_message("One or both image dimensions are not a power of 2. Alchemy only supports image dimensions that are powers of 2.\n\nPowers of 2: 1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048, 4096, and so on.")

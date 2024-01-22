@@ -385,6 +385,8 @@ def exportHUD(image, layer, console, plainChoice, nextGenChoice, heroOutlineChoi
             # A next-gen-style portrait is needed
             # Export a next-gen-style portrait
             exportNGHUD(image, console, folderName, fileName, currentWidth, alchemyVersion)
+        # Announce completion
+        pdb.gimp_message("Export complete.")
     else:
         # Errors, cannot proceed
         # Display an error message

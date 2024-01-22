@@ -201,6 +201,8 @@ def exportCSP(image, layer, console, xml1Choice, xml2Choice):
             # No portrait was exported
             # Display an error message
             pdb.gimp_message("Nothing was exported. Choose at least one export type.")
+        # Announce completion
+        pdb.gimp_message("Export complete.")
     else:
         # Errors, cannot proceed
         # Display an error message

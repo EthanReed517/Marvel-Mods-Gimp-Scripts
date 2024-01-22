@@ -18,7 +18,7 @@ This script will only work correctly if the image has been saved as a .xcf file.
 	- **Export a CSP for XML2?**: Select if you want to export a CSP for XML2.
 4. If the file is not set up properly, you will receive an error with explanations. Otherwise, it will move on.
 5. The .xcf will be saved and several additional operations will be run while the texture is being exported to the various folders in different formats. The operations will depend on the options selected. Textures that are the same will be grouped together. See below for a list of the texture types that will be exported for each console. 
-6. This script creates duplicate images to export, so you will not see any changes on your texture. Wait for the status bar to finish before proceeding with any further operations to your texture.
+6. This script creates duplicate images to export, so you will not see any changes on your texture. Wait for the status bar to finish before proceeding with any further operations to your texture. Once it's done running, a message will announce that the export is complete.
 
 ## Export Types
  - **XML2 PC**: The texture format will depend on the size of the image. If the texture is over 128x128, it will export as an RGB DXT1 .dds texture. If the texture is 128x128 or smaller, it will export as a PNG8 texture.

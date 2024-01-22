@@ -29,7 +29,7 @@ This script will only work correctly if the image has been saved as a .xcf file.
 2. In the toolbar, go to `Marvel Mods/Export Textures/Quick Exporters` and choose the `Export Multiple Portraits (CSP and HUD)` plugin.
 3. If the file is not set up properly, you will receive an error with explanations. Otherwise, it will move on.
 4. The .xcf will be saved and several additional operations will be run while the texture is being exported to the various folders in different formats. The operations will depend on the options selected. Textures that are the same will be grouped together. See below for a list of the texture types that will be exported for each console. 
-5. This script creates duplicate images to export, so you will not see any changes on your texture. Wait for the status bar to finish before proceeding with any further operations to your texture.
+5. This script creates duplicate images to export, so you will not see any changes on your texture. Wait for the status bar to finish before proceeding with any further operations to your texture. Once it's done running, a message will announce that the export is complete.
 
 ## Export Types
 For more information on export types, see the "Export Multiple Portraits (CSP and HUD)" plugin. 

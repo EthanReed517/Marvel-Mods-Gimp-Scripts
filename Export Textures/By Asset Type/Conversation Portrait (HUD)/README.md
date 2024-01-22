@@ -22,7 +22,7 @@ This script will only work correctly if the image has been saved as a .xcf file.
 	- **Alchemy Version**: Select the version of Alchemy being used. Select `Alchemy 2.5` if you're exporting portraits in 3ds Max 5 with the Alchemy 2.5 export plugin. Select `Alchemy 5` if you're creating portraits with the [Alchemy 5 Texture Replacement Method](https://marvelmods.com/forum/index.php/topic,11009.0.html).
 4. If the file is not set up properly, you will receive an error with explanations. Otherwise, it will move on.
 5. The .xcf will be saved and several additional operations will be run while the texture is being exported to the various folders in different formats. The operations will depend on the options selected. Textures that are the same will be grouped together. See below for a list of the texture types that will be exported for each console. 
-6. This script creates duplicate images to export, so you will not see any changes on your texture. Wait for the status bar to finish before proceeding with any further operations to your texture.
+6. This script creates duplicate images to export, so you will not see any changes on your texture. Wait for the status bar to finish before proceeding with any further operations to your texture. Once it's done running, a message will announce that the export is complete.
 
 ## Export Types
  - **Next-Gen Style**:

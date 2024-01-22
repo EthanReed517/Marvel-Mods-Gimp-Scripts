@@ -487,6 +487,8 @@ def exportCSPandHUD(image, layer, console, alchemyVersion, plainChoice, nextGenC
                 # XML2 portrait needed
                 # Export for XML2
                 exportXML2CSP(image, console, folderName, fileName, currentWidth)
+        # Announce completion
+        pdb.gimp_message("Export complete.")
     else:
         # Errors, cannot proceed
         # Display an error message

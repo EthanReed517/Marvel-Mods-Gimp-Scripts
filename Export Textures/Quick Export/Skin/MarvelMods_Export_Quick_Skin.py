@@ -65,7 +65,7 @@ register(
     "BaconWizard17",
     "BaconWizard17",
     "January 2024",
-    "Export Skin (Quick)",
+    "Export Skin",
     "*",
     [
         (PF_IMAGE, "image", "Input image", None),
