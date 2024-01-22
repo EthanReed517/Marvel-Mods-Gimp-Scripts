@@ -1,17 +1,20 @@
 # Marvel Mods GIMP Plugins
 by BaconWizard17
-## Quick Export - Export Conversation Portrait (HUD)
-This is a quick version of my `Export Conversation Portrait (HUD)` plugin that runs without a dialog and uses my preferred settings. This plugin exports a skin texture in several optimized formats. 
+## Quick Export - Export Multiple Portraits (CSP and HUD)
+This is a quick version of my `Export Multiple Portraits (CSP and HUD)` plugin that runs without a dialog and uses my preferred settings. This plugin exports a skin texture in several optimized formats. 
 
 The following values are selected:
  - **Console**: `All`
- - **Export a Plain Portrait?**: `No`
- - **Export an MUA1 next-gen style portrait?**: `Yes`
- - **Export a portrait with a hero outline?**: `Yes`
- - **Export a portrait with a red villain outline?**: `No`
- - **Export a portrait with a green villain outline?**: `No`
  - **Alchemy Version**: `Alchemy 2.5`
-For more information on these settings, see the "Export Conversation Portrait (HUD)" plugin. 
+ - **Export a Plain HUD?**: `No`
+ - **Export an MUA1 next-gen style HUD?**: `Yes`
+ - **Export a HUD with a hero outline?**: `Yes`
+ - **Export a HUD with a red villain outline?**: `No`
+ - **Export a HUD with a green villain outline?**: `No`
+ - **Export a CSP for XML1?**: `No`
+ - **Export a CSP for XML2?**: `Yes`
+4. If the file is not set up properly, you will receive an error with explanations. Otherwise, it will move on.
+For more information on these settings, see the "Export Multiple Portraits (CSP and HUD)" plugin. 
 
 This plugin contains all functionality of the full version, so the hard-coded settings can be changed by editing the `.py` file.
 
@@ -23,16 +26,16 @@ This script will only work correctly if the image has been saved as a .xcf file.
 
 ### Usage
 1. Start with an image open in GIMP that you would like to export. See the "Compatibility" section above for details on the image type.
-2. In the toolbar, go to `Marvel Mods/Export Textures/Quick Exporters` and choose the `Export Conversation Portrait (HUD)` plugin.
+2. In the toolbar, go to `Marvel Mods/Export Textures/Quick Exporters` and choose the `Export Multiple Portraits (CSP and HUD)` plugin.
 3. If the file is not set up properly, you will receive an error with explanations. Otherwise, it will move on.
 4. The .xcf will be saved and several additional operations will be run while the texture is being exported to the various folders in different formats. The operations will depend on the options selected. Textures that are the same will be grouped together. See below for a list of the texture types that will be exported for each console. 
 5. This script creates duplicate images to export, so you will not see any changes on your texture. Wait for the status bar to finish before proceeding with any further operations to your texture.
 
 ## Export Types
-For more information on export types, see the "Export Conversation Portrait (HUD)" plugin. 
+For more information on export types, see the "Export Multiple Portraits (CSP and HUD)" plugin. 
 
 ## Templates
-In order for the script to function correctly, I've provided three templates that can be used with it. For more information on these templates (and for the files themselves), see the "Export Conversation Portrait (HUD)" plugin. 
+In order for the script to function correctly, I've provided three templates that can be used with it. For more information on these templates (and for the files themselves), see the "Export Multiple Portraits (CSP and HUD)" plugin. 
 
 ## Credits
 - BaconWizard17: Script creation

@@ -4,7 +4,7 @@
 # ########### #
 # INFORMATION #
 # ########### #
-# GIMP plugin to export a character select portrait (CSP)
+# GIMP plugin to export a character select portrait (CSP) and conversation portrait (HUD)
 # This was designed with the intention to use it with modding processes for MarvelMods.com, though it can have other uses. 
 # For detailed instructions, please reference the README.md file included with this download.
 # (c) BaconWizard17 2023
