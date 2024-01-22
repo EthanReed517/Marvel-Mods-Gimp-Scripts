@@ -25,6 +25,7 @@ This script will only work correctly if the image has been saved as a .xcf file.
  - **GameCube**: The texture will export as a PNG8 texture with a maximum size of 128x128. 
  - **PS2**: The texture will export as a PNG8 texture with a maximum size of 128x128.
  - **Xbox**: The texture will export as a PNG8 texture with a maximum size of 128x128.
+ - XML2 PSP is skipped, as it does not have well-documented support at this time.
 
 ## Templates
 In order for the script to function correctly, I've provided three templates that can be used with it: `Template (64x64).xcf`, `Template (128x128).xcf`, and `Template (256x256).xcf`. The only difference between each is the texture size. Here's how to use the templates:
