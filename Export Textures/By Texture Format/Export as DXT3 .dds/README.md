@@ -1,6 +1,6 @@
 # Marvel Mods GIMP Plugins
 by BaconWizard17
-## Export to DXT3
+## Export to DXT3 .dds
 This plugin exports a texture to DXT3 format
 
 ### Compatibility
@@ -11,7 +11,7 @@ This script will only work correctly if the image has been saved as a .xcf file.
 
 ### Usage
 1. Start with an image open in GIMP that you would like to export. See the "Compatibility" section above for details on the image type.
-2. In the toolbar, go to `Marvel Mods/Export Textures/By Texture Format` and choose the `Export as DXT3` plugin.
+2. In the toolbar, go to `Marvel Mods/Export Textures/By Texture Format` and choose the `Export as DXT3 .dds` plugin.
 3. A dialog will appear with options. You can toggle the following options:
   - If the image will be saved with RGB colors (for use with Wii, Xbox, or XML2 PC, or for MUA1 PC if Alchemy 5 is being used)
   - If the image will be saved with BGR colors (for use with MUA1 PC if Alchemy 2.5 is being used)

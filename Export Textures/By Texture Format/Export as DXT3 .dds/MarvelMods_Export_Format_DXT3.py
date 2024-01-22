@@ -113,7 +113,7 @@ register(
     "BaconWizard17",
     "BaconWizard17",
     "January 2023",
-    "Export as DXT3",
+    "Export as DXT3 .dds",
     "*",
     [
         (PF_IMAGE, "image", "Input image", None),

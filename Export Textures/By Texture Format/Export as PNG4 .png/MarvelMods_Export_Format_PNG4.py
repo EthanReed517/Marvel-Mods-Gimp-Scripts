@@ -102,7 +102,7 @@ register(
     "BaconWizard17",
     "BaconWizard17",
     "January 2023",
-    "Export as PNG4",
+    "Export as PNG4 .png",
     "*",
     [
         (PF_IMAGE, "image", "Input image", None),
