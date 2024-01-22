@@ -30,8 +30,6 @@
 # ####### #
 # IMPORTS #
 # ####### #
-# To be able to check file paths
-import os
 # To be able to execute GIMP scripts
 from gimpfu import*
 
@@ -39,67 +37,74 @@ from gimpfu import*
 # ######### #
 # FUNCTIONS #
 # ######### #
-# Define the folder checking operation
-def folderCheck(dirname, newFolder):
-    # Append the paths
-    outFolder = os.path.join(dirname, newFolder)
-    # Check if the path exists
-    outFolderExists = os.path.exists(outFolder)
-    # If the path doesn't exist, create the new folder
-    if outFolderExists == False:
-        os.mkdir(outFolder)
-    # Return the new path
-    return outFolder
-    
-# Define the function for converting to DXT5
-def convertDXT5(image, layer, isBGR, flattenChoice):
-    # Clear the selection (This is done just in case there is a selection, but there shouldn't be)
-    pdb.gimp_selection_none(image)
-    # Flatten the image if chosen
-    if flattenChoice==1:
-        layer = pdb.gimp_image_flatten(image)
-    # RGB-BGR swap if needed
-    if isBGR=="yes":
-        pdb.plug_in_colors_channel_mixer(image, layer, FALSE, 0, 0, 1, 0, 1, 0, 1, 0, 0)
-    # Display the changes
-    pdb.gimp_displays_flush()
-    # Get the active layer
-    layer = pdb.gimp_image_get_active_layer(image)
-    # return the new layer
-    return layer
-    
-# Define the export operation
-def exportDDS(image, layer, flattenChoice, dirname, newFolder, isBGR, outFileName):
-    # Get the name of the export folder, check if it exists, and create it if it doesn't
-    outFolder = folderCheck(dirname, newFolder)
-    # Prep for export
-    layer = convertDXT5(image, layer, isBGR, flattenChoice)
-    # Get the full save file path
-    outFilePath = os.path.join(outFolder, outFileName)
-    # Export the image
-    pdb.file_dds_save(image, layer, outFilePath, outFilePath, 3, 0, 4, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0)
-    return layer
+# Define the function to check for image errors
+def errorCheck(image, layer):
+    # Get the current dimensions of the image
+    currentWidth = image.width
+    currentHeight = image.height
+    # Set the initial error state
+    canProceed = False
+    # Check if the dimensions are powers of 2
+    powerOf2 = pdb.python_fu_marvelmods_basic_p02check(image, layer)
+    # Determine next steps based on power of 2 check
+    if powerOf2 == True:
+        # Image dimensions are powers of 2, can proceed
+        canProceed = True
+    else:
+        # Image dimensions are not powers of 2
+        # Give error message
+        pdb.gimp_message("ERROR: One or both image dimensions are not a power of 2. Alchemy only supports image dimensions that are powers of 2.\n\nPowers of 2: 1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048, 4096, and so on.")
+    # Return whether or not the script can proceed, as well as the width and height
+    return canProceed
 
 # Define the main operation
-def exportDXT5(image, layer, exportRGB, exportBGR, flattenChoice):
-    # Get the file path of the original image
-    filePath = pdb.gimp_image_get_filename(image)
-    # Save the file in its original format before proceeding
-    pdb.gimp_file_save(image, layer, filePath, filePath)
-    # Get the folder and file name from the file path
-    dirname = os.path.dirname(filePath)
-    fileName = os.path.basename(filePath)
-    # Start an undo group so that the entire operation can be undone at once
-    pdb.gimp_image_undo_group_start(image)
-    # Get the new file name
-    outFileName = fileName[0:-3] + "dds"
-    # Export the files
-    if exportRGB==1:
-        layer = exportDDS(image, layer, flattenChoice, dirname, "DXT5 RGB", "no", outFileName)
-    if exportBGR==1:
-        layer = exportDDS(image, layer, flattenChoice, dirname, "DXT5 RGB-BGR Swapped", "yes", outFileName)
-    # End the undo group
-    pdb.gimp_image_undo_group_end(image)
+def exportDXT5(image, layer, alchemyVersion, exportRGB, exportBGR, flattenChoice):
+    # Save the file and get its path and name
+    (folderName, fileName) = pdb.python_fu_marvelmods_basic_get_path_save(image, layer)
+    # Check for errors
+    canProceed = errorCheck(image, layer)
+    # Determine if it's okay to proceed
+    if canProceed == True:
+        # No errors, can proceed
+        # Create a duplicate image for the export
+        exportImage = pdb.gimp_image_duplicate(image)
+        # Get the active layer of the new image
+        exportLayer = pdb.gimp_image_get_active_layer(exportImage)
+        # Determine if it's necessary to flatten the image
+        if flattenChoice == 1:
+            # Image needs to be flattened
+            # Flatten the image
+            exportLayer = pdb.gimp_image_flatten(exportImage)
+        else:
+            # Image is not flattened
+            # Check if Alchemy 2.5 is in use
+            if alchemyVersion == 0:
+                # Alchemy 2.5 is in use
+                # Warn the user
+                pdb.gimp_message("WARNING: The Alchemy 2.5 exporter does not support DXT5 textures with partial transparency very well. Only turn off image flattening if the texture has sections that are fully transparent, or if the texture is a normal map that will be applied after export.")
+        # Determine if an RGB version needs to be exported
+        if exportRGB == 1:
+            # RGB version needs to be exported
+            # Export the RGB version
+            pdb.python_fu_marvelmods_basic_exportDDS(exportImage, exportLayer, folderName, "DXT5 RGB", outFileName, 2, 0)
+        # Determine if a BGR version needs to be exported
+        if exportBGR == 1:
+            # BGR version needs to be exported
+            # Check the Alchemy version
+            if alchemyVersion == 0:
+                # Alchemy 2.5
+                # Export the BGR version
+                pdb.python_fu_marvelmods_basic_exportDDS(exportImage, exportLayer, folderName, "DXT5 BGR", outFileName, 2, 1)
+            else:
+                # Alchemy 5
+                # Display the warning.
+                pdb.gimp_message("WARNING: It is not necessary to RGB-BGR swap colors with Alchemy 5. No RGB-BGR-swapped texture was exported.")
+        # Announce completion
+        pdb.gimp_message("Export complete.")
+    else:
+        # Errors, cannot proceed
+        # Display an error message
+        pdb.gimp_message("The image was not exported.")
 
 
 # ######## #
@@ -112,12 +117,13 @@ register(
     "Exports a texture to DXT5 format as a .dds.",
     "BaconWizard17",
     "BaconWizard17",
-    "January 2023",
+    "January 2024",
     "Export as DXT5 .dds",
     "*",
     [
         (PF_IMAGE, "image", "Input image", None),
         (PF_DRAWABLE, "drawable", "Layer, mask or channel", None),
+        (PF_OPTION, "alchemyVersion", "Alchemy Version:", 0, ["Alchemy 2.5","Alchemy 5"]),
         (PF_TOGGLE, "exportRGB", "Export in RGB?", 1),
         (PF_TOGGLE, "exportBGR", "Export RGB-BGR Swapped?", 1),
         (PF_TOGGLE, "flattenChoice", "Flatten Image?", 1)

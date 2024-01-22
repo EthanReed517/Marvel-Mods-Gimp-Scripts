@@ -4,14 +4,13 @@
 # ########### #
 # INFORMATION #
 # ########### #
-# GIMP plugin to export an image in DXT3 format.
+# GIMP plugin to export an image in plain png format.
 # This was designed with the intention to use it with modding processes for MarvelMods.com, though it can have other uses. 
 # For detailed instructions, please reference the README.md file included with this download.
 # (c) BaconWizard17 2023
 #
 #   History:
-#   v1.0: 30Jan2023: First published version.
-#   v2.0: 22Jan2024: Full rewrite to include error checking, Alchemy 5, and basic procedures.
+#   v1.0: 22Jan2024: First published version.
 
 #   This program is free software; you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License as published by
@@ -59,7 +58,7 @@ def errorCheck(image, layer):
     return canProceed
 
 # Define the main operation
-def exportDXT3(image, layer, alchemyVersion, exportRGB, exportBGR):
+def exportPlainPNG(image, layer):
     # Save the file and get its path and name
     (folderName, fileName) = pdb.python_fu_marvelmods_basic_get_path_save(image, layer)
     # Check for errors
@@ -71,25 +70,8 @@ def exportDXT3(image, layer, alchemyVersion, exportRGB, exportBGR):
         exportImage = pdb.gimp_image_duplicate(image)
         # Get the active layer of the new image
         exportLayer = pdb.gimp_image_get_active_layer(exportImage)
-        # Flatten the image
-        exportLayer = pdb.gimp_image_flatten(exportImage)
-        # Determine if an RGB version needs to be exported
-        if exportRGB == 1:
-            # RGB version needs to be exported
-            # Export the RGB version
-            pdb.python_fu_marvelmods_basic_exportDDS(exportImage, exportLayer, folderName, "DXT3 RGB", outFileName, 1, 0)
-        # Determine if a BGR version needs to be exported
-        if exportBGR == 1:
-            # BGR version needs to be exported
-            # Check the Alchemy version
-            if alchemyVersion == 0:
-                # Alchemy 2.5
-                # Export the BGR version
-                pdb.python_fu_marvelmods_basic_exportDDS(exportImage, exportLayer, folderName, "DXT3 BGR", outFileName, 1, 1)
-            else:
-                # Alchemy 5
-                # Display the warning.
-                pdb.gimp_message("WARNING: It is not necessary to RGB-BGR swap colors with Alchemy 5. No RGB-BGR-swapped texture was exported.")
+        # Export the image
+        pdb.python_fu_marvelmods_basic_exportPNG(exportImage, exportLayer, folderName, "Plain PNG", outFileName, 0)
         # Announce completion
         pdb.gimp_message("Export complete.")
     else:
@@ -103,23 +85,20 @@ def exportDXT3(image, layer, alchemyVersion, exportRGB, exportBGR):
 # ######## #
 # Register the script in GIMP
 register(
-    "python_fu_marvelmods_export_format_dxt3",
-    "Exports a texture to DXT3 format as a .dds.",
-    "Exports a texture to DXT3 format as a .dds.",
+    "python_fu_marvelmods_export_format_plainpng",
+    "Exports a texture to plain png format.",
+    "Exports a texture to plain png format.",
     "BaconWizard17",
     "BaconWizard17",
     "January 2024",
-    "Export as DXT3 .dds",
+    "Export as plain .png",
     "*",
     [
         (PF_IMAGE, "image", "Input image", None),
-        (PF_DRAWABLE, "drawable", "Layer, mask or channel", None),
-        (PF_OPTION, "alchemyVersion", "Alchemy Version:", 0, ["Alchemy 2.5","Alchemy 5"]),
-        (PF_TOGGLE, "exportRGB", "Export in RGB?", 1),
-        (PF_TOGGLE, "exportBGR", "Export RGB-BGR Swapped?", 1)
+        (PF_DRAWABLE, "drawable", "Layer, mask or channel", None)
     ],
     [],
-    exportDXT3,
+    exportPlainPNG,
     menu="<Image>/Marvel Mods/Export Textures/By Texture Format"
 )
 

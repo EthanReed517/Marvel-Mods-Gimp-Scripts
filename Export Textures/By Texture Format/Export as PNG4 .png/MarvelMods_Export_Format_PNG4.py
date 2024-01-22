@@ -11,6 +11,7 @@
 #
 #   History:
 #   v1.0: 30Jan2023: First published version.
+#   v2.0: 22Jan2024: Full rewrite to include error checking and basic procedures.
 
 #   This program is free software; you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License as published by
@@ -30,8 +31,6 @@
 # ####### #
 # IMPORTS #
 # ####### #
-# To be able to check file paths
-import os
 # To be able to execute GIMP scripts
 from gimpfu import*
 
@@ -39,56 +38,49 @@ from gimpfu import*
 # ######### #
 # FUNCTIONS #
 # ######### #
-# Define the folder checking operation
-def folderCheck(dirname, newFolder):
-    # Append the paths
-    outFolder = os.path.join(dirname, newFolder)
-    # Check if the path exists
-    outFolderExists = os.path.exists(outFolder)
-    # If the path doesn't exist, create the new folder
-    if outFolderExists == False:
-        os.mkdir(outFolder)
-    # Return the new path
-    return outFolder
-    
-# Define the function for converting to PNG4
-def convertPNG4(image):
-    # Start an undo group so that the entire operation can be undone at once
-    pdb.gimp_image_undo_group_start(image)
-    # Clear the selection (This is done just in case there is a selection, but there shouldn't be)
-    pdb.gimp_selection_none(image)
-    # Flatten the Image
-    layer = pdb.gimp_image_flatten(image)
-    # Index the colors
-    pdb.gimp_image_convert_indexed(image, CONVERT_DITHER_NONE, CONVERT_PALETTE_GENERATE, 16, FALSE, FALSE, "")
-    # Display the changes
-    pdb.gimp_displays_flush()
-    # End the undo group
-    pdb.gimp_image_undo_group_end(image)
-    # Get the active layer
-    layer = pdb.gimp_image_get_active_layer(image)
-    # return the new layer
-    return layer
+# Define the function to check for image errors
+def errorCheck(image, layer):
+    # Get the current dimensions of the image
+    currentWidth = image.width
+    currentHeight = image.height
+    # Set the initial error state
+    canProceed = False
+    # Check if the dimensions are powers of 2
+    powerOf2 = pdb.python_fu_marvelmods_basic_p02check(image, layer)
+    # Determine next steps based on power of 2 check
+    if powerOf2 == True:
+        # Image dimensions are powers of 2, can proceed
+        canProceed = True
+    else:
+        # Image dimensions are not powers of 2
+        # Give error message
+        pdb.gimp_message("ERROR: One or both image dimensions are not a power of 2. Alchemy only supports image dimensions that are powers of 2.\n\nPowers of 2: 1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048, 4096, and so on.")
+    # Return whether or not the script can proceed, as well as the width and height
+    return canProceed
 
 # Define the main operation
 def exportPNG4(image, layer):
-    # Get the file path of the original image
-    filePath = pdb.gimp_image_get_filename(image)
-    # Save the file in its original format before proceeding
-    pdb.gimp_file_save(image, layer, filePath, filePath)
-    # Get the folder and file name from the file path
-    dirname = os.path.dirname(filePath)
-    fileName = os.path.basename(filePath)
-    # Get the name of the export folder, check if it exists, and create it if it doesn't
-    outFolder = folderCheck(dirname, "PNG4")
-    # Convert to PNG4
-    layer = convertPNG4(image)
-    # Get the new file name
-    outFileName = fileName[0:-3] + "png"
-    # Get the full save file path
-    outFilePath = os.path.join(outFolder, outFileName)
-    # Export the image
-    pdb.file_png_save(image, layer, outFilePath, outFilePath, 0, 9, 0, 0, 0, 0, 0)
+    # Save the file and get its path and name
+    (folderName, fileName) = pdb.python_fu_marvelmods_basic_get_path_save(image, layer)
+    # Check for errors
+    canProceed = errorCheck(image, layer)
+    # Determine if it's okay to proceed
+    if canProceed == True:
+        # No errors, can proceed
+        # Create a duplicate image for the export
+        exportImage = pdb.gimp_image_duplicate(image)
+        # Get the active layer of the new image
+        exportLayer = pdb.gimp_image_get_active_layer(exportImage)
+        # Flatten the image
+        exportLayer = pdb.gimp_image_flatten(exportImage)
+        # Export the image
+        pdb.python_fu_marvelmods_basic_exportPNG(exportImage, exportLayer, folderName, "PNG4", outFileName, 1)
+        # Announce completion
+        pdb.gimp_message("Export complete.")
+    else:
+        # Errors, cannot proceed
+        # Display an error message
+        pdb.gimp_message("The image was not exported.")
 
 
 # ######## #
@@ -101,7 +93,7 @@ register(
     "Exports a texture to PNG4 format.",
     "BaconWizard17",
     "BaconWizard17",
-    "January 2023",
+    "January 2024",
     "Export as PNG4 .png",
     "*",
     [
