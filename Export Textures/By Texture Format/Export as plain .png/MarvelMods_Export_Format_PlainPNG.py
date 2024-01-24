@@ -71,7 +71,7 @@ def exportPlainPNG(image, layer):
         # Get the active layer of the new image
         exportLayer = pdb.gimp_image_get_active_layer(exportImage)
         # Export the image
-        pdb.python_fu_marvelmods_basic_exportPNG(exportImage, exportLayer, folderName, "Plain PNG", outFileName, 0)
+        pdb.python_fu_marvelmods_basic_exportPNG(exportImage, exportLayer, folderName, "Plain PNG", fileName, 0)
         # Announce completion
         pdb.gimp_message("Export complete.")
     else:

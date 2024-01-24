@@ -77,7 +77,7 @@ def exportDXT1(image, layer, alchemyVersion, exportRGB, exportBGR):
         if exportRGB == 1:
             # RGB version needs to be exported
             # Export the RGB version
-            pdb.python_fu_marvelmods_basic_exportDDS(exportImage, exportLayer, folderName, "DXT1 RGB", outFileName, 0, 0)
+            pdb.python_fu_marvelmods_basic_exportDDS(exportImage, exportLayer, folderName, "DXT1 RGB", fileName, 0, 0)
         # Determine if a BGR version needs to be exported
         if exportBGR == 1:
             # BGR version needs to be exported
@@ -85,7 +85,7 @@ def exportDXT1(image, layer, alchemyVersion, exportRGB, exportBGR):
             if alchemyVersion == 0:
                 # Alchemy 2.5
                 # Export the BGR version
-                pdb.python_fu_marvelmods_basic_exportDDS(exportImage, exportLayer, folderName, "DXT1 BGR", outFileName, 0, 1)
+                pdb.python_fu_marvelmods_basic_exportDDS(exportImage, exportLayer, folderName, "DXT1 BGR", fileName, 0, 1)
             else:
                 # Alchemy 5
                 # Display the warning.

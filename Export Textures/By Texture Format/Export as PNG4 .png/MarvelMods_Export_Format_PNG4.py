@@ -74,7 +74,7 @@ def exportPNG4(image, layer):
         # Flatten the image
         exportLayer = pdb.gimp_image_flatten(exportImage)
         # Export the image
-        pdb.python_fu_marvelmods_basic_exportPNG(exportImage, exportLayer, folderName, "PNG4", outFileName, 1)
+        pdb.python_fu_marvelmods_basic_exportPNG(exportImage, exportLayer, folderName, "PNG4", fileName, 1)
         # Announce completion
         pdb.gimp_message("Export complete.")
     else:

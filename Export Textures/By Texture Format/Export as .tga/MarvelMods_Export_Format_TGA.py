@@ -76,7 +76,7 @@ def exportTGA(image, layer, flattenChoice):
             # Flatten the image
             exportLayer = pdb.gimp_image_flatten(exportImage)
         # Export the image
-        pdb.python_fu_marvelmods_basic_exportTGA(exportImage, exportLayer, folderName, "TGA", outFileName)
+        pdb.python_fu_marvelmods_basic_exportTGA(exportImage, exportLayer, folderName, "TGA", fileName)
         # Announce completion
         pdb.gimp_message("Export complete.")
     else:
