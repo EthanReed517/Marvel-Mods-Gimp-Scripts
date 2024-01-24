@@ -29,7 +29,7 @@ This script will only work correctly if the image has been saved as a .xcf file.
 	  - `Alchemy 2.5`: Choose if your version of 3ds Max has the Alchemy 2.5 exporter. The Alchemy 2.5 exporter is included on the virtual machine version of 3ds Max 5.
 	  - `Alchemy 5`: Choose if your version of 3ds Max has the Alchemy 5 exporter. The Alchemy 5 exporter is most commonly used with 3ds Max 10 and 3ds Max 12.
     - **Transparency**:
-	  - `Yes`: Choose if your texture needs to have partial or full transparency. This will export in a format that supports transparency (DXT5 compression for dds textures, no compression for png textures).
+	  - `Yes`: Choose if your texture needs to have partial or full transparency. This will export in a format that supports transparency. For Alchemy 2.5, this will always be uncompressed/plain png. For Alchemy 5, this will be DXT5 for dds textures and uncompressed/plain png for png textures.
 	  - `No`: Choose if your texture should not have any transparency. This will export in a format that does not support transparency (DXT1 compression for dds textures, PNG8 compression for png textures).
 	- **PSP Texture Compression**:
 	  - `PNG4`: Choose if you want to export PSP textures with PNG4 compression. PNG4 compression reduces the image to 16 colors. This results in a smaller texture size but worse texture quality. This is the standard format used by the PSP versions of XML2, MUA1, and MUA2.
@@ -45,21 +45,21 @@ This script will only work correctly if the image has been saved as a .xcf file.
    - Textures over 256x256 will be exported as dds files, and 256x256 or less will export as png files. This threshold can be modified by other settings.
    - **Texture Type**: 
      - `Primary`: This option will not change the texture. 
-     - `Secondary`: This option will change the minimum size of a dds texture to 256x256.
+     - `Secondary`: This option will change the dds/png cutoff point to 128x128.
    - **Alchemy Version**: 
      - `Alchemy 2.5`: This option will export for XML2 PC and MUA1 PC. Any dds textures for MUA1 PC will be RGB-BGR swapped.
      - `Alchemy 5`: This option will export for MUA1 PC only.
    - **Transparency**: 
-     - `Yes`: This option will export dds textures with DXT5 compression and png textures without compression. 
+     - `Yes`: For Alchemy 2.5, this option will export all textures as uncompressed png files. For Alchemy 5, this option will export dds textures with DXT5 compression and png textures without compression. 
      - `No`: This option will export dds textures with DXT1 compression and png textures with PNG8 compression.
    - **Console**, **Character Size**, **Skin Type**, and **PSP Texture Compression** have no impact on PC textures.
  - **Steam**:
-   - Textures will be exported as dds files.
+   - Textures will be exported as dds files unless modified by other settings.
    - **Alchemy Version**: 
      - `Alchemy 2.5`: This option will RGB-BGR swap Steam textures.
      - `Alchemy 5`: This option will not RGB-BGR swap Steam textures.
    - **Transparency**: 
-     - `Yes`: This option will export dds textures with DXT5 compression. 
+     - `Yes`: For Alchemy 2.5, this option will export all textures as uncompressed png files. For Alchemy 5, this option will export dds textures with DXT5 compression. 
      - `No`: This option will export dds textures with DXT1 compression.
    - **Console**, **Character Size**, **Skin Type**, **Texture Type**, and **PSP Texture Compression** have no impact on Steam textures.
  - **GameCube**: 
@@ -92,7 +92,7 @@ This script will only work correctly if the image has been saved as a .xcf file.
      - `PC Only`: This option will not export PS2 Textures.
    - **Character Size**: 
      - `Standard`: This option will limit the maximum texture size for PS2 to 256x256. 
-     - `Large`: This option will not change the texture. 
+     - `Large`: This option will not change the texture size. 
      - **Skin Type** and **Texture Type** can reduce the size further.
    - **Skin Type**: 
      - `Primary`: This option will not change the texture. 
@@ -103,17 +103,23 @@ This script will only work correctly if the image has been saved as a .xcf file.
    - **Transparency**: 
      - `Yes`: This option will export png textures without compression. 
      - `No`: This option will export png textures with PNG8 compression.
-   - **Alchemy Version** and **PSP Texture Compression** have no impact on PS2 textures.
+   - **Alchemy Version**:
+     - `Alchemy 2.5`: This option will export PS2 textures for all games.
+	 - `Alchemy 5`: This option will only export MUA2 PS2 textures.
+   - **PSP Texture Compression** has no impact on PS2 textures.
  - **PS3**:
-   - Textures will be exported as dds files.
+   - Textures will be exported as dds files unless modified by other settings.
    - PS3 textures will presumably work on the PS4 re-release, but this hasn't been confirmed.
+   - **Console**:
+     - `All`: This option will export PS3 textures.
+     - `PC Only`: This option will not export PS3 Textures.
    - **Alchemy Version**: 
      - `Alchemy 2.5`: This option will RGB-BGR swap PS3 textures.
      - `Alchemy 5`: This option will not RGB-BGR swap PS3 textures.
    - **Transparency**: 
-     - `Yes`: This option will export dds textures with DXT5 compression. 
+     - `Yes`: For Alchemy 2.5, this option will export all textures as uncompressed png files. For Alchemy 5, this option will export dds textures with DXT5 compression. 
      - `No`: This option will export dds textures with DXT1 compression.
-   - **Console**, **Character Size**, **Skin Type**, **Texture Type**, and **PSP Texture Compression** have no impact on Steam textures.
+   - **Character Size**, **Skin Type**, **Texture Type**, and **PSP Texture Compression** have no impact on Steam textures.
  - **PSP**: 
    - Textures will be exported as png files.
    - **Note**: XML2 PSP currently does not support custom skins.
@@ -121,14 +127,14 @@ This script will only work correctly if the image has been saved as a .xcf file.
      - `All`: This option will export PSP textures.
      - `PC Only`: This option will not export PSP Textures.
    - **Character Size**: 
-     - `Standard`: This option will limit the maximum texture size for PSP to 128x128. 
-     - `Large`: This option will not change the texture. 
+     - `Standard`: This option will limit the maximum texture size for GameCube to 128x128. 
+     - `Large`: This option will reduce the texture size in half. 
      - **Skin Type** and **Texture Type** can reduce the size further.
    - **Skin Type**: 
      - `Primary`: This option will not change the texture. 
      - `Secondary`: This option will reduce the texture size in half.
    - **Texture Type**: 
-     - `Primary`: This option will not reduce the texture size.
+     - `Primary`: This option will not change the texture. 
      - `Secondary`: This option will reduce the texture size in half.
    - **Transparency**: 
      - `Yes`: This option will export png textures without compression. 
@@ -139,12 +145,12 @@ This script will only work correctly if the image has been saved as a .xcf file.
      - This option is ignored if `Yes` is chosen for **Transparency**
    - **Alchemy Version** has no impact on PSP textures.
  - **Wii**:
-   - Textures will be exported as dds files.
+   - Textures will be exported as dds files unless modified by other settings.
    - **Console**:
      - `All`: This option will export Wii textures.
      - `PC Only`: This option will not export Wii Textures.
    - **Transparency**: 
-     - `Yes`: This option will export dds textures with DXT5 compression. 
+     - `Yes`: This option will export textures as uncompressed png files.
      - `No`: This option will export dds textures with DXT1 compression.
    - **Character Size**, **Skin Type**, **Texture Type**, **Alchemy Version**, and **PSP Texture Compression** have no impact on Wii textures.
  - **Xbox**:
@@ -154,12 +160,12 @@ This script will only work correctly if the image has been saved as a .xcf file.
      - `PC Only`: This option will not export Xbox Textures.
    - **Texture Type**: 
      - `Primary`: This option will not change the texture. 
-     - `Secondary`: This option will change the minimum size of a dds texture to 256x256.
+     - `Secondary`: This option will change the dds/png cutoff point to 128x128.
    - **Alchemy Version**: 
      - `Alchemy 2.5`: Xbox textures will be exported.
      - `Alchemy 5`: Xbox textures will not be exported.
    - **Transparency**: 
-     - `Yes`: This option will export dds textures with DXT5 compression and png textures without compression. 
+     - `Yes`: For Alchemy 2.5, this option will export all textures as uncompressed png files. For Alchemy 5, this option will export dds textures with DXT5 compression. 
      - `No`: This option will export dds textures with DXT1 compression and png textures with PNG8 compression.
    - **Character Size**, **Skin Type**, and **PSP Texture Compression** have no impact on Xbox textures.
  - **Xbox 360**:
@@ -167,12 +173,12 @@ This script will only work correctly if the image has been saved as a .xcf file.
    - Xbox 360 textures will presumably work on the Xbox One re-release, but this hasn't been confirmed.
    - **Texture Type**: 
      - `Primary`: This option will not change the texture. 
-     - `Secondary`: This option will change the minimum size of a dds texture to 256x256.
+     - `Secondary`: This option will change the dds/png cutoff point to 128x128.
    - **Alchemy Version**: 
-     - `Alchemy 2.5`: This option will RGB-BGR dds textures.
+     - `Alchemy 2.5`: This option will RGB-BGR swap dds textures.
      - `Alchemy 5`: This option will not change the texture.
    - **Transparency**: 
-     - `Yes`: This option will export dds textures with DXT5 compression and png textures without compression. 
+     - `Yes`: For Alchemy 2.5, this option will export all textures as uncompressed png files. For Alchemy 5, this option will export dds textures with DXT5 compression. 
      - `No`: This option will export dds textures with DXT1 compression and png textures with PNG8 compression.
    - **Console**, **Character Size**, **Skin Type**, and **PSP Texture Compression** have no impact on Xbox 360 textures.
 ## Credits

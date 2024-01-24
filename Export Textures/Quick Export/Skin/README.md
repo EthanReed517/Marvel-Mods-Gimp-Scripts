@@ -1,6 +1,6 @@
 # Marvel Mods GIMP Plugins
 by BaconWizard17
-## Export Skin (Quick)
+## Quick Export - Export Skin
 This is a quick version of my `Export Skin` plugin that runs without a dialog and uses my preferred settings. This plugin exports a skin texture in several optimized formats. 
 
 The following values are selected:
@@ -29,27 +29,7 @@ This script will only work correctly if the image has been saved as a .xcf file.
 5. This script creates duplicate images to export, so you will not see any changes on your texture. Wait for the status bar to finish before proceeding with any further operations to your texture. Once it's done running, a message will announce that the export is complete.
 
 ## Export Types
- - **PC**:
-   - Textures over 256x256 will be exported as dds files with DXT1 compression (RGB-BGR swapped for MUA1 PC), and 256x256 or less will export as png files with PNG8 compression.
- - **Steam**:
-   - Textures will be exported as RGB-BGR swapped dds files with DXT1 compression.
- - **GameCube**: 
-   - Textures will be exported as png files with PNG8 compression and a max size of 128x128.
- - **PS2**: 
-   - Textures will be exported as png files with PNG8 compression and a max size of 256x256 (128x128 for MUA2 PS2).
- - **PS3**:
-   - Textures will be exported as RGB-BGR swapped dds files with DXT1 compression.
-   - PS3 textures will presumably work on the PS4 re-release, but this hasn't been confirmed.
- - **PSP**: 
-   - Textures will be exported as png files with PNG8 compression and a max size of 128x128.
-   - **Note**: XML2 PSP currently does not support custom skins.
- - **Wii**:
-   - Textures will be exported as dds files with DXT1 compression.
- - **Xbox**:
-   - Textures over 256x256 will be exported as dds files with DXT1 compression, and 256x256 or less will export as png files with PNG8 compression.
- - **Xbox 360**:
-   - Textures over 256x256 will be exported as RGB-BGR swapped dds files with DXT1 compression, and 256x256 or less will export as png files with PNG8 compression.
-   - Xbox 360 textures will presumably work on the Xbox One re-release, but this hasn't been confirmed.
+See the "Export Skin" plugin for more information
 
 ## Credits
 - BaconWizard17: Script creation

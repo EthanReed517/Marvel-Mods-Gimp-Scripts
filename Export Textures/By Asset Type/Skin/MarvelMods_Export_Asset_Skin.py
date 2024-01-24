@@ -14,6 +14,7 @@
 #   v1.1: 30Aug2023: Add support for transparency, add support for next-gen MUA1 (Steam, PS3, and Xbox 360), and add support for MUA2 PS2. Improve efficiency
 #   v1.2: 06Sep2023: Now checks if image dimensions are a power of 2 and gives an error if not.
 #   v1.3: 10Jan2024: Removed some functions and replaced them with common/basic processes
+#   v2.0: 24Jan2024: Full rewrite. More use of basic procedures. Alchemy 2.5 transparency now uses plain png only. Better logic for different texture types.
 
 #   This program is free software; you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License as published by
@@ -42,6 +43,26 @@ from gimpfu import*
 # ######### #
 # FUNCTIONS #
 # ######### #
+# Define the function to check for image errors
+def errorCheck(image, layer):
+    # Get the current dimensions of the image
+    currentWidth = image.width
+    currentHeight = image.height
+    # Set the initial error state
+    canProceed = False
+    # Check if the dimensions are powers of 2
+    powerOf2 = pdb.python_fu_marvelmods_basic_p02check(image, layer)
+    # Determine next steps based on power of 2 check
+    if powerOf2 == True:
+        # Image dimensions are powers of 2, can proceed
+        canProceed = True
+    else:
+        # Image dimensions are not powers of 2
+        # Give error message
+        pdb.gimp_message("ERROR: One or both image dimensions are not a power of 2. Alchemy only supports image dimensions that are powers of 2.\n\nPowers of 2: 1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048, 4096, and so on.")
+    # Return whether or not the script can proceed, as well as the width and height
+    return canProceed, currentWidth, currentHeight
+
 # Define the size checking operation
 def sizeCheck(currentWidth, currentHeight, skinType, texType):
     # Determine how many primaries and secondaries
@@ -62,24 +83,6 @@ def sizeCheck(currentWidth, currentHeight, skinType, texType):
     else:
         oversized = False
     return oversized
-
-# Define the function for RGB-BGR swapping
-def RGB_BGR(image, layer):
-    # Perform the swap
-    pdb.plug_in_colors_channel_mixer(image, layer, FALSE, 0, 0, 1, 0, 1, 0, 1, 0, 0)
-    
-# Define the function for resizing to half size
-def resizeHalf(image, layer):
-    # Get the current dimensions of the image
-    currentWidth = image.width
-    currentHeight = image.height
-    # Get the new dimensions by dividing old dimensions by 2
-    newWidth = currentWidth/2
-    newHeight = currentHeight/2
-    # scale the image accordingly
-    pdb.gimp_image_scale(image, newWidth, newHeight)
-    # Resize the layer to the image size
-    pdb.gimp_layer_resize_to_image_size(layer)
     
 # Define the function for resizing to the max size for PNG8
 def resizeMax(image, layer, skinType, texType):
@@ -112,224 +115,400 @@ def resizeMax(image, layer, skinType, texType):
     pdb.gimp_image_scale(image, newWidth, newHeight)
     # Resize the layer to the image size
     pdb.gimp_layer_resize_to_image_size(layer)
-    
-# Define the function for exporting as a png
-def exportPNG(image, layer, dirname, newFolder, fileName, transparency, colors):
-    # Check if the export folder exists and create it if needed
-    outFolder = pdb.python_fu_marvelmods_basic_folderCheck(dirname, newFolder)
-    # Get the new file name
-    outFileName = fileName[0:-3] + "png"
-    # Get the full save file path
-    outFilePath = os.path.join(outFolder, outFileName)
-    # Create a duplicate image that can be exported
-    exportImage = pdb.gimp_image_duplicate(image)
-    # Get the active layer of the new image
-    exportLayer = pdb.gimp_image_get_active_layer(exportImage)
-    # Determine if the image should be transparent
-    if transparency == 1:
-        # Not transparent
-        # Flatten the Image
-        exportLayer = pdb.gimp_image_flatten(exportImage)
-        # Index the colors
-        exportLayer = pdb.python_fu_marvelmods_basic_indexcolors(exportImage, colors)
-    # Export the image
-    pdb.file_png_save(exportImage, exportLayer, outFilePath, outFilePath, 0, 9, 0, 0, 0, 0, 0)
-    
-# Define the function for exporting as a dds
-def exportDDS(image, layer, dirname, newFolder, fileName, transparency, BGR):
-    # Check if the export folder exists and create it if needed
-    outFolder = pdb.python_fu_marvelmods_basic_folderCheck(dirname, newFolder)
-    # Get the new file name
-    outFileName = fileName[0:-3] + "dds"
-    # Get the full save file path
-    outFilePath = os.path.join(outFolder, outFileName)
-    # Create a duplicate image that can be exported
-    exportImage = pdb.gimp_image_duplicate(image)
-    # Get the active layer of the new image
-    exportLayer = pdb.gimp_image_get_active_layer(exportImage)
-    # Determine if the image should be transparent
-    if transparency == 1:
-        # Not transparent
-        # Flatten the Image
-        exportLayer = pdb.gimp_image_flatten(exportImage)
-        # set the compression (DXT1)
-        compression = 1
-    else:
-        # transparent
-        # set the compression (DXT5)
-        compression = 3
-    # Determine if the image needs to be RGB-BGR swapped
-    if BGR == True:
-        # RGB-BGR needed
-        RGB_BGR(exportImage, exportLayer)
-    # Export the image
-    pdb.file_dds_save(exportImage, exportLayer, outFilePath, outFilePath, compression, 0, 4, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0)
 
 # Define the main operation
-def exportSkin(image, layer, console, skinType, texType, charSize, alchemyVersion, transparency, PSPFormat):
-    # Get the file path of the original image
-    filePath = pdb.gimp_image_get_filename(image)
-    # Save the file in its original format before proceeding
-    pdb.gimp_file_save(image, layer, filePath, filePath)
-    # Get the folder and file name from the file path
-    dirname = os.path.dirname(filePath)
-    fileName = os.path.basename(filePath)
-    # Get the current dimensions of the image
-    currentWidth = image.width
-    currentHeight = image.height
-    # Check if the dimensions are powers of 2
-    powerOf2 = pdb.python_fu_marvelmods_basic_p02check(image, layer)
-    if powerOf2 == True:
-        # Both dimensions are powers of 2
+def exportSkin(image, layer, console, skinType, texType, charSize, alchemyVersion, transparency, pspFormat):
+    # Save the file and get its path and name
+    (folderName, fileName) = pdb.python_fu_marvelmods_basic_get_path_save(image, layer)
+    # Check for errors
+    (canProceed, currentWidth, currentHeight) = errorCheck(image, layer)
+    # Determine if it's okay to proceed
+    if canProceed == True:
+        # No errors, can proceed
         # Clear the selection (This is done just in case there is a selection, but there shouldn't be)
         pdb.gimp_selection_none(image)
         # Determine if the image is oversized
         oversized = sizeCheck(currentWidth, currentHeight, skinType, texType)
         # Create a duplicate image that can be manipulated
-        modImage = pdb.gimp_image_duplicate(image)
+        exportImage = pdb.gimp_image_duplicate(image)
         # Get the active layer of the new image
-        modLayer = pdb.gimp_image_get_active_layer(modImage)
+        exportLayer = pdb.gimp_image_get_active_layer(exportImage)
         # Begin the export
-        # Determine the console
-        if console == 1:
-            # PC
-            # Determine if the image is oversized or transparent
-            if (oversized == True) or (transparency == 0):
-                # The image is oversized or transparent
-                # Determine the version of Alchemy
-                if alchemyVersion == 0:
-                    # Alchemy 2.5
-                    # Export for XML2 PC
-                    exportDDS(modImage, modLayer, dirname, "XML2 PC", fileName, transparency, False)
-                    # Export for MUA1 PC and Steam
-                    exportDDS(modImage, modLayer, dirname, "MUA1 PC and Steam", fileName, transparency, True)
+        # Determine if the image is oversized
+        if oversized == True:
+            # The image is oversized
+            # Determine the skin type
+            if skinType == 1:
+                # Secondary skin
+                # Secondary skins have a lower threshold where they are considered oversized. This is because the PS2 should not exceed 128x128 for a standard texture on a secondary skin, and PS2 textures are exported separately when oversized.
+                # However, the other consoles may not be oversized. The check needs to be run again but treating this as a primary skin to verify that.
+                oversized = sizeCheck(currentWidth, currentHeight, 0, texType)
+            # Determine if the image is still oversized for the main consoles
+            if oversized == True:
+                # The image is still oversized for the main consoles
+                # Determine the console
+                if console == 1:
+                    # PC Only
+                    # Determine if the image needs transparency
+                    if transparency == 0:
+                        # The image is transparent
+                        # Determine the Alchemy version
+                        if alchemyVersion == 0:
+                            # Alchemy 2.5
+                            # Export for PC and MUA1 Steam
+                            pdb.python_fu_marvelmods_basic_exportPNG(exportImage, exportLayer, folderName, "PC and MUA1 Steam", fileName, 0)
+                        else:
+                            # Alchemy 5
+                            # Export for MUA1 PC and Steam
+                            pdb.python_fu_marvelmods_basic_exportDDS(exportImage, exportLayer, folderName, "MUA1 PC and Steam", fileName, 2, 0)
+                    else:
+                        # The image is not transparent
+                        # Flatten the image
+                        exportLayer = pdb.gimp_image_flatten(exportImage)
+                        # Determine the Alchemy version
+                        if alchemyVersion == 0:
+                            # Alchemy 2.5
+                            # Export for XML2 PC
+                            pdb.python_fu_marvelmods_basic_exportDDS(exportImage, exportLayer, folderName, "XML2 PC", fileName, 0, 0)
+                            # Export for MUA1 PC and Steam
+                            pdb.python_fu_marvelmods_basic_exportDDS(exportImage, exportLayer, folderName, "MUA1 PC and Steam", fileName, 0, 1)
+                        else:
+                            # Alchemy 5
+                            # Export for MUA1 PC and Steam
+                            pdb.python_fu_marvelmods_basic_exportDDS(exportImage, exportLayer, folderName, "MUA1 PC and Steam", fileName, 0, 0)
                 else:
-                    # Alchemy 5
-                    # Export for MUA1 PC and Steam
-                    exportDDS(modImage, modLayer, dirname, "MUA1 PC and Steam", fileName, transparency, False)
-            else:
-                # The image is neither oversized nor transparent
-                # Export for PC (same folder name regardless of Alchemy version because it'll work for XML2 and MUA1 PC no matter what)
-                exportPNG(modImage, modLayer, dirname, "PC", fileName, transparency, 256)
-                # Determine the version of Alchemy
-                if alchemyVersion == 0:
-                    # Alchemy 2.5
-                    # Export for MUA1 Steam
-                    exportDDS(modImage, modLayer, dirname, "MUA1 Steam", fileName, transparency, True)
-                else:
-                    # Alchemy 5
-                    # Export for MUA1 Steam
-                    exportDDS(modImage, modLayer, dirname, "MUA1 Steam", fileName, transparency, False)
-        else:
-            # all consoles
-            # Determine if the image is oversized or transparent
-            if (oversized == True) or (transparency == 0):
-                # The image is oversized or transparent
-                # Determine the version of Alchemy
-                if alchemyVersion == 0:
-                    # Alchemy 2.5
-                    # The secondary skin property should not reduce the threshold for png vs dds on PC, Xbox, and 360.
-                    if skinType == 1:
-                        # secondary skin
-                        oversized2 = sizeCheck(currentWidth, currentHeight, 0, texType)
-                        # check if oversized under new conditions
-                        if oversized2 == True:
+                    # All consoles
+                    # Determine if the image needs transparency
+                    if transparency == 0:
+                        # The image is transparent
+                        # Determine the Alchemy version
+                        if alchemyVersion == 0:
+                            # Alchemy 2.5
+                            # Determine the character size
+                            if charSize == 0:
+                                # Standard size character
+                                # Export for many consoles
+                                pdb.python_fu_marvelmods_basic_exportPNG(exportImage, exportLayer, folderName, "PC, Wii, Xbox, MUA1 Steam, PS3, and 360", fileName, 0)
+                                # Reduce to the max size for PS2 per the parameters
+                                resizeMax(exportImage, exportLayer, skinType, texType)
+                                # Export for PS2
+                                pdb.python_fu_marvelmods_basic_exportPNG(exportImage, exportLayer, folderName, "PS2", fileName, 0)
+                            else:
+                                # Big character
+                                # Export for many consoles
+                                pdb.python_fu_marvelmods_basic_exportPNG(exportImage, exportLayer, folderName, "PC, PS2, Wii, Xbox, MUA1 Steam, PS3, and 360", fileName, 0)
+                            # Resize to half size
+                            pdb.python_fu_marvelmods_scaling_scaleHalf(exportImage, exportLayer)
+                            # Export for GameCube, PSP, and MUA2 PS2
+                            pdb.python_fu_marvelmods_basic_exportPNG(exportImage, exportLayer, folderName, "GameCube, PSP, and MUA2 PS2", fileName, 0)
+                        else:
+                            # Alchemy 5
+                            # Export for Wii
+                            pdb.python_fu_marvelmods_basic_exportPNG(exportImage, exportLayer, folderName, "Wii", fileName, 0)
+                            # Export for MUA1 PC, Steam, PS3, and 360
+                            pdb.python_fu_marvelmods_basic_exportDDS(exportImage, exportLayer, folderName, "MUA1 PC, Steam, PS3, and 360", fileName, 2, 0)
+                            # Determine the character size
+                            if charSize == 0:
+                                # Standard size character
+                                # Reduce to the max size for PS2 per the parameters
+                                resizeMax(exportImage, exportLayer, skinType, texType)
+                            # Resize to half size
+                            pdb.python_fu_marvelmods_scaling_scaleHalf(exportImage, exportLayer)
+                            # Export for PSP and MUA2 PS2
+                            pdb.python_fu_marvelmods_basic_exportPNG(exportImage, exportLayer, folderName, "PSP and MUA2 PS2", fileName, 0)
+                    else:
+                        # The image is not transparent
+                        # Flatten the image
+                        exportLayer = pdb.gimp_image_flatten(exportImage)
+                        # Determine the Alchemy version
+                        if alchemyVersion == 0:
+                            # Alchemy 2.5
                             # Export for Wii, Xbox, and XML2 PC
-                            exportDDS(modImage, modLayer, dirname, "Wii, Xbox, and XML2 PC", fileName, transparency, False)
-                            # Export for MUA1 PC, Steam, PS3, and 360
-                            exportDDS(modImage, modLayer, dirname, "MUA1 PC, Steam, PS3, and 360", fileName, transparency, True)
+                            pdb.python_fu_marvelmods_basic_exportDDS(exportImage, exportLayer, folderName, "Wii, Xbox, and XML2 PC", fileName, 0, 0)
+                            # Export for next-gen MUA1
+                            pdb.python_fu_marvelmods_basic_exportDDS(exportImage, exportLayer, folderName, "MUA1 PC, Steam, PS3, and 360", fileName, 0, 1)
+                            # Determine the character size
+                            if charSize == 0:
+                                # Standard size character
+                                # Reduce to the max size for PS2 per the parameters
+                                resizeMax(exportImage, exportLayer, skinType, texType)
+                            # Export for PS2
+                            pdb.python_fu_marvelmods_basic_exportPNG(exportImage, exportLayer, folderName, "PS2", fileName, 2)
+                            # Resize to half size
+                            pdb.python_fu_marvelmods_scaling_scaleHalf(exportImage, exportLayer)
+                            # Determine the PSP format
+                            if pspFormat == 0:
+                                # PNG4
+                                # Export for PSP
+                                pdb.python_fu_marvelmods_basic_exportPNG(exportImage, exportLayer, folderName, "PSP", fileName, 1)
+                                # Export for GameCube and MUA2 PS2
+                                pdb.python_fu_marvelmods_basic_exportPNG(exportImage, exportLayer, folderName, "GameCube and MUA2 PS2", fileName, 2)
+                            else:
+                                # PNG8
+                                # Export for GameCube, PSP, and MUA2 PS2
+                                pdb.python_fu_marvelmods_basic_exportPNG(exportImage, exportLayer, folderName, "GameCube, PSP, and MUA2 PS2", fileName, 2)
                         else:
-                            # export for PC, Xbox, and 360
-                            exportPNG(modImage, modLayer, dirname, "PC, Xbox, and MUA1 360", fileName, transparency, 256)
-                            # Export for Wii
-                            exportDDS(modImage, modLayer, dirname, "Wii", fileName, transparency, False)
-                            # Export for Steam and PS3
-                            exportDDS(modImage, modLayer, dirname, "MUA1 Steam and PS3", fileName, transparency, True)
-                    else:
-                        # Export for Wii, Xbox, and XML2 PC
-                        exportDDS(modImage, modLayer, dirname, "Wii, Xbox, and XML2 PC", fileName, transparency, False)
-                        # Export for MUA1 PC, Steam, PS3, and 360
-                        exportDDS(modImage, modLayer, dirname, "MUA1 PC, Steam, PS3, and 360", fileName, transparency, True)
-                else:
-                    # Alchemy 5
-                    # The secondary skin property should not reduce the threshold for png vs dds on PC, Xbox, and 360.
-                    if skinType == 1:
-                        # secondary skin
-                        oversized2 = sizeCheck(currentWidth, currentHeight, 0, texType)
-                        # check if oversized under new conditions
-                        if oversized2 == True:
-                            # Export for Wii
-                            exportDDS(modImage, modLayer, dirname, "Wii", fileName, transparency, False)
-                            # Export for MUA1 PC, Steam, PS3, and 360
-                            exportDDS(modImage, modLayer, dirname, "MUA1 PC, Steam, PS3, and 360", fileName, transparency, True)
+                            # Alchemy 5
+                            # Export for Wii and next-gen MUA1
+                            pdb.python_fu_marvelmods_basic_exportDDS(exportImage, exportLayer, folderName, "Wii, MUA1 PC, Steam, PS3, and 360", fileName, 0, 0)
+                            # Determine the character size
+                            if charSize == 0:
+                                # Standard size character
+                                # Reduce to the max size for PS2 per the parameters
+                                resizeMax(exportImage, exportLayer, skinType, texType)
+                            # Resize to half size
+                            pdb.python_fu_marvelmods_scaling_scaleHalf(exportImage, exportLayer)
+                            # Determine the PSP format
+                            if pspFormat == 0:
+                                # PNG4
+                                # Export for PSP
+                                pdb.python_fu_marvelmods_basic_exportPNG(exportImage, exportLayer, folderName, "PSP", fileName, 1)
+                                # Export for MUA2 PS2
+                                pdb.python_fu_marvelmods_basic_exportPNG(exportImage, exportLayer, folderName, "MUA2 PS2", fileName, 2)
+                            else:
+                                # PNG8
+                                # Export for PSP and MUA2 PS2
+                                pdb.python_fu_marvelmods_basic_exportPNG(exportImage, exportLayer, folderName, "PSP and MUA2 PS2", fileName, 2)
+            else:
+                # The image is not oversized for the main consoles
+                # Determine the console
+                if console == 1:
+                    # PC Only
+                    # Determine if the image needs transparency
+                    if transparency == 0:
+                        # The image is transparent
+                        # Determine the Alchemy version
+                        if alchemyVersion == 0:
+                            # Alchemy 2.5
+                            # Export for PC and Steam
+                            pdb.python_fu_marvelmods_basic_exportPNG(exportImage, exportLayer, folderName, "PC and MUA1 Steam", fileName, 0)
                         else:
-                            # export for PC and 360
-                            exportPNG(modImage, modLayer, dirname, "PC, and MUA1 360", fileName, transparency, 256)
-                            # Export for Wii
-                            exportDDS(modImage, modLayer, dirname, "Wii", fileName, transparency, False)
-                            # Export for Steam and PS3
-                            exportDDS(modImage, modLayer, dirname, "MUA1 Steam and PS3", fileName, transparency, True)
+                            # Alchemy 5
+                            # Export for PC
+                            pdb.python_fu_marvelmods_basic_exportPNG(exportImage, exportLayer, folderName, "MUA1 PC", fileName, 0)
+                            # Export for Steam
+                            pdb.python_fu_marvelmods_basic_exportDDS(exportImage, exportLayer, folderName, "MUA1 Steam", fileName, 2, 0)
                     else:
-                        # Export for Wii, MUA1 PC, Steam, PS3, and 360
-                        exportDDS(modImage, modLayer, dirname, "Wii, MUA1 PC, Steam, PS3, and 360", fileName, transparency, False)
-                # resizing should only apply to oversized images
-                if oversized == True:
-                    # image is oversized
-                    # Determine the character size
-                    if charSize == 0:
-                        # standard size character
-                        # Resize to max size for texture type
-                        resizeMax(modImage, modLayer, skinType, texType)
-                # In the case of oversized or transparent textures, PS2 needs to be exported separately
-                exportPNG(modImage, modLayer, dirname, "PS2", fileName, transparency, 256)
+                        # The image is not transparent
+                        # Flatten the image
+                        exportLayer = pdb.gimp_image_flatten(exportImage)
+                        # Determine the Alchemy version
+                        if alchemyVersion == 0:
+                            # Alchemy 2.5
+                            # Export for PC
+                            pdb.python_fu_marvelmods_basic_exportPNG(exportImage, exportLayer, folderName, "PC", fileName, 2)
+                            # Export for Steam
+                            pdb.python_fu_marvelmods_basic_exportDDS(exportImage, exportLayer, folderName, "MUA1 Steam", fileName, 0, 1)
+                        else:
+                            # Alchemy 5
+                            # Export for PC
+                            pdb.python_fu_marvelmods_basic_exportPNG(exportImage, exportLayer, folderName, "MUA1 PC", fileName, 2)
+                            # Export for Steam
+                            pdb.python_fu_marvelmods_basic_exportDDS(exportImage, exportLayer, folderName, "MUA1 Steam", fileName, 0, 0)
+                else:
+                    # All consoles
+                    # Determine if the image needs transparency
+                    if transparency == 0:
+                        # The image is transparent
+                        # Determine the Alchemy version
+                        if alchemyVersion == 0:
+                            # Alchemy 2.5
+                            # Export for PC and Steam
+                            pdb.python_fu_marvelmods_basic_exportPNG(exportImage, exportLayer, folderName, "PC, Xbox, Wii, MUA1 Steam, PS3, and 360", fileName, 0)
+                            # Determine the character size
+                            if charSize == 0:
+                                # Standard size character
+                                # Reduce to the max size for PS2 per the parameters
+                                resizeMax(exportImage, exportLayer, skinType, texType)
+                            # Export for PS2
+                            pdb.python_fu_marvelmods_basic_exportPNG(exportImage, exportLayer, folderName, "PS2", fileName, 0)
+                            # Resize to half size
+                            pdb.python_fu_marvelmods_scaling_scaleHalf(exportImage, exportLayer)
+                            # Export for GameCube, PSP, and MUA2 PS2
+                            pdb.python_fu_marvelmods_basic_exportPNG(exportImage, exportLayer, folderName, "GameCube, PSP, and MUA2 PS2", fileName, 0)
+                        else:
+                            # Alchemy 5
+                            # Export for PC
+                            pdb.python_fu_marvelmods_basic_exportPNG(exportImage, exportLayer, folderName, "Wii, MUA1 PC and 360", fileName, 0)
+                            # Export for Steam
+                            pdb.python_fu_marvelmods_basic_exportDDS(exportImage, exportLayer, folderName, "MUA1 Steam and PS3", fileName, 2, 0)
+                            # Determine the character size
+                            if charSize == 0:
+                                # Standard size character
+                                # Reduce to the max size for PS2 per the parameters
+                                resizeMax(exportImage, exportLayer, skinType, texType)
+                            # Resize to half size
+                            pdb.python_fu_marvelmods_scaling_scaleHalf(exportImage, exportLayer)
+                            # Export for PSP and MUA2 PS2
+                            pdb.python_fu_marvelmods_basic_exportPNG(exportImage, exportLayer, folderName, "GameCube, PSP, and MUA2 PS2", fileName, 0)
+                    else:
+                        # The image is not transparent
+                        # Flatten the image
+                        exportLayer = pdb.gimp_image_flatten(exportImage)
+                        # Determine the Alchemy version
+                        if alchemyVersion == 0:
+                            # Alchemy 2.5
+                            # Export for PC, PS2, Xbox, and MUA1 360
+                            pdb.python_fu_marvelmods_basic_exportPNG(exportImage, exportLayer, folderName, "PC, Xbox, and MUA1 360", fileName, 2)
+                            # Export for Wii
+                            pdb.python_fu_marvelmods_basic_exportDDS(exportImage, exportLayer, folderName, "Wii", fileName, 0, 0)
+                            # Export for Steam and PS3
+                            pdb.python_fu_marvelmods_basic_exportDDS(exportImage, exportLayer, folderName, "MUA1 Steam and PS3", fileName, 0, 1)
+                            # Determine the character size
+                            if charSize == 0:
+                                # Standard size character
+                                # Reduce to the max size for PS2 per the parameters
+                                resizeMax(exportImage, exportLayer, skinType, texType)
+                            # Export for PS2
+                            pdb.python_fu_marvelmods_basic_exportPNG(exportImage, exportLayer, folderName, "PS2", fileName, 2)
+                            # Resize to half size
+                            pdb.python_fu_marvelmods_scaling_scaleHalf(exportImage, exportLayer)
+                            # Determine the PSP format
+                            if pspFormat == 0:
+                                # PNG4
+                                # Export for PSP
+                                pdb.python_fu_marvelmods_basic_exportPNG(exportImage, exportLayer, folderName, "PSP", fileName, 1)
+                                # Export for GameCube and MUA2 PS2
+                                pdb.python_fu_marvelmods_basic_exportPNG(exportImage, exportLayer, folderName, "GameCube and MUA2 PS2", fileName, 2)
+                            else:
+                                # PNG8
+                                # Export for GameCube, PSP, and MUA2 PS2
+                                pdb.python_fu_marvelmods_basic_exportPNG(exportImage, exportLayer, folderName, "GameCube, PSP, and MUA2 PS2", fileName, 2)
+                        else:
+                            # Alchemy 5
+                            # Export for PC
+                            pdb.python_fu_marvelmods_basic_exportPNG(exportImage, exportLayer, folderName, "MUA1 PC and 360", fileName, 2)
+                            # Export for Steam
+                            pdb.python_fu_marvelmods_basic_exportDDS(exportImage, exportLayer, folderName, "Wii, MUA1 Steam and PS3", fileName, 0, 0)
+                            # Determine the character size
+                            if charSize == 0:
+                                # Standard size character
+                                # Reduce to the max size for PS2 per the parameters
+                                resizeMax(exportImage, exportLayer, skinType, texType)
+                            # Resize to half size
+                            pdb.python_fu_marvelmods_scaling_scaleHalf(exportImage, exportLayer)
+                            # Determine the PSP format
+                            if pspFormat == 0:
+                                # PNG4
+                                # Export for PSP
+                                pdb.python_fu_marvelmods_basic_exportPNG(exportImage, exportLayer, folderName, "PSP", fileName, 1)
+                                # Export for MUA2 PS2
+                                pdb.python_fu_marvelmods_basic_exportPNG(exportImage, exportLayer, folderName, "MUA2 PS2", fileName, 2)
+                            else:
+                                # PNG8
+                                # Export for PSP and MUA2 PS2
+                                pdb.python_fu_marvelmods_basic_exportPNG(exportImage, exportLayer, folderName, "PSP and MUA2 PS2", fileName, 2)
+        else:
+            # The image is not oversized
+            # Determine the console
+            if console == 1:
+                # PC Only
+                # Determine if the image needs transparency
+                if transparency == 0:
+                    # The image is transparent
+                    # Determine the Alchemy version
+                    if alchemyVersion == 0:
+                        # Alchemy 2.5
+                        # Export for PC and Steam
+                        pdb.python_fu_marvelmods_basic_exportPNG(exportImage, exportLayer, folderName, "PC and MUA1 Steam", fileName, 0)
+                    else:
+                        # Alchemy 5
+                        # Export for PC
+                        pdb.python_fu_marvelmods_basic_exportPNG(exportImage, exportLayer, folderName, "MUA1 PC", fileName, 0)
+                        # Export for Steam
+                        pdb.python_fu_marvelmods_basic_exportDDS(exportImage, exportLayer, folderName, "MUA1 Steam", fileName, 2, 0)
+                else:
+                    # The image is not transparent
+                    # Flatten the image
+                    exportLayer = pdb.gimp_image_flatten(exportImage)
+                    # Determine the Alchemy version
+                    if alchemyVersion == 0:
+                        # Alchemy 2.5
+                        # Export for PC
+                        pdb.python_fu_marvelmods_basic_exportPNG(exportImage, exportLayer, folderName, "PC", fileName, 2)
+                        # Export for Steam
+                        pdb.python_fu_marvelmods_basic_exportDDS(exportImage, exportLayer, folderName, "MUA1 Steam", fileName, 0, 1)
+                    else:
+                        # Alchemy 5
+                        # Export for PC
+                        pdb.python_fu_marvelmods_basic_exportPNG(exportImage, exportLayer, folderName, "MUA1 PC", fileName, 2)
+                        # Export for Steam
+                        pdb.python_fu_marvelmods_basic_exportDDS(exportImage, exportLayer, folderName, "MUA1 Steam", fileName, 0, 0)
             else:
-                # The image is neither oversized nor transparent
-                # Determine the version of Alchemy
-                if alchemyVersion == 0:
-                    # Alchemy 2.5
-                    # Export for PC, PS2, Xbox, and 360
-                    exportPNG(modImage, modLayer, dirname, "PC, PS2, Xbox, and MUA1 360", fileName, transparency, 256)
-                    # Export for Wii
-                    exportDDS(modImage, modLayer, dirname, "Wii", fileName, transparency, False)
-                    # Export for MUA1 Steam and PS3
-                    exportDDS(modImage, modLayer, dirname, "MUA1 Steam and PS3", fileName, transparency, True)
+                # All consoles
+                # Determine if the image needs transparency
+                if transparency == 0:
+                    # The image is transparent
+                    # Determine the Alchemy version
+                    if alchemyVersion == 0:
+                        # Alchemy 2.5
+                        # Export for PC and Steam
+                        pdb.python_fu_marvelmods_basic_exportPNG(exportImage, exportLayer, folderName, "PC, PS2, Xbox, Wii, MUA1 Steam, PS3, and 360", fileName, 0)
+                        # Resize to half size
+                        pdb.python_fu_marvelmods_scaling_scaleHalf(exportImage, exportLayer)
+                        # Export for GameCube, PSP, and MUA2 PS2
+                        pdb.python_fu_marvelmods_basic_exportPNG(exportImage, exportLayer, folderName, "GameCube, PSP, and MUA2 PS2", fileName, 0)
+                    else:
+                        # Alchemy 5
+                        # Export for PC
+                        pdb.python_fu_marvelmods_basic_exportPNG(exportImage, exportLayer, folderName, "Wii, MUA1 PC and 360", fileName, 0)
+                        # Export for Steam
+                        pdb.python_fu_marvelmods_basic_exportDDS(exportImage, exportLayer, folderName, "MUA1 Steam and PS3", fileName, 2, 0)
+                        # Resize to half size
+                        pdb.python_fu_marvelmods_scaling_scaleHalf(exportImage, exportLayer)
+                        # Export for GameCube, PSP, and MUA2 PS2
+                        pdb.python_fu_marvelmods_basic_exportPNG(exportImage, exportLayer, folderName, "PSP and MUA2 PS2", fileName, 0)
                 else:
-                    # Alchemy 5
-                    # Export for PC and 360
-                    exportPNG(modImage, modLayer, dirname, "PC, PS2, and MUA1 360", fileName, transparency, 256)
-                    # Export for Wii, MUA1 Steam and PS3
-                    exportDDS(modImage, modLayer, dirname, "Wii, MUA1 Steam and PS3", fileName, transparency, False)
-            # Based on previous steps, image is now at ideal size for PS2. Resize to half size for remaining consoles
-            resizeHalf(modImage, modLayer)
-            # Non-transparent PNG4 will always have PSP separate
-            if (PSPFormat == 0) and (transparency == 1):
-                # PSP is separate
-                # export PSP
-                exportPNG(modImage, modLayer, dirname, "PSP", fileName, transparency, 16)
-                # Determine the version of Alchemy
-                if alchemyVersion == 0:
-                    # Alchemy 2.5
-                    # Export for GameCube and MUA2 PS2
-                    exportPNG(modImage, modLayer, dirname, "GameCube and MUA2 PS2", fileName, transparency, 256)
-                else:
-                    # Alchemy 5
-                    # Export for MUA2 PS2
-                    exportPNG(modImage, modLayer, dirname, "MUA2 PS2", fileName, transparency, 256)
-            else:
-                # Transparent textures or PSP is PNG8
-                if alchemyVersion == 0:
-                    # Alchemy 2.5
-                    # Export for GameCube, PSP, and MUA2 PS2
-                    exportPNG(modImage, modLayer, dirname, "GameCube, PSP, and MUA2 PS2", fileName, transparency, 256)
-                else:
-                    # Alchemy 5
-                    # Export for PSP and MUA2 PS2
-                    exportPNG(modImage, modLayer, dirname, "PSP and MUA2 PS2", fileName, transparency, 256)
+                    # The image is not transparent
+                    # Flatten the image
+                    exportLayer = pdb.gimp_image_flatten(exportImage)
+                    # Determine the Alchemy version
+                    if alchemyVersion == 0:
+                        # Alchemy 2.5
+                        # Export for PC, PS2, Xbox, and MUA1 360
+                        pdb.python_fu_marvelmods_basic_exportPNG(exportImage, exportLayer, folderName, "PC, PS2, Xbox, and MUA1 360", fileName, 2)
+                        # Export for Wii
+                        pdb.python_fu_marvelmods_basic_exportDDS(exportImage, exportLayer, folderName, "Wii", fileName, 0, 0)
+                        # Export for Steam and PS3
+                        pdb.python_fu_marvelmods_basic_exportDDS(exportImage, exportLayer, folderName, "MUA1 Steam and PS3", fileName, 0, 1)
+                        # Resize to half size
+                        pdb.python_fu_marvelmods_scaling_scaleHalf(exportImage, exportLayer)
+                        # Determine the PSP format
+                        if pspFormat == 0:
+                            # PNG4
+                            # Export for PSP
+                            pdb.python_fu_marvelmods_basic_exportPNG(exportImage, exportLayer, folderName, "PSP", fileName, 1)
+                            # Export for GameCube and MUA2 PS2
+                            pdb.python_fu_marvelmods_basic_exportPNG(exportImage, exportLayer, folderName, "GameCube and MUA2 PS2", fileName, 2)
+                        else:
+                            # PNG8
+                            # Export for GameCube, PSP, and MUA2 PS2
+                            pdb.python_fu_marvelmods_basic_exportPNG(exportImage, exportLayer, folderName, "GameCube, PSP, and MUA2 PS2", fileName, 2)
+                    else:
+                        # Alchemy 5
+                        # Export for PC
+                        pdb.python_fu_marvelmods_basic_exportPNG(exportImage, exportLayer, folderName, "MUA1 PC and 360", fileName, 2)
+                        # Export for Steam
+                        pdb.python_fu_marvelmods_basic_exportDDS(exportImage, exportLayer, folderName, "Wii, MUA1 Steam and PS3", fileName, 0, 0)
+                        # Resize to half size
+                        pdb.python_fu_marvelmods_scaling_scaleHalf(exportImage, exportLayer)
+                        # Determine the PSP format
+                        if pspFormat == 0:
+                            # PNG4
+                            # Export for PSP
+                            pdb.python_fu_marvelmods_basic_exportPNG(exportImage, exportLayer, folderName, "PSP", fileName, 1)
+                            # Export for MUA2 PS2
+                            pdb.python_fu_marvelmods_basic_exportPNG(exportImage, exportLayer, folderName, "MUA2 PS2", fileName, 2)
+                        else:
+                            # PNG8
+                            # Export for PSP and MUA2 PS2
+                            pdb.python_fu_marvelmods_basic_exportPNG(exportImage, exportLayer, folderName, "PSP and MUA2 PS2", fileName, 2)
         # Announce completion
         pdb.gimp_message("Export complete.")
     else:
-        # One or both image dimensions are not powers of 2
-        pdb.gimp_message("One or both image dimensions are not a power of 2. Alchemy only supports image dimensions that are powers of 2.\n\nPowers of 2: 1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048, 4096, and so on.")
+        # Errors, cannot proceed
+        # Display an error message
+        pdb.gimp_message("The image was not exported.")
 
 
 # ######## #
@@ -354,7 +533,7 @@ register(
         (PF_OPTION, "charSize", "Character Size:", 0, ["Standard","Large"]),
         (PF_OPTION, "alchemyVersion", "Alchemy Version:", 0, ["Alchemy 2.5","Alchemy 5"]),
         (PF_OPTION, "transparency", "Requires Transparency:", 1, ["Yes","No"]),
-        (PF_OPTION, "PSPFormat", "PSP Texture Compression:", 1, ["PNG4","PNG8"])
+        (PF_OPTION, "pspFormat", "PSP Texture Compression:", 1, ["PNG4","PNG8"])
     ],
     [],
     exportSkin,
