@@ -522,7 +522,7 @@ register(
     "BaconWizard17",
     "BaconWizard17",
     "September 2023",
-    "Export Skin",
+    "Export Skin, Mannequin, or 3D Head",
     "*",
     [
         (PF_IMAGE, "image", "Input image", None),
