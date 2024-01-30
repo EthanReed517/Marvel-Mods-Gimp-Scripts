@@ -102,5 +102,18 @@ This script will only work correctly if the image has been saved as a .xcf file.
      - `All`: This option will export Xbox 360 textures.
      - `PC Only`: This option will not Xbox 360 Textures.
    - **Alchemy Version** and **PSP Texture Format** have no impact on Xbox 360 textures.
+
+## Templates
+In order for the script to function correctly, I've provided a template that can be used with it: `Template.xcf`. Here's how to use the template:
+1. Open the template that you want to use in GIMP. Save it as something else so that you always have the templates available. The file name doesn't matter.
+2. The images included in the template can be used, or you can replace them with your own.
+3. There should be 6 layers:
+    - **Up**: The up-facing part of the environment map.
+    - **Down**: The down-facing part of the environment map.
+    - **Left**: The left-facing part of the environment map.
+    - **Right**: The right-facing part of the environment map.
+    - **Front**: The front-facing part of the environment map.
+    - **Back**: The back-facing part of the environment map.
+	
 ## Credits
 - BaconWizard17: Script creation
