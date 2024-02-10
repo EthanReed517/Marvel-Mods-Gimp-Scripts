@@ -158,7 +158,7 @@ def exportStandardHUD(image, console, folderName, fileName, currentWidth, outlin
             else:
                 # All consoles
                 # Export the cross-compatible version
-                pdb.python_fu_marvelmods_basic_exportPNG(exportImage, exportLayer, folderName, "Main", outFileName, 2)
+                pdb.python_fu_marvelmods_basic_exportPNG(exportImage, exportLayer, folderName, "Main except PSP", outFileName, 2)
                 # Export the Wii version
                 pdb.python_fu_marvelmods_basic_exportDDS(exportImage, exportLayer, folderName, "Wii", outFileName, 0, 0)
                 # Export the PS3 and Steam version
@@ -285,7 +285,7 @@ def exportNGHUD(image, console, folderName, fileName, currentWidth, alchemyVersi
             else:
                 # All consoles
                 # Export the cross-compatible version
-                pdb.python_fu_marvelmods_basic_exportPNG(exportImage, exportLayer, folderName, "All", outFileName, 0)
+                pdb.python_fu_marvelmods_basic_exportPNG(exportImage, exportLayer, folderName, "All except PSP", outFileName, 0)
                 # Resize to half size
                 pdb.python_fu_marvelmods_scaling_scaleHalf(exportImage, exportLayer)
                 # Export the PSP version
@@ -300,7 +300,7 @@ def exportNGHUD(image, console, folderName, fileName, currentWidth, alchemyVersi
             else:
                 # All consoles
                 # Export the cross-compatible version
-                pdb.python_fu_marvelmods_basic_exportTGA(exportImage, exportLayer, folderName, "Main", outFileName)   
+                pdb.python_fu_marvelmods_basic_exportTGA(exportImage, exportLayer, folderName, "All except PSP", outFileName)   
                 # Resize to half size
                 pdb.python_fu_marvelmods_scaling_scaleHalf(exportImage, exportLayer)
                 # Export the PSP version
