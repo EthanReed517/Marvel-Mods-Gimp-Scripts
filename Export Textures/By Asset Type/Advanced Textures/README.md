@@ -7,7 +7,7 @@ This plugin exports advanced textures (normal maps, spec maps, gloss/emissive ma
 This script will only work correctly if the image has been saved as a .xcf file. The texture can be for a skin, 3D head, or mannequin. Normal maps should be set up in the green normal map format, while other textures can be any color. Resulting textures will only work with next-gen MUA1.
 
 ### Installation
- 1. This script can be installed using `runUpdateAdmin.bat` from my scripts, or it can be placed individually in your GIMP plugins directory. The standard location for this is `C:\Users\(your user)\AppData\Roaming\GIMP\2.10\plug-ins`. Check the main `README.md` file in this project for more details on proper installation.
+ 1. This script can be installed using `update.bat` from the main folder of this release, or it can be placed individually in your GIMP plugins directory. The standard location for this is `C:\Users\(your user)\AppData\Roaming\GIMP\2.10\plug-ins`. Check the main `README.md` file in this project for more details on proper installation.
 
 ### Usage
 1. Start with an image open in GIMP that you would like to export. See the "Compatibility" section above for details on the image type.

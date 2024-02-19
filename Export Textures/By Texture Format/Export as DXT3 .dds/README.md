@@ -7,7 +7,7 @@ This plugin exports a texture as a .dds file with DXT3 compression.
 This script will only work correctly if the image has been saved as a .xcf file. The dimensions of the image must be powers of 2.
 
 ### Installation
- 1. This script can be installed using `runUpdateAdmin.bat` from my scripts, or it can be placed individually in your GIMP plugins directory. The standard location for this is `C:\Users\(your user)\AppData\Roaming\GIMP\2.10\plug-ins`. Check the main `README.md` file in this project for more details on proper installation.
+ 1. This script can be installed using `update.bat` from the main folder of this release, or it can be placed individually in your GIMP plugins directory. The standard location for this is `C:\Users\(your user)\AppData\Roaming\GIMP\2.10\plug-ins`. Check the main `README.md` file in this project for more details on proper installation.
 
 ### Usage
 1. Start with an image open in GIMP that you would like to export. See the "Compatibility" section above for details on the image type.

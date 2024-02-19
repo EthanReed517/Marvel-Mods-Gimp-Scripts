@@ -11,9 +11,9 @@ You must have [gegl-python-fu & gegl_graph Ver.3.0.zip](http://gimpchat.com/view
 
 ### Installation
  1. Open `update.bat` with Notepad++ or another text editor.
- 2. Edit the file paths in line 6 to reflect your GIMP configuration.
+ 2. Edit the file paths in line 6 and line 8 to reflect your GIMP configuration.
  3. Save `update.bat`
- 4. Run `runUpdateAdmin` to run the update script with administrator access, which will allow you to access the necessary folders.
+ 4. Run `update.bat` as an administrator, which will allow you to access the necessary folders.
 
 Alternatively, you can manually paste individual scripts into the appropriate folders.
 

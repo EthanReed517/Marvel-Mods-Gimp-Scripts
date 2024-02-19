@@ -7,7 +7,7 @@ This plugin exports a single skin showcase in 3 different sizes for different us
 This script will only work correctly on a single skin showcase that was assembled using my scripts. It can have 1 or 2 rows/columns of 543x1080 previews. The image must be saved already. Generally, I save it as "Preview.xcf".
 
 ### Installation
- 1. This script can be installed using `runUpdateAdmin.bat` from my scripts, or it can be placed individually in your GIMP plugins directory. The standard location for this is `C:\Users\(your user)\AppData\Roaming\GIMP\2.10\plug-ins`. Check the main `README.md` file in this project for more details on proper installation.
+ 1. This script can be installed using `update.bat` from the main folder of this release, or it can be placed individually in your GIMP plugins directory. The standard location for this is `C:\Users\(your user)\AppData\Roaming\GIMP\2.10\plug-ins`. Check the main `README.md` file in this project for more details on proper installation.
 
 ### Usage
 1. Start with an image open in GIMP that you would like to scale. See the "Compatibility" section above for details on the image type.
