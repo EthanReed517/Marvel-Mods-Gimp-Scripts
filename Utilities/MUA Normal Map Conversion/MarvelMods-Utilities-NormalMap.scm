@@ -1,5 +1,5 @@
 ; Marvel Ultimate Alliance (1) normal map conversion
-(define (script-fu-mua-normal Image Drawable)
+(define (script-fu-marvelmods-utilities-normal Image Drawable)
 
     (let* ((tmp 0)(tmp2 0)(map 0)(Green 0)(Black 0)(Alpha 0))
 
