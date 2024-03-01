@@ -10,10 +10,7 @@
 # (c) BaconWizard17 2023
 #
 #   History:
-#   v1.0: 30Jan2023: First published version.
-#   v1.1: 30Aug2023: Add support for transparency, add support for next-gen MUA1 (Steam, PS3, and Xbox 360), and add support for MUA2 PS2. Improve efficiency
-#   v1.2: 06Sep2023: Now checks if image dimensions are a power of 2 and gives an error if not.
-#   v2.0: 10Jan2024: Simplified to call the main script but with pre-selected parameters
+#   v1.0: 01Mar2024: First published version.
 
 #   This program is free software; you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License as published by
@@ -41,17 +38,17 @@ from gimpfu import*
 # FUNCTIONS #
 # ######### #
 # Define the main operation
-def exportSkin(image, layer):
+def exportSkinSecondary(image, layer):
     # Define the remaining properties
+    primarySize = 0
     console = 0
     skinType = 0
-    texType = 0
     charSize = 0
     alchemyVersion = 0
     transparency = 1
     PSPFormat = 1
     # Call the main script
-    pdb.python_fu_marvelmods_export_asset_skin(image, layer, console, skinType, texType, charSize, alchemyVersion, transparency, PSPFormat)
+    pdb.python_fu_marvelmods_export_asset_skin_seconary(image, layer, primarySize, console, skinType, charSize, alchemyVersion, transparency, PSPFormat)
 
 
 # ######## #
@@ -59,20 +56,20 @@ def exportSkin(image, layer):
 # ######## #
 # Register the script in GIMP
 register(
-    "python_fu_marvelmods_export_quick_skin",
+    "python_fu_marvelmods_export_quick_skin_secondary",
     "Exports a skin texture in multiple formats. Also\nworks on 3D head textures and mannequin textures.\nThis is an optimized version that runs without\noptions and with my preferred settings.\n\nCheck the README.md file included with the\ndownload for more clarity on the options.",
     "Exports a skin texture in multiple formats. Also works on 3D head textures and mannequin textures.",
     "BaconWizard17",
     "BaconWizard17",
-    "January 2024",
-    "Export Skin",
+    "March 2024",
+    "Export Skin, Mannequin, or 3D Head (Secondary Texture)",
     "*",
     [
         (PF_IMAGE, "image", "Input image", None),
         (PF_DRAWABLE, "layer", "Layer, mask, or channel", None)
     ],
     [],
-    exportSkin,
+    exportSkinSecondary,
     menu="<Image>/Marvel Mods/Export Textures/Quick Exporters"
 )
 

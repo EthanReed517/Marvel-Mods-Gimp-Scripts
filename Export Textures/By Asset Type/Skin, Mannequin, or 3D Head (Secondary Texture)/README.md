@@ -1,10 +1,10 @@
 # Marvel Mods GIMP Plugins
 by BaconWizard17
-## Export Skin
+## Export Skin, Mannequin, or 3D Head (Secondary)
 This plugin exports a skin texture in several optimized formats.
 
 ### Compatibility
-This script will only work correctly if the image has been saved as a .xcf file. The texture can be for a skin, 3D head, or mannequin.
+This script will only work correctly if the image has been saved as a .xcf file. The texture can be for a skin, 3D head, or mannequin. The texture should be a secondary texture for the skin (smaller texture).
 
 ### Installation
  1. This script can be installed using `update.bat` from the main folder of this release, or it can be placed individually in your GIMP plugins directory. The standard location for this is `C:\Users\(your user)\AppData\Roaming\GIMP\2.10\plug-ins`. Check the main `README.md` file in this project for more details on proper installation.
@@ -13,17 +13,17 @@ This script will only work correctly if the image has been saved as a .xcf file.
 1. Start with an image open in GIMP that you would like to export. See the "Compatibility" section above for details on the image type.
 2. In the toolbar, go to `Marvel Mods/Export Textures/By Asset Type` and choose the `Export Skin` plugin.
 3. You will be presented with a series of options:
+	- **Primary Texture Size**:
+	  - `256x256 or less`: Choose if the primary texture for the asset is 256x256 or less.
+	  - `Over 256x256`: Choose if the primary texture for the asset is over 256x256.
 	- **Console**:
 	  - `All`: Choose if you want to export textures for all available consoles.
 	  - `PC only`: Choose if you want to export textures for the PC versions only.
 	- **Skin Type**:
 	  - `Primary`: Choose if you are exporting a texture for a primary skin. A primary skin is a main skin used by a character. This option will not change the standard export.
 	  - `Secondary`: Choose if you are exporting a texture for a secondary skin. A secondary skin is a skin used during a power, such as a skin swap. For GameCube, PS2, and PSP textures, this reduces the texture size in half.
-	- **Texture Type**:
-	  - `Primary`: Choose if you are exporting a primary texture. A primary texture is the main/largest texture used by a skin. This option will not change the standard export.
-	  - `Secondary`: Choose if you are exporting a secondary texture. A secondary texture is any additional/smaller texture used in a skin. For PC, this reduces the threshold for when dds textures are used in half. For GameCube, PS2, and PSP textures, this reduces the texture size in half.
 	- **Character Size**:
-	  - `Standard`: Choose if you are exporting a texture for a standard-sized character. Standard-sized characters are all playable characters and most NPCs (anyone who is not extremely large). Selecting this option limits the texture size to 256x256 on the PS2 and 128x128 on the PSP and GameCube, although **Skin Type** and **Texture Type** can reduce this further.
+	  - `Standard`: Choose if you are exporting a texture for a standard-sized character. Standard-sized characters are all playable characters and most NPCs (anyone who is not extremely large). Selecting this option limits the texture size to 256x256 on the PS2 and 128x128 on the PSP and GameCube, although **Skin Type** can reduce this further.
 	  - `Large`: Choose if you are exporting a texture for a large character. Large characters are special oversized NPCs, like Galactus, Master Mold, Ymir, or Sentinels. This option will not change the standard export.
 	- **Alchemy Version**:
 	  - `Alchemy 2.5`: Choose if your version of 3ds Max has the Alchemy 2.5 exporter. The Alchemy 2.5 exporter is included on the virtual machine version of 3ds Max 5.
@@ -43,9 +43,6 @@ This script will only work correctly if the image has been saved as a .xcf file.
 ## Export Types
  - **PC**:
    - Textures over 256x256 will be exported as dds files, and 256x256 or less will export as png files. This threshold can be modified by other settings.
-   - **Texture Type**: 
-     - `Primary`: This option will not change the texture. 
-     - `Secondary`: This option will change the dds/png cutoff point to 128x128.
    - **Alchemy Version**: 
      - `Alchemy 2.5`: This option will export for XML2 PC and MUA1 PC. Any dds textures for MUA1 PC will be RGB-BGR swapped.
      - `Alchemy 5`: This option will export for MUA1 PC only.
@@ -61,7 +58,7 @@ This script will only work correctly if the image has been saved as a .xcf file.
    - **Transparency**: 
      - `Yes`: For Alchemy 2.5, this option will export all textures as uncompressed png files. For Alchemy 5, this option will export dds textures with DXT5 compression. 
      - `No`: This option will export dds textures with DXT1 compression.
-   - **Console**, **Character Size**, **Skin Type**, **Texture Type**, and **PSP Texture Compression** have no impact on Steam textures.
+   - **Console**, **Character Size**, **Skin Type**, and **PSP Texture Compression** have no impact on Steam textures.
  - **GameCube**: 
    - Textures will be exported as png files.
    - **Console**:
@@ -70,11 +67,8 @@ This script will only work correctly if the image has been saved as a .xcf file.
    - **Character Size**: 
      - `Standard`: This option will limit the maximum texture size for GameCube to 128x128. 
      - `Large`: This option will reduce the texture size in half. 
-     - **Skin Type** and **Texture Type** can reduce the size further.
+     - **Skin Type** can reduce the size further.
    - **Skin Type**: 
-     - `Primary`: This option will not change the texture. 
-     - `Secondary`: This option will reduce the texture size in half.
-   - **Texture Type**: 
      - `Primary`: This option will not change the texture. 
      - `Secondary`: This option will reduce the texture size in half.
    - **Alchemy Version**:
@@ -93,12 +87,9 @@ This script will only work correctly if the image has been saved as a .xcf file.
    - **Character Size**: 
      - `Standard`: This option will limit the maximum texture size for PS2 to 256x256. 
      - `Large`: This option will not change the texture size. 
-     - **Skin Type** and **Texture Type** can reduce the size further.
+     - **Skin Type** can reduce the size further.
    - **Skin Type**: 
      - `Primary`: This option will not change the texture. 
-     - `Secondary`: This option will reduce the texture size in half.
-   - **Texture Type**: 
-     - `Primary`: This option will not reduce the texture size.
      - `Secondary`: This option will reduce the texture size in half.
    - **Transparency**: 
      - `Yes`: This option will export png textures without compression. 
@@ -119,7 +110,7 @@ This script will only work correctly if the image has been saved as a .xcf file.
    - **Transparency**: 
      - `Yes`: For Alchemy 2.5, this option will export all textures as uncompressed png files. For Alchemy 5, this option will export dds textures with DXT5 compression. 
      - `No`: This option will export dds textures with DXT1 compression.
-   - **Character Size**, **Skin Type**, **Texture Type**, and **PSP Texture Compression** have no impact on Steam textures.
+   - **Character Size**, **Skin Type**, and **PSP Texture Compression** have no impact on Steam textures.
  - **PSP**: 
    - Textures will be exported as png files.
    - **Note**: XML2 PSP currently does not support custom skins.
@@ -129,11 +120,8 @@ This script will only work correctly if the image has been saved as a .xcf file.
    - **Character Size**: 
      - `Standard`: This option will limit the maximum texture size for GameCube to 128x128. 
      - `Large`: This option will reduce the texture size in half. 
-     - **Skin Type** and **Texture Type** can reduce the size further.
+     - **Skin Type** can reduce the size further.
    - **Skin Type**: 
-     - `Primary`: This option will not change the texture. 
-     - `Secondary`: This option will reduce the texture size in half.
-   - **Texture Type**: 
      - `Primary`: This option will not change the texture. 
      - `Secondary`: This option will reduce the texture size in half.
    - **Transparency**: 
@@ -152,15 +140,12 @@ This script will only work correctly if the image has been saved as a .xcf file.
    - **Transparency**: 
      - `Yes`: This option will export textures as uncompressed png files.
      - `No`: This option will export dds textures with DXT1 compression.
-   - **Character Size**, **Skin Type**, **Texture Type**, **Alchemy Version**, and **PSP Texture Compression** have no impact on Wii textures.
+   - **Character Size**, **Skin Type**, **Alchemy Version**, and **PSP Texture Compression** have no impact on Wii textures.
  - **Xbox**:
    - Textures over 256x256 will be exported as dds files, and 256x256 or less will export as png files. This threshold can be modified by other settings.
    - **Console**:
      - `All`: This option will export Xbox textures.
      - `PC Only`: This option will not export Xbox Textures.
-   - **Texture Type**: 
-     - `Primary`: This option will not change the texture. 
-     - `Secondary`: This option will change the dds/png cutoff point to 128x128.
    - **Alchemy Version**: 
      - `Alchemy 2.5`: Xbox textures will be exported.
      - `Alchemy 5`: Xbox textures will not be exported.
@@ -171,9 +156,6 @@ This script will only work correctly if the image has been saved as a .xcf file.
  - **Xbox 360**:
    - Textures over 256x256 will be exported as dds files, and 256x256 or less will export as png files. This threshold can be modified by other settings.
    - Xbox 360 textures will presumably work on the Xbox One re-release, but this hasn't been confirmed.
-   - **Texture Type**: 
-     - `Primary`: This option will not change the texture. 
-     - `Secondary`: This option will change the dds/png cutoff point to 128x128.
    - **Alchemy Version**: 
      - `Alchemy 2.5`: This option will RGB-BGR swap dds textures.
      - `Alchemy 5`: This option will not change the texture.
