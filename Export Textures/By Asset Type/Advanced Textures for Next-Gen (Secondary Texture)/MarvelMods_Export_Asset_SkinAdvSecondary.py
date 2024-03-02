@@ -200,7 +200,7 @@ register(
         (PF_OPTION, "primarySize", "Primary Texture Size:", 0, ["256x256 or less","Over 256x256"]),
         (PF_OPTION, "textureType", "Advanced Texture Type:", 0, ["Normal Map","Specular Map","Gloss/Emissive Map","Environment Mask"]),
         (PF_OPTION, "console", "Console:", 0, ["All","PC Only"]),
-        (PF_OPTION, "alchemyVersion", "Alchemy Version:", 0, ["Alchemy 2.5","Alchemy 5"])
+        (PF_OPTION, "alchemyVersion", "Alchemy Version:", 1, ["Alchemy 2.5","Alchemy 5"])
     ],
     [],
     exportSkinAdv,
