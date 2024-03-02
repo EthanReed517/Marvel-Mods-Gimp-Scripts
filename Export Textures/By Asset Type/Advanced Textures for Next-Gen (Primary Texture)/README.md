@@ -1,6 +1,6 @@
 # Marvel Mods GIMP Plugins
 by BaconWizard17
-## Export Advanced Textures
+## Export Advanced Textures (Primary Texture)
 This plugin exports advanced textures (normal maps, spec maps, gloss/emissive maps, and environment masks) in several optimized formats to be used with next-gen MUA1.
 
 ### Compatibility
@@ -11,7 +11,7 @@ This script will only work correctly if the image has been saved as a .xcf file.
 
 ### Usage
 1. Start with an image open in GIMP that you would like to export. See the "Compatibility" section above for details on the image type.
-2. In the toolbar, go to `Marvel Mods/Export Textures/By Asset Type` and choose the `Export Skin` plugin.
+2. In the toolbar, go to `Marvel Mods/Export Textures/By Asset Type` and choose the `Export Advanced Textures for Next-Gen (Primary Texture)` plugin.
 3. You will be presented with a series of options:
     - **Advanced Texture Type**:
 	  - `Normal Map`: Choose if you are exporting a normal map. Changes the export to DXT5. Adds "_n" to the end of the file name.
@@ -21,9 +21,6 @@ This script will only work correctly if the image has been saved as a .xcf file.
 	- **Console**:
 	  - `All`: Choose if you want to export textures for all available consoles.
 	  - `PC only`: Choose if you want to export textures for the PC versions only.
-	- **Texture Type**:
-	  - `Primary`: Choose if you are exporting a primary texture. A primary texture is the main/largest texture used by a skin. This option will not change the standard export.
-	  - `Secondary`: Choose if you are exporting a secondary texture. A secondary texture is any additional/smaller texture used in a skin. For PC and Xbox 360, this reduces the threshold for when dds textures are used in half.
 	- **Alchemy Version**:
 	  - `Alchemy 2.5`: Choose if your version of 3ds Max has the Alchemy 2.5 exporter. The Alchemy 2.5 exporter is included on the virtual machine version of 3ds Max 5.
 	  - `Alchemy 5`: Choose if your version of 3ds Max has the Alchemy 5 exporter. The Alchemy 5 exporter is most commonly used with 3ds Max 10 and 3ds Max 12.
@@ -39,9 +36,6 @@ This script will only work correctly if the image has been saved as a .xcf file.
 	 - `Specular Map`: Adds "_s" to the end of the file name.
 	 - `Gloss/Emissive Map`: Adds "_g" to the end of the file name.
 	 - `Environment Mask`: Adds "_m" to the end of the file name.
-   - **Texture Type**: 
-     - `Primary`: This option will not change the texture. 
-     - `Secondary`: This option will change the dds/png cutoff point to 128x128.
    - **Alchemy Version**: 
      - `Alchemy 2.5`: Any dds textures for MUA1 PC will be RGB-BGR swapped.
      - `Alchemy 5`: This option will not change the texture
@@ -56,7 +50,7 @@ This script will only work correctly if the image has been saved as a .xcf file.
    - **Alchemy Version**: 
      - `Alchemy 2.5`: This option will RGB-BGR swap Steam textures.
      - `Alchemy 5`: This option will not RGB-BGR swap Steam textures.
-   - **Console** and **Texture Type** have no impact on Steam textures.
+   - **Console** have no impact on Steam textures.
  - **PS3**:
    - Textures will be exported as dds files unless modified by other settings.
    - PS3 textures will presumably work on the PS4 re-release, but this hasn't been confirmed.
@@ -71,7 +65,7 @@ This script will only work correctly if the image has been saved as a .xcf file.
    - **Alchemy Version**: 
      - `Alchemy 2.5`: This option will RGB-BGR swap PS3 textures.
      - `Alchemy 5`: This option will not RGB-BGR swap PS3 textures.
-   - **Console** and **Texture Type** have no impact on PS3 textures.
+   - **Console** have no impact on PS3 textures.
  - **Xbox 360**:
    - Textures over 256x256 will be exported as dds files, and 256x256 or less will export as png files. This threshold can be modified by other settings.
    - Xbox 360 textures will presumably work on the Xbox One re-release, but this hasn't been confirmed.
@@ -83,9 +77,6 @@ This script will only work correctly if the image has been saved as a .xcf file.
    - **Console**:
      - `All`: This option will export Xbox 360 textures.
      - `PC Only`: This option will not Xbox 360 Textures.
-   - **Texture Type**: 
-     - `Primary`: This option will not change the texture. 
-     - `Secondary`: This option will change the dds/png cutoff point to 128x128.
    - **Alchemy Version**: 
      - `Alchemy 2.5`: Any dds textures for Xbox 360 will be RGB-BGR swapped.
      - `Alchemy 5`: This option will not change the texture

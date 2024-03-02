@@ -10,7 +10,7 @@
 # (c) BaconWizard17 2023
 #
 #   History:
-#   v1.0: 25Jan2024: First published version.
+#   v1.0: 01Mar2024: First published version.
 
 #   This program is free software; you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License as published by
@@ -59,24 +59,8 @@ def errorCheck(image, layer):
     # Return whether or not the script can proceed, as well as the width and height
     return canProceed, currentWidth, currentHeight
 
-# Define the size checking operation
-def sizeCheck(currentWidth, currentHeight, texType):
-    # Determine the max size based on the texture type
-    if texType == 0:
-        # primary texture
-        criteria = 256
-    else:
-        # secondary texture
-        criteria = 128
-    # compare the criteria to the current texture size
-    if (currentWidth > criteria) or (currentHeight > criteria):
-        oversized = True
-    else:
-        oversized = False
-    return oversized
-
 # Define the main operation
-def exportSkinAdv(image, layer, textureType, console, texType, alchemyVersion):
+def exportSkinAdv(image, layer, primarySize, textureType, console, alchemyVersion):
     # Save the file and get its path and name
     (folderName, fileName) = pdb.python_fu_marvelmods_basic_get_path_save(image, layer)
     # List the texture types and suffix
@@ -128,12 +112,10 @@ def exportSkinAdv(image, layer, textureType, console, texType, alchemyVersion):
                     pdb.python_fu_marvelmods_basic_exportDDS(exportImage, exportLayer, folderName, "MUA1 PC, Steam, PS3, and 360", fileName, 2, 0)
         else:
             # All others
-            # Determine if the image is oversized
-            oversized = sizeCheck(currentWidth, currentHeight, texType)
             # Flatten the image
             exportLayer = pdb.gimp_image_flatten(exportImage)
             # Determine if the image is oversized
-            if oversized == True:
+            if primarySize == 1:
                 # The image is still oversized for the main consoles
                 # Determine the console
                 if console == 1:
@@ -204,20 +186,20 @@ def exportSkinAdv(image, layer, textureType, console, texType, alchemyVersion):
 # ######## #
 # Register the script in GIMP
 register(
-    "python_fu_marvelmods_export_asset_skinadv",
+    "python_fu_marvelmods_export_asset_skinadvsecondary",
     "Exports advanced material textures for next-gen skins and mannequins in multiple formats.\n\nCheck the README.md file included with the\ndownload for more clarity on the options.",
     "Exports advanced material textures for next-gen skins and mannequins in multiple formats.",
     "BaconWizard17",
     "BaconWizard17",
-    "January 2024",
-    "Export Advanced Textures for Next-Gen",
+    "March 2024",
+    "Export Advanced Textures for Next-Gen (Secondary Texture)",
     "*",
     [
         (PF_IMAGE, "image", "Input image", None),
         (PF_DRAWABLE, "layer", "Layer, mask or channel", None),
+        (PF_OPTION, "primarySize", "Primary Texture Size:", 0, ["256x256 or less","Over 256x256"]),
         (PF_OPTION, "textureType", "Advanced Texture Type:", 0, ["Normal Map","Specular Map","Gloss/Emissive Map","Environment Mask"]),
         (PF_OPTION, "console", "Console:", 0, ["All","PC Only"]),
-        (PF_OPTION, "texType", "Texture Type:", 0, ["Primary Texture","Secondary Texture"]),
         (PF_OPTION, "alchemyVersion", "Alchemy Version:", 0, ["Alchemy 2.5","Alchemy 5"])
     ],
     [],
