@@ -148,7 +148,7 @@ def exportEnvMaps(image, layer, folderName, subFolderName, fileName, format):
             pdb.python_fu_marvelmods_basic_exportDDS(exportImage, exportLayer, folderName, subFolderName, outFileName, 0, 1)
 
 # Define the main operation
-def exportSkinEnv(image, layer, console, alchemyVersion, pspFormat):
+def exportSkinEnv(image, layer, primarySize, console, alchemyVersion, pspFormat):
     # Save the file and get its path and name
     (folderName, fileName) = pdb.python_fu_marvelmods_basic_get_path_save(image, layer)
     # Check for errors
@@ -175,29 +175,48 @@ def exportSkinEnv(image, layer, console, alchemyVersion, pspFormat):
         # Determine the console
         if console == 1:
             # PC Only
-            # Export for PC
-            exportEnvMaps(exportImage, exportLayer, folderName, "PC", fileName, "PNG8")
-            # Determine the version of Alchemy
-            if alchemyVersion == 0:
-                # Alchemy 2.5
-                # Export for Steam
-                exportEnvMaps(exportImage, exportLayer, folderName, "Steam", fileName, "DXT1 BGR")
+            # Determine the size of the primary texture
+            if primarySize == 0:
+                # 256x256 or less
+                # Export for PC
+                exportEnvMaps(exportImage, exportLayer, folderName, "PC", fileName, "PNG8")
+                # Determine the version of Alchemy
+                if alchemyVersion == 0:
+                    # Alchemy 2.5
+                    # Export for Steam
+                    exportEnvMaps(exportImage, exportLayer, folderName, "Steam", fileName, "DXT1 BGR")
+                else:
+                    # Alchemy 5 (either)
+                    # Export for Steam
+                    exportEnvMaps(exportImage, exportLayer, folderName, "Steam", fileName, "DXT1 RGB")
             else:
-                # Alchemy 5 (either)
-                # Export for Steam
-                exportEnvMaps(exportImage, exportLayer, folderName, "Steam", fileName, "DXT1 RGB")
+                # over 256x256
+                # Determine the version of Alchemy
+                if alchemyVersion == 0:
+                    # Alchemy 2.5
+                    # Export for XML2 PC
+                    exportEnvMaps(exportImage, exportLayer, folderName, "XML2 PC", fileName, "DXT1 RGB")
+                    # Export for MUA1 PC and Steam
+                    exportEnvMaps(exportImage, exportLayer, folderName, "MUA1 PC and Steam", fileName, "DXT1 BGR")
+                else:
+                    # Alchemy 5 (either)
+                    # Export for MUA1 PC and Steam
+                    exportEnvMaps(exportImage, exportLayer, folderName, "MUA1 PC and Steam", fileName, "DXT1 RGB")                
         else:
             # All consoles
             # Determine the width
-                if currentWidth > 32:
-                    # Normal size
-                    # Export for PC and MUA1 360
-                    exportEnvMaps(exportImage, exportLayer, folderName, "PC and MUA1 360", fileName, "PNG8")
-                    # Determine the version of Alchemy
-                    if alchemyVersion == 0:
-                        # Alchemy 2.5
+            if currentWidth > 32:
+                # Normal size
+                # Determine the version of Alchemy
+                if alchemyVersion == 0:
+                    # Alchemy 2.5
+                    # Determine the size of the primary texture
+                    if primarySize == 0:
+                        # 256x256 or less
+                        # Export for PC and MUA1 360
+                        exportEnvMaps(exportImage, exportLayer, folderName, "PC and MUA1 360", fileName, "PNG8")
                         # Export for Steam and PS3
-                        exportEnvMaps(exportImage, exportLayer, folderName, "Steam and PS3", fileName, "DXT1 BGR")
+                        exportEnvMaps(exportImage, exportLayer, folderName, "MUA1 Steam and PS3", fileName, "DXT1 BGR")
                         # Get the scale factor
                         scaleFactor = currentWidth / 32
                         # Reduce the image size
@@ -206,103 +225,146 @@ def exportSkinEnv(image, layer, console, alchemyVersion, pspFormat):
                         exportEnvMaps(exportImage, exportLayer, folderName, "Xbox", fileName, "PNG8")
                         # Export for Wii
                         exportEnvMaps(exportImage, exportLayer, folderName, "Wii", fileName, "DXT1 RGB")
-                        # Resize to half size
-                        pdb.python_fu_marvelmods_scaling_scaleHalf(exportImage, exportLayer)
-                        # Export for PS2
-                        exportEnvMaps(exportImage, exportLayer, folderName, "PS2", fileName, "PNG8")
-                        # Resize to half size
-                        pdb.python_fu_marvelmods_scaling_scaleHalf(exportImage, exportLayer)
+                    else:
+                        # over 256x256
+                        # Export for XML2 PC
+                        exportEnvMaps(exportImage, exportLayer, folderName, "XML2 PC", fileName, "DXT1 RGB")
+                        # Export for MUA1 PC, Steam, 360, and PS3
+                        exportEnvMaps(exportImage, exportLayer, folderName, "MUA1 PC, Steam, 360, and PS3", fileName, "DXT1 BGR")
+                        # Get the scale factor
+                        scaleFactor = currentWidth / 32
+                        # Reduce the image size
+                        pdb.python_fu_marvelmods_scaling_scaleAny(exportImage, exportLayer, scaleFactor)
+                        # Export for Xbox and Wii
+                        exportEnvMaps(exportImage, exportLayer, folderName, "Xbox and Wii", fileName, "DXT1 RGB")
+                    # Resize to half size
+                    pdb.python_fu_marvelmods_scaling_scaleHalf(exportImage, exportLayer)
+                    # Export for PS2
+                    exportEnvMaps(exportImage, exportLayer, folderName, "PS2", fileName, "PNG8")
+                    # Resize to half size
+                    pdb.python_fu_marvelmods_scaling_scaleHalf(exportImage, exportLayer)
+                    # Determine the PSP format
+                    if pspFormat == 0:
+                        # PSP is PNG4
+                        # Export for PSP
+                        exportEnvMaps(exportImage, exportLayer, folderName, "PSP", fileName, "PNG4")
+                        # Export for GameCube and MUA2 PS2
+                        exportEnvMaps(exportImage, exportLayer, folderName, "GameCube and MUA2 PS2", fileName, "PNG8")
+                    else:
+                        # PSP is PNG8
+                        # Export for GameCube, PSP, and MUA2 PS2
+                        exportEnvMaps(exportImage, exportLayer, folderName, "GameCube, PSP, and MUA2 PS2", fileName, "PNG8")
+                else:
+                    # Alchemy 5 (either)
+                    # Determine the size of the primary texture
+                    if primarySize == 0:
+                        # 256x256 or smaller
+                        # Export for PC and MUA1 360
+                        exportEnvMaps(exportImage, exportLayer, folderName, "PC and MUA1 360", fileName, "PNG8")
+                        # Export for Steam and PS3
+                        exportEnvMaps(exportImage, exportLayer, folderName, "MUA1 Steam and PS3", fileName, "DXT1 RGB")
+                    else:
+                        # over 256x256
+                        # Export for MUA1 PC, Steam, 360, and PS3
+                        exportEnvMaps(exportImage, exportLayer, folderName, "MUA1 PC, Steam, 360, and PS3", fileName, "DXT1 RGB")                        
+                    # Determine which alchemy 5 version was picked
+                    if alchemyVersion == 1:
+                        # Alchemy 5 in 3ds Max
+                        # Get the scale factor
+                        scaleFactor = currentWidth / 32
+                        # Reduce the image size
+                        pdb.python_fu_marvelmods_scaling_scaleAny(exportImage, exportLayer, scaleFactor)
+                        # Export for Wii
+                        exportEnvMaps(exportImage, exportLayer, folderName, "Wii", fileName, "DXT1 RGB")
+                        # Resize to quarter size
+                        pdb.python_fu_marvelmods_scaling_scaleQuarter(exportImage, exportLayer)
                         # Determine the PSP format
                         if pspFormat == 0:
                             # PSP is PNG4
                             # Export for PSP
                             exportEnvMaps(exportImage, exportLayer, folderName, "PSP", fileName, "PNG4")
                             # Export for GameCube and MUA2 PS2
-                            exportEnvMaps(exportImage, exportLayer, folderName, "GameCube and MUA2 PS2", fileName, "PNG8")
+                            exportEnvMaps(exportImage, exportLayer, folderName, "MUA2 PS2", fileName, "PNG8")
                         else:
                             # PSP is PNG8
                             # Export for GameCube, PSP, and MUA2 PS2
-                            exportEnvMaps(exportImage, exportLayer, folderName, "GameCube, PSP, and MUA2 PS2", fileName, "PNG8")
-                    else:
-                        # Alchemy 5 (either)
-                        # Export for Steam
-                        exportEnvMaps(exportImage, exportLayer, folderName, "Steam and PS3", fileName, "DXT1 RGB")
-                        # Determine which alchemy 5 version was picked
-                        if alchemyVersion == 1:
-                            # Alchemy 5 in 3ds Max
-                            # Get the scale factor
-                            scaleFactor = currentWidth / 32
-                            # Reduce the image size
-                            pdb.python_fu_marvelmods_scaling_scaleAny(exportImage, exportLayer, scaleFactor)
-                            # Export for Wii
-                            exportEnvMaps(exportImage, exportLayer, folderName, "Wii", fileName, "DXT1 RGB")
-                            # Resize to quarter size
-                            pdb.python_fu_marvelmods_scaling_scaleQuarter(exportImage, exportLayer)
-                            # Determine the PSP format
-                            if pspFormat == 0:
-                                # PSP is PNG4
-                                # Export for PSP
-                                exportEnvMaps(exportImage, exportLayer, folderName, "PSP", fileName, "PNG4")
-                                # Export for GameCube and MUA2 PS2
-                                exportEnvMaps(exportImage, exportLayer, folderName, "MUA2 PS2", fileName, "PNG8")
-                            else:
-                                # PSP is PNG8
-                                # Export for GameCube, PSP, and MUA2 PS2
-                                exportEnvMaps(exportImage, exportLayer, folderName, "PSP and MUA2 PS2", fileName, "PNG8")
-                else:
-                    # Size is 32x32 or less
-                    # Determine the version of Alchemy
-                    if alchemyVersion == 0:
-                        # Alchemy 2.5
+                            exportEnvMaps(exportImage, exportLayer, folderName, "PSP and MUA2 PS2", fileName, "PNG8")
+            else:
+                # Size is 32x32 or less
+                # Determine the version of Alchemy
+                if alchemyVersion == 0:
+                    # Alchemy 2.5
+                    # Determine the size of the primary texture
+                    if primarySize == 0:
+                        # 256x256 or less
                         # Export for Steam and PS3
-                        exportEnvMaps(exportImage, exportLayer, folderName, "Steam and PS3", fileName, "DXT1 BGR")
+                        exportEnvMaps(exportImage, exportLayer, folderName, "MUA1 Steam and PS3", fileName, "DXT1 BGR")
                         # Export for Xbox
                         exportEnvMaps(exportImage, exportLayer, folderName, "PC, Xbox, and MUA1 360", fileName, "PNG8")
                         # Export for Wii
                         exportEnvMaps(exportImage, exportLayer, folderName, "Wii", fileName, "DXT1 RGB")
-                        # Resize to half size
-                        pdb.python_fu_marvelmods_scaling_scaleHalf(exportImage, exportLayer)
-                        # Export for PS2
-                        exportEnvMaps(exportImage, exportLayer, folderName, "PS2", fileName, "PNG8")
-                        # Resize to half size
-                        pdb.python_fu_marvelmods_scaling_scaleHalf(exportImage, exportLayer)
-                        # Determine the PSP format
-                        if pspFormat == 0:
-                            # PSP is PNG4
-                            # Export for PSP
-                            exportEnvMaps(exportImage, exportLayer, folderName, "PSP", fileName, "PNG4")
-                            # Export for GameCube and MUA2 PS2
-                            exportEnvMaps(exportImage, exportLayer, folderName, "GameCube and MUA2 PS2", fileName, "PNG8")
-                        else:
-                            # PSP is PNG8
-                            # Export for GameCube, PSP, and MUA2 PS2
-                            exportEnvMaps(exportImage, exportLayer, folderName, "GameCube, PSP, and MUA2 PS2", fileName, "PNG8")
                     else:
-                        # Alchemy 5 (either)
+                        # over 256x256
+                        # Export for MUA1 PC, Steam, 360, and PS3
+                        exportEnvMaps(exportImage, exportLayer, folderName, "MUA1 PC, Steam, 360, and PS3", fileName, "DXT1 BGR")
+                        # Export for Xbox and Wii
+                        exportEnvMaps(exportImage, exportLayer, folderName, "Xbox, Wii, and XML2 PC", fileName, "DXT1 RGB")                        
+                    # Resize to half size
+                    pdb.python_fu_marvelmods_scaling_scaleHalf(exportImage, exportLayer)
+                    # Export for PS2
+                    exportEnvMaps(exportImage, exportLayer, folderName, "PS2", fileName, "PNG8")
+                    # Resize to half size
+                    pdb.python_fu_marvelmods_scaling_scaleHalf(exportImage, exportLayer)
+                    # Determine the PSP format
+                    if pspFormat == 0:
+                        # PSP is PNG4
+                        # Export for PSP
+                        exportEnvMaps(exportImage, exportLayer, folderName, "PSP", fileName, "PNG4")
+                        # Export for GameCube and MUA2 PS2
+                        exportEnvMaps(exportImage, exportLayer, folderName, "GameCube and MUA2 PS2", fileName, "PNG8")
+                    else:
+                        # PSP is PNG8
+                        # Export for GameCube, PSP, and MUA2 PS2
+                        exportEnvMaps(exportImage, exportLayer, folderName, "GameCube, PSP, and MUA2 PS2", fileName, "PNG8")
+                elif alchemyVersion == 1:
+                    # Alchemy 5 in 3ds Max
+                    # Determine the size of the primary texture
+                    if primarySize == 0:
+                        # 256x256 or less
                         # Export for PC
                         exportEnvMaps(exportImage, exportLayer, folderName, "PC and MUA1 360", fileName, "PNG8")
-                        # Determine which alchemy 5 version was picked
-                        if alchemyVersion == 1:
-                            # Alchemy 5 in 3ds Max
-                            # Export for Wii
-                            exportEnvMaps(exportImage, exportLayer, folderName, "Wii and MUA1 Steam and PS3", fileName, "DXT1 RGB")
-                            # Resize to quarter size
-                            pdb.python_fu_marvelmods_scaling_scaleQuarter(exportImage, exportLayer)
-                            # Determine the PSP format
-                            if pspFormat == 0:
-                                # PSP is PNG4
-                                # Export for PSP
-                                exportEnvMaps(exportImage, exportLayer, folderName, "PSP", fileName, "PNG4")
-                                # Export for GameCube and MUA2 PS2
-                                exportEnvMaps(exportImage, exportLayer, folderName, "MUA2 PS2", fileName, "PNG8")
-                            else:
-                                # PSP is PNG8
-                                # Export for GameCube, PSP, and MUA2 PS2
-                                exportEnvMaps(exportImage, exportLayer, folderName, "PSP and MUA2 PS2", fileName, "PNG8")         
-                        else:
-                            # Alchemy 5 raven setup
-                            # Export for Steam and PS3
-                            exportEnvMaps(exportImage, exportLayer, folderName, "MUA1 Steam and PS3", fileName, "DXT1 RGB")
+                        # Export for Wii
+                        exportEnvMaps(exportImage, exportLayer, folderName, "Wii, MUA1 Steam and PS3", fileName, "DXT1 RGB")
+                    else:
+                        # over 256x256
+                        # Export for Wii
+                        exportEnvMaps(exportImage, exportLayer, folderName, "Wii, MUA1 PC, Steam, 360, and PS3", fileName, "DXT1 RGB")
+                    # Resize to quarter size
+                    pdb.python_fu_marvelmods_scaling_scaleQuarter(exportImage, exportLayer)
+                    # Determine the PSP format
+                    if pspFormat == 0:
+                        # PSP is PNG4
+                        # Export for PSP
+                        exportEnvMaps(exportImage, exportLayer, folderName, "PSP", fileName, "PNG4")
+                        # Export for GameCube and MUA2 PS2
+                        exportEnvMaps(exportImage, exportLayer, folderName, "MUA2 PS2", fileName, "PNG8")
+                    else:
+                        # PSP is PNG8
+                        # Export for GameCube, PSP, and MUA2 PS2
+                        exportEnvMaps(exportImage, exportLayer, folderName, "PSP and MUA2 PS2", fileName, "PNG8")
+                else:
+                    # Alchemy 5 raven setup
+                    # Determine the size of the primary texture
+                    if primarySize == 0:
+                        # 256x256 or less
+                        # Export for PC
+                        exportEnvMaps(exportImage, exportLayer, folderName, "PC and MUA1 360", fileName, "PNG8")
+                        # Export for Wii
+                        exportEnvMaps(exportImage, exportLayer, folderName, "MUA1 Steam and PS3", fileName, "DXT1 RGB")
+                    else:
+                        # over 256x256
+                        # Export for Wii
+                        exportEnvMaps(exportImage, exportLayer, folderName, "MUA1 PC, Steam, 360, and PS3", fileName, "DXT1 RGB")
         # Announce completion
         pdb.gimp_message("Export complete.")
     else:
@@ -327,6 +389,7 @@ register(
     [
         (PF_IMAGE, "image", "Input image", None),
         (PF_DRAWABLE, "layer", "Layer, mask or channel", None),
+        (PF_OPTION, "primarySize", "Primary Texture Size:", 0, ["256x256 or less","Over 256x256"]),
         (PF_OPTION, "console", "Console:", 0, ["All","PC Only"]),
         (PF_OPTION, "alchemyVersion", "Alchemy Version:", 0, ["Alchemy 2.5","Alchemy 5 (3ds Max)","Alchemy 5 (Raven Set Up Material)"]),
         (PF_OPTION, "pspFormat", "PSP Texture Compression:", 1, ["PNG4","PNG8"])
