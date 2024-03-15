@@ -48,7 +48,7 @@ def exportSkinSecondary(image, layer):
     transparency = 1
     PSPFormat = 1
     # Call the main script
-    pdb.python_fu_marvelmods_export_asset_skin_seconary(image, layer, primarySize, console, skinType, charSize, alchemyVersion, transparency, PSPFormat)
+    pdb.python_fu_marvelmods_export_asset_skin_secondary(image, layer, primarySize, console, skinType, charSize, alchemyVersion, transparency, PSPFormat)
 
 
 # ######## #
