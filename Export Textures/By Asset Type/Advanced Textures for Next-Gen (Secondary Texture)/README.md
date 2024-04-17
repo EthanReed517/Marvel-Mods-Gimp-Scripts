@@ -25,8 +25,12 @@ This script will only work correctly if the image has been saved as a .xcf file.
 	  - `All`: Choose if you want to export textures for all available consoles.
 	  - `PC only`: Choose if you want to export textures for the PC versions only.
 	- **Alchemy Version**:
-	  - `Alchemy 2.5`: Choose if your version of 3ds Max has the Alchemy 2.5 exporter. The Alchemy 2.5 exporter is included on the virtual machine version of 3ds Max 5.
-	  - `Alchemy 5`: Choose if your version of 3ds Max has the Alchemy 5 exporter. The Alchemy 5 exporter is most commonly used with 3ds Max 10 and 3ds Max 12.
+	  - `Alchemy 2.5`: Choose if you're using the older Alchemy 2.5 tool to add advanced textures.
+	  - `Alchemy 5`: Choose if you're using the newer Alchemy 5 tool to add advanced textures.
+	- **Steam/360 Normal Map Color**:
+	  - `Yellow`: Choose this if you want the normal map to be the yellow format that is common to most Steam and Xbox 360 models.
+	  - `Blue`: Choose this if you want the normal map to be the blue format that is common to fewer Steam and Xbox 360 models.
+	  - **Note**: Regardless of what you choose for the color, the normal map will function the same way on the Steam and 360. The only change is whether the blue channel is fully black or white; it doesn't contain any actual information. This option is just here to cover both default styles. 
 4. If one or both of the image dimensions is not a power of 2, you will get an error warning as such, and the process will be aborted. Alchemy only supports images whose dimensions are powers of 2.
 5. The .xcf will be saved and several additional operations will be run while the texture is being exported to the various folders in different formats. The operations will depend on the options selected. Textures that are the same will be grouped together. See below for a list of the texture types that will be exported for each console. 
 6. This script creates duplicate images to export, so you will not see any changes on your texture. Wait for the status bar to finish before proceeding with any further operations to your texture. Once it's done running, a message will announce that the export is complete.
@@ -42,7 +46,7 @@ This script will only work correctly if the image has been saved as a .xcf file.
    - **Alchemy Version**: 
      - `Alchemy 2.5`: Any dds textures for MUA1 PC will be RGB-BGR swapped.
      - `Alchemy 5`: This option will not change the texture
-   - **Console** has no impact on PC textures.
+   - **Console** and **Steam/360 Normal Map Color** have no impact on PC textures.
  - **Steam**:
    - Textures will be exported as DXT1 dds files.
    - **Advanced Texture Type**:
@@ -53,7 +57,11 @@ This script will only work correctly if the image has been saved as a .xcf file.
    - **Alchemy Version**: 
      - `Alchemy 2.5`: This option will RGB-BGR swap Steam textures.
      - `Alchemy 5`: This option will not RGB-BGR swap Steam textures.
-   - **Console** have no impact on Steam textures.
+   - **Steam/360 Normal Map Color**:
+     - `Yellow`: This option will make normal maps yellow.
+	 - `Blue`: This option will make normal maps blue.
+	 - **Note**: Regardless of what you choose for the color, the normal map will function the same way. The only change is whether the blue channel is fully black or white; it doesn't contain any actual information. This option is just here to cover both default styles. 
+   - **Console** has no impact on Steam textures.
  - **PS3**:
    - Textures will be exported as DXT1 dds files.
    - PS3 textures will presumably work on the PS4 re-release, but this hasn't been confirmed.
@@ -68,7 +76,7 @@ This script will only work correctly if the image has been saved as a .xcf file.
    - **Alchemy Version**: 
      - `Alchemy 2.5`: This option will RGB-BGR swap PS3 textures.
      - `Alchemy 5`: This option will not RGB-BGR swap PS3 textures.
-   - **Console** have no impact on PS3 textures.
+   - **Steam/360 Normal Map Color** has no impact on PC textures.
  - **Xbox 360**:
    - Textures over 256x256 will be exported as DXT1 dds files, and 256x256 or less will export as PNG8 files. This threshold can be modified by other settings.
    - Xbox 360 textures will presumably work on the Xbox One re-release, but this hasn't been confirmed.
@@ -83,5 +91,9 @@ This script will only work correctly if the image has been saved as a .xcf file.
    - **Alchemy Version**: 
      - `Alchemy 2.5`: Any dds textures for Xbox 360 will be RGB-BGR swapped.
      - `Alchemy 5`: This option will not change the texture
+   - **Steam/360 Normal Map Color**:
+     - `Yellow`: This option will make normal maps yellow.
+	 - `Blue`: This option will make normal maps blue.
+	 - **Note**: Regardless of what you choose for the color, the normal map will function the same way. The only change is whether the blue channel is fully black or white; it doesn't contain any actual information. This option is just here to cover both default styles. 
 ## Credits
 - BaconWizard17: Script creation
