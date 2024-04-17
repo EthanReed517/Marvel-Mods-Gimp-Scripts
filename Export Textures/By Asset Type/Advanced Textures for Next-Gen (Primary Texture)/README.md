@@ -30,7 +30,7 @@ This script will only work correctly if the image has been saved as a .xcf file.
 
 ## Export Types
  - **PC**:
-   - Textures over 256x256 will be exported as dds files, and 256x256 or less will export as png files. This threshold can be modified by other settings.
+   - Textures over 256x256 will be exported as DXT1 dds files, and 256x256 or less will export as PNG8 files. This threshold can be modified by other settings.
    - **Advanced Texture Type**:
 	 - `Normal Map`: Changes the export to DXT5 .dds. Adds "_n" to the end of the file name.
 	 - `Specular Map`: Adds "_s" to the end of the file name.
@@ -41,9 +41,9 @@ This script will only work correctly if the image has been saved as a .xcf file.
      - `Alchemy 5`: This option will not change the texture
    - **Console** has no impact on PC textures.
  - **Steam**:
-   - Textures will be exported as DXT1 dds files unless modified by other settings.
+   - Textures will be exported as DXT1 dds files.
    - **Advanced Texture Type**:
-	 - `Normal Map`: Changes the export to DXT5 .dds. Adds "_n" to the end of the file name.
+	 - `Normal Map`: Modifies the texture to the yellow normal map style required by the Steam version. Adds "_n" to the end of the file name.
 	 - `Specular Map`: Adds "_s" to the end of the file name.
 	 - `Gloss/Emissive Map`: Adds "_g" to the end of the file name.
 	 - `Environment Mask`: Adds "_m" to the end of the file name.
@@ -52,7 +52,7 @@ This script will only work correctly if the image has been saved as a .xcf file.
      - `Alchemy 5`: This option will not RGB-BGR swap Steam textures.
    - **Console** have no impact on Steam textures.
  - **PS3**:
-   - Textures will be exported as dds files unless modified by other settings.
+   - Textures will be exported as DXT1 dds files.
    - PS3 textures will presumably work on the PS4 re-release, but this hasn't been confirmed.
    - **Advanced Texture Type**:
 	 - `Normal Map`: Changes the export to DXT5 .dds. Adds "_n" to the end of the file name.
@@ -67,10 +67,10 @@ This script will only work correctly if the image has been saved as a .xcf file.
      - `Alchemy 5`: This option will not RGB-BGR swap PS3 textures.
    - **Console** have no impact on PS3 textures.
  - **Xbox 360**:
-   - Textures over 256x256 will be exported as dds files, and 256x256 or less will export as png files. This threshold can be modified by other settings.
+   - Textures over 256x256 will be exported as DXT1 dds files, and 256x256 or less will export as PNG8 files. This threshold can be modified by other settings.
    - Xbox 360 textures will presumably work on the Xbox One re-release, but this hasn't been confirmed.
    - **Advanced Texture Type**:
-	 - `Normal Map`: Changes the export to DXT5 .dds. Adds "_n" to the end of the file name.
+	 - `Normal Map`: Modifies the texture to the yellow normal map style required by the Xbox 360 version. Adds "_n" to the end of the file name.
 	 - `Specular Map`: Adds "_s" to the end of the file name.
 	 - `Gloss/Emissive Map`: Adds "_g" to the end of the file name.
 	 - `Environment Mask`: Adds "_m" to the end of the file name.

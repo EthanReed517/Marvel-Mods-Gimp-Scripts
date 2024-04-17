@@ -69,6 +69,35 @@ def sizeCheck(currentWidth, currentHeight):
         oversized = False
     return oversized
 
+# Define the function for exporting the two types of normal maps.
+def exportNorm(currentWidth, currentHeight, exportImage, exportLayer, folderName, greenFolderName, yellowFolderNameList, fileName, BGR):
+    # Export the green normal map
+    pdb.python_fu_marvelmods_basic_exportDDS(exportImage, exportLayer, folderName, greenFolderName, fileName, 2, BGR)
+    # Decompose the image
+    redImage, greenImage, blueImage, alphaImage = pdb.plug_in_decompose(exportImage, exportLayer, "RGBA", 0)
+    # Create a plain white image
+    whiteImage = pdb.gimp_image_new(currentWidth, currentHeight, 0)
+    # Create a layer for the plain white image
+    whiteLayer = pdb.gimp_layer_new(whiteImage, currentWidth, currentHeight, 0, "Background", 100, 28)
+    # Get the current layer of the white image
+    whiteLayer2 = pdb.gimp_image_get_active_layer(whiteImage)
+    # Apply the layer to the image
+    pdb.gimp_image_insert_layer(whiteImage, whiteLayer, whiteLayer2, 0)
+    # Set the background fill color
+    pdb.gimp_context_set_background((255, 255, 255))
+    # Fill the layer with the background color
+    pdb.gimp_drawable_fill(whiteLayer, 1)
+    # Compose the image
+    exportImage = pdb.plug_in_compose(greenImage, exportLayer, alphaImage, redImage, whiteImage, "RGBA")
+    # Get the active layer of the new image
+    exportLayer = pdb.gimp_image_get_active_layer(exportImage)
+    # Export the first yellow folder (there will always be one, and it will always be the DXT1 folder)
+    pdb.python_fu_marvelmods_basic_exportDDS(exportImage, exportLayer, folderName, yellowFolderNameList[0], fileName, 0, BGR)
+    if len(yellowFolderNameList) == 2:
+        # Two yellow folders
+        # export the second as PNG8
+        pdb.python_fu_marvelmods_basic_exportPNG(exportImage, exportLayer, folderName, yellowFolderNameList[1], fileName, 2)
+
 # Define the main operation
 def exportSkinAdv(image, layer, textureType, console, alchemyVersion):
     # Save the file and get its path and name
@@ -104,22 +133,38 @@ def exportSkinAdv(image, layer, textureType, console, alchemyVersion):
                 if alchemyVersion == 0:
                     # Alchemy 2.5
                     # Export for MUA1 PC and Steam
-                    pdb.python_fu_marvelmods_basic_exportDDS(exportImage, exportLayer, folderName, "MUA1 PC and Steam", fileName, 2, 1)
+                    exportNorm(currentWidth, currentHeight, exportImage, exportLayer, folderName, "MUA1 PC", ["MUA1 Steam"], fileName, 1)
                 else:
                     # Alchemy 5
                     # Export for MUA1 PC and Steam
-                    pdb.python_fu_marvelmods_basic_exportDDS(exportImage, exportLayer, folderName, "MUA1 PC and Steam", fileName, 2, 0)
+                    exportNorm(currentWidth, currentHeight, exportImage, exportLayer, folderName, "MUA1 PC", ["MUA1 Steam"], fileName, 0)
             else:
                 # All consoles
-                # Determine the Alchemy version
-                if alchemyVersion == 0:
-                    # Alchemy 2.5
-                    # Export for next-gen MUA1
-                    pdb.python_fu_marvelmods_basic_exportDDS(exportImage, exportLayer, folderName, "MUA1 PC, Steam, PS3, and 360", fileName, 2, 1)
+                # Determine if the image is oversized
+                oversized = sizeCheck(currentWidth, currentHeight)
+                # Determine if the image is oversized
+                if oversized == True:
+                    # The image is oversized
+                    # Determine the Alchemy version
+                    if alchemyVersion == 0:
+                        # Alchemy 2.5
+                        # Export for next-gen MUA1
+                        exportNorm(currentWidth, currentHeight, exportImage, exportLayer, folderName, "MUA1 PC and PS3", ["MUA1 Steam and 360"], fileName, 1)
+                    else:
+                        # Alchemy 5
+                        # Export for next-gen MUA1
+                        exportNorm(currentWidth, currentHeight, exportImage, exportLayer, folderName, "MUA1 PC and PS3", ["MUA1 Steam and 360"], fileName, 0)
                 else:
-                    # Alchemy 5
-                    # Export for next-gen MUA1
-                    pdb.python_fu_marvelmods_basic_exportDDS(exportImage, exportLayer, folderName, "MUA1 PC, Steam, PS3, and 360", fileName, 2, 0)
+                    # The image is not oversized
+                    # Determine the Alchemy version
+                    if alchemyVersion == 0:
+                        # Alchemy 2.5
+                        # Export for next-gen MUA1
+                        exportNorm(currentWidth, currentHeight, exportImage, exportLayer, folderName, "MUA1 PC and PS3", ["MUA1 Steam", "MUA1 360"], fileName, 1)
+                    else:
+                        # Alchemy 5
+                        # Export for next-gen MUA1
+                        exportNorm(currentWidth, currentHeight, exportImage, exportLayer, folderName, "MUA1 PC and PS3", ["MUA1 Steam", "MUA1 360"], fileName, 0)
         else:
             # All others
             # Determine if the image is oversized
