@@ -238,11 +238,11 @@ def exportSkinAdv(image, layer, textureType, console, alchemyVersion, normalColo
                         # Export for Steam
                         pdb.python_fu_marvelmods_basic_exportDDS(exportImage, exportLayer, folderName, "MUA1 Steam and PS3", fileName, 0, 0)
         # Announce completion
-        pdb.gimp_message("Export complete.")
+        pdb.gimp_message(fileName + " was successfully exported.")
     else:
         # Errors, cannot proceed
         # Display an error message
-        pdb.gimp_message("The image was not exported.")
+        pdb.gimp_message(fileName + " could not be exported.")
 
 
 # ######## #

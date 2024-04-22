@@ -386,11 +386,11 @@ def exportHUD(image, layer, console, plainChoice, nextGenChoice, heroOutlineChoi
             # Export a next-gen-style portrait
             exportNGHUD(image, console, folderName, fileName, currentWidth, alchemyVersion)
         # Announce completion
-        pdb.gimp_message("Export complete.")
+        pdb.gimp_message(fileName + " was successfully exported.")
     else:
         # Errors, cannot proceed
         # Display an error message
-        pdb.gimp_message("The image was not exported.")
+        pdb.gimp_message(fileName + " could not be exported.")
 
 
 # ######## #

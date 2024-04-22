@@ -386,11 +386,11 @@ def exportSkin(image, layer, console, skinType, charSize, alchemyVersion, transp
                             # Export for PSP and MUA2 PS2
                             pdb.python_fu_marvelmods_basic_exportPNG(exportImage, exportLayer, folderName, "PSP and MUA2 PS2", fileName, 2)
         # Announce completion
-        pdb.gimp_message("Export complete.")
+        pdb.gimp_message(fileName + " was successfully exported.")
     else:
         # Errors, cannot proceed
         # Display an error message
-        pdb.gimp_message("The image was not exported.")
+        pdb.gimp_message(fileName + " could not be exported.")
 
 
 # ######## #

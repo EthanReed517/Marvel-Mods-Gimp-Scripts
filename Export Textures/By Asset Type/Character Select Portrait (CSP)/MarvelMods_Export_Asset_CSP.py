@@ -146,8 +146,8 @@ def exportXML2CSP(image, console, folderName, fileName, currentWidth):
     # Set up the file name
     outFileName = "x2c_" + fileName
     # Filter remaining options based on the image size
-    if currentWidth <= 128:
-        # Console resolution or standard resolution
+    if currentWidth == 64:
+       # Console resolution
         # Filter remaining export options based on console selection
         if console == 1:
             # PC Only
@@ -157,6 +157,21 @@ def exportXML2CSP(image, console, folderName, fileName, currentWidth):
             # All consoles
             # Export the cross-compatible version
             pdb.python_fu_marvelmods_basic_exportPNG(exportImage, exportLayer, folderName, "All", outFileName, 2)
+    elif currentWidth == 128:
+        # standard resolution
+        # Filter remaining export options based on console selection
+        if console == 1:
+            # PC Only
+            # Export for PC
+            pdb.python_fu_marvelmods_basic_exportPNG(exportImage, exportLayer, folderName, "PC", outFileName, 2)
+        else:
+            # All consoles
+            # Export the cross-compatible version
+            pdb.python_fu_marvelmods_basic_exportPNG(exportImage, exportLayer, folderName, "All except PSP", outFileName, 2)
+            # Resize to 64x64
+            pdb.python_fu_marvelmods_scaling_scaleHalf(exportImage, exportLayer)
+            # Export the PSP version
+            pdb.python_fu_marvelmods_basic_exportPNG(exportImage, exportLayer, folderName, "PSP", outFileName, 2)
     else:
         # HD resolution and higher
         # Filter based on console selection
@@ -173,7 +188,11 @@ def exportXML2CSP(image, console, folderName, fileName, currentWidth):
             # Resize to 128x128
             pdb.python_fu_marvelmods_scaling_scaleAny(exportImage, exportLayer, reducedWidth)
             # Export the console version
-            pdb.python_fu_marvelmods_basic_exportPNG(exportImage, exportLayer, folderName, "Consoles", outFileName, 2)
+            pdb.python_fu_marvelmods_basic_exportPNG(exportImage, exportLayer, folderName, "GC, PS2, and Xbox", outFileName, 2)
+            # Resize to 64x64
+            pdb.python_fu_marvelmods_scaling_scaleHalf(exportImage, exportLayer)
+            # Export the PSP version
+            pdb.python_fu_marvelmods_basic_exportPNG(exportImage, exportLayer, folderName, "PSP", outFileName, 2)
 
 # Define the main operation
 def exportCSP(image, layer, console, xml1Choice, xml2Choice):
@@ -184,27 +203,29 @@ def exportCSP(image, layer, console, xml1Choice, xml2Choice):
     # Determine if it's okay to proceed
     if canProceed == True:
         # No errors, can proceed
-        # Determine if an XML1 portrait should be exported
-        if xml1Choice == 1:
-            # XML1 portrait needed
-            # Export for XML1
-            exportXML1CSP(image, console, folderName, fileName, currentWidth)
-        # Determine if an XML2 portrait should be exported
-        if xml2Choice == 1:
-            # XML2 portrait needed
-            # Export for XML2
-            exportXML2CSP(image, console, folderName, fileName, currentWidth)
         # Determine if no portrait was exported
         if (xml1Choice == 0) and (xml2Choice == 0):
             # No portrait was exported
             # Display an error message
             pdb.gimp_message("Nothing was exported. Choose at least one export type.")
-        # Announce completion
-        pdb.gimp_message("Export complete.")
+        else:
+            # Something was picked
+            # Determine if an XML1 portrait should be exported
+            if xml1Choice == 1:
+                # XML1 portrait needed
+                # Export for XML1
+                exportXML1CSP(image, console, folderName, fileName, currentWidth)
+            # Determine if an XML2 portrait should be exported
+            if xml2Choice == 1:
+                # XML2 portrait needed
+                # Export for XML2
+                exportXML2CSP(image, console, folderName, fileName, currentWidth)
+            # Announce completion
+            pdb.gimp_message(fileName + " was successfully exported.")
     else:
         # Errors, cannot proceed
         # Display an error message
-        pdb.gimp_message("The image was not exported.")
+        pdb.gimp_message(fileName + " could not be exported.")
 
 
 # ######## #
