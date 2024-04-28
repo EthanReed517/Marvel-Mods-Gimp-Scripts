@@ -366,11 +366,11 @@ def exportSkinEnv(image, layer, primarySize, console, alchemyVersion, pspFormat)
                         # Export for Wii
                         exportEnvMaps(exportImage, exportLayer, folderName, "MUA1 PC, Steam, 360, and PS3", fileName, "DXT1 RGB")
         # Announce completion
-        pdb.gimp_message(fileName + " was successfully exported.")
+        pdb.gimp_message(folderName + "\\" + fileName + ".xcf was successfully exported.")
     else:
         # Errors, cannot proceed
         # Display an error message
-        pdb.gimp_message(fileName + " could not be exported.")
+        pdb.gimp_message(folderName + "\\" + fileName + ".xcf could not be exported.")
 
 
 # ######## #

@@ -505,11 +505,11 @@ def exportCSPandHUD(image, layer, console, alchemyVersion, plainChoice, nextGenC
                 # Export for XML2
                 exportXML2CSP(image, console, folderName, fileName, currentWidth)
         # Announce completion
-        pdb.gimp_message(fileName + " was successfully exported.")
+        pdb.gimp_message(folderName + "\\" + fileName + ".xcf was successfully exported.")
     else:
         # Errors, cannot proceed
         # Display an error message
-        pdb.gimp_message(fileName + " could not be exported.")
+        pdb.gimp_message(folderName + "\\" + fileName + ".xcf could not be exported.")
 
 
 # ######## #

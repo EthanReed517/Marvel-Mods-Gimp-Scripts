@@ -91,11 +91,11 @@ def exportDXT3(image, layer, alchemyVersion, exportRGB, exportBGR):
                 # Display the warning.
                 pdb.gimp_message("WARNING: It is not necessary to RGB-BGR swap colors with Alchemy 5. No RGB-BGR-swapped texture was exported.")
         # Announce completion
-        pdb.gimp_message("Export complete.")
+        pdb.gimp_message(folderName + "\\" + fileName + ".xcf was successfully exported.")
     else:
         # Errors, cannot proceed
         # Display an error message
-        pdb.gimp_message("The image was not exported.")
+        pdb.gimp_message(folderName + "\\" + fileName + ".xcf could not be exported.")
 
 
 # ######## #

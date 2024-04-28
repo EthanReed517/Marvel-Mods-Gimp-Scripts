@@ -78,11 +78,11 @@ def exportTGA(image, layer, flattenChoice):
         # Export the image
         pdb.python_fu_marvelmods_basic_exportTGA(exportImage, exportLayer, folderName, "TGA", fileName)
         # Announce completion
-        pdb.gimp_message("Export complete.")
+        pdb.gimp_message(folderName + "\\" + fileName + ".xcf was successfully exported.")
     else:
         # Errors, cannot proceed
         # Display an error message
-        pdb.gimp_message("The image was not exported.")
+        pdb.gimp_message(folderName + "\\" + fileName + ".xcf could not be exported.")
 
 
 # ######## #

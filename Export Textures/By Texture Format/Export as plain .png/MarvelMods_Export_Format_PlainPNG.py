@@ -73,11 +73,11 @@ def exportPlainPNG(image, layer):
         # Export the image
         pdb.python_fu_marvelmods_basic_exportPNG(exportImage, exportLayer, folderName, "Plain PNG", fileName, 0)
         # Announce completion
-        pdb.gimp_message("Export complete.")
+        pdb.gimp_message(folderName + "\\" + fileName + ".xcf was successfully exported.")
     else:
         # Errors, cannot proceed
         # Display an error message
-        pdb.gimp_message("The image was not exported.")
+        pdb.gimp_message(folderName + "\\" + fileName + ".xcf could not be exported.")
 
 
 # ######## #
