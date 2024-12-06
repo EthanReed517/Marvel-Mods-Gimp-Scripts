@@ -125,29 +125,37 @@ def exportEnvMaps(image, layer, folderName, subFolderName, fileName, format):
                 layerToRemove = pdb.gimp_image_get_layer_by_name(exportImage, layerRemoveName)
                 # Remove the layer
                 pdb.gimp_image_remove_layer(exportImage, layerToRemove)
-        # Flatten the image
-        exportLayer = pdb.gimp_image_flatten(exportImage)
         # Set up the file name
         outFileName = fileName + "_" + suffix
         # Determine the export method
         if format == "PNG4":
             # PNG4 format
+            # Flatten the image
+            exportLayer = pdb.gimp_image_flatten(exportImage)
             # Export the image
             pdb.python_fu_marvelmods_basic_exportPNG(exportImage, exportLayer, folderName, subFolderName, outFileName, 1)
         elif format == "PNG8":
             # PNG8 format
+            # Flatten the image
+            exportLayer = pdb.gimp_image_flatten(exportImage)
             # Export the image
             pdb.python_fu_marvelmods_basic_exportPNG(exportImage, exportLayer, folderName, subFolderName, outFileName, 2)
         elif format == "Plain PNG":
             # Plain PNG format
+            # Get the active layer of the new image
+            exportLayer = pdb.gimp_image_get_active_layer(exportImage)
             # Export the image
             pdb.python_fu_marvelmods_basic_exportPNG(exportImage, exportLayer, folderName, subFolderName, outFileName, 0)
         elif format == "DXT1 RGB":
             # DXT1 RGB
+            # Flatten the image
+            exportLayer = pdb.gimp_image_flatten(exportImage)
             # Export the image
             pdb.python_fu_marvelmods_basic_exportDDS(exportImage, exportLayer, folderName, subFolderName, outFileName, 0, 0)
         else:
             # DXT1 BGR
+            # Flatten the image
+            exportLayer = pdb.gimp_image_flatten(exportImage)
             # Export the image
             pdb.python_fu_marvelmods_basic_exportDDS(exportImage, exportLayer, folderName, subFolderName, outFileName, 0, 1)
 
