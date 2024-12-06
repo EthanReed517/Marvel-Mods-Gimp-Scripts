@@ -138,6 +138,10 @@ def exportEnvMaps(image, layer, folderName, subFolderName, fileName, format):
             # PNG8 format
             # Export the image
             pdb.python_fu_marvelmods_basic_exportPNG(exportImage, exportLayer, folderName, subFolderName, outFileName, 2)
+        elif format == "Plain PNG":
+            # Plain PNG format
+            # Export the image
+            pdb.python_fu_marvelmods_basic_exportPNG(exportImage, exportLayer, folderName, subFolderName, outFileName, 0)
         elif format == "DXT1 RGB":
             # DXT1 RGB
             # Export the image
@@ -195,7 +199,7 @@ def exportSkinEnv(image, layer, primarySize, console, alchemyVersion, pspFormat)
                 if alchemyVersion == 0:
                     # Alchemy 2.5
                     # Export for XML2 PC
-                    exportEnvMaps(exportImage, exportLayer, folderName, "XML2 PC", fileName, "DXT1 RGB")
+                    exportEnvMaps(exportImage, exportLayer, folderName, "XML2 PC", fileName, "Plain PNG")
                     # Export for MUA1 PC and Steam
                     exportEnvMaps(exportImage, exportLayer, folderName, "MUA1 PC and Steam", fileName, "DXT1 BGR")
                 else:
@@ -224,11 +228,11 @@ def exportSkinEnv(image, layer, primarySize, console, alchemyVersion, pspFormat)
                         # Export for Xbox
                         exportEnvMaps(exportImage, exportLayer, folderName, "Xbox", fileName, "PNG8")
                         # Export for Wii
-                        exportEnvMaps(exportImage, exportLayer, folderName, "Wii", fileName, "DXT1 RGB")
+                        exportEnvMaps(exportImage, exportLayer, folderName, "Wii", fileName, "Plain PNG")
                     else:
                         # over 256x256
                         # Export for XML2 PC
-                        exportEnvMaps(exportImage, exportLayer, folderName, "XML2 PC", fileName, "DXT1 RGB")
+                        exportEnvMaps(exportImage, exportLayer, folderName, "XML2 PC", fileName, "Plain PNG")
                         # Export for MUA1 PC, Steam, 360, and PS3
                         exportEnvMaps(exportImage, exportLayer, folderName, "MUA1 PC, Steam, 360, and PS3", fileName, "DXT1 BGR")
                         # Get the scale factor
@@ -236,7 +240,7 @@ def exportSkinEnv(image, layer, primarySize, console, alchemyVersion, pspFormat)
                         # Reduce the image size
                         pdb.python_fu_marvelmods_scaling_scaleAny(exportImage, exportLayer, scaleFactor)
                         # Export for Xbox and Wii
-                        exportEnvMaps(exportImage, exportLayer, folderName, "Xbox and Wii", fileName, "DXT1 RGB")
+                        exportEnvMaps(exportImage, exportLayer, folderName, "Xbox and Wii", fileName, "Plain PNG")
                     # Resize to half size
                     pdb.python_fu_marvelmods_scaling_scaleHalf(exportImage, exportLayer)
                     # Export for PS2
