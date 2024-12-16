@@ -1,13 +1,13 @@
 # Marvel Mods GIMP Plugins
 by BaconWizard17
-## Export Skin, Mannequin, or 3D Head (Secondary)
-This plugin exports a skin texture in several optimized formats.
+## Export Skin, Mannequin, or 3D Head (Secondary Texture)
+This plugin exports a skin texture in several optimized formats. This script is for secondary textures so that the texture format can be matched up with the primary texture regardless of size. For the primary (smaller) textures, see the `Export Skin, Mannequin, or 3D Head (Primary Texture)` script.
 
 ### Compatibility
-This script will only work correctly if the image has been saved as a .xcf file. The texture can be for a skin, 3D head, or mannequin. The texture should be a secondary texture for the skin (smaller texture).
+This script will only work correctly if the image has been saved as a .xcf file, and its dimensions should be powers of 2. The texture can be for a skin, mannequin, 3D head, bolton, or power model. The texture should be a secondary texture for the skin (smaller texture).
 
 ### Installation
- 1. This script can be installed using `update.bat` from the main folder of this release, or it can be placed individually in your GIMP plugins directory. The standard location for this is `C:\Users\(your user)\AppData\Roaming\GIMP\2.10\plug-ins`. Check the main `README.md` file in this project for more details on proper installation.
+ 1. This script can be installed using `update.bat` from the main folder of this release. Check the main `README.md` file in this project for more details on proper installation.
 
 ### Usage
 1. Start with an image open in GIMP that you would like to export. See the "Compatibility" section above for details on the image type.

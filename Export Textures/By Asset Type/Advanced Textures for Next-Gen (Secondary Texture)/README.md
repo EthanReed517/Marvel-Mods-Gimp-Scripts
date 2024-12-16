@@ -1,13 +1,13 @@
 # Marvel Mods GIMP Plugins
 by BaconWizard17
 ## Export Advanced Textures (Secondary Texture)
-This plugin exports advanced textures (normal maps, spec maps, gloss/emissive maps, and environment masks) in several optimized formats to be used with next-gen MUA1.
+This plugin exports advanced textures (normal maps, spec maps, gloss/emissive maps, and environment masks) in several optimized formats to be used with next-gen MUA1. This script is for secondary textures so that the texture format can be matched up with the primary texture regardless of size. For the primary (largest) texture, see the `Export Advanced Textures (Primary Texture)` script.
 
 ### Compatibility
-This script will only work correctly if the image has been saved as a .xcf file. The texture can be for a skin, 3D head, or mannequin. Normal maps should be set up in the green normal map format, while other textures can be any color. Resulting textures will only work with next-gen MUA1. The texture should be a secondary texture for the skin (smaller texture).
+This script will only work correctly if the image has been saved as a .xcf file, and its dimensions should be powers of 2. The texture can be for a skin, mannequin, bolton, or power model. The texture should be a secondary (smaller) texture for the model. Normal maps should be set up in the green normal map format, while other textures can be any color. Resulting textures will only work with next-gen MUA1.
 
 ### Installation
- 1. This script can be installed using `update.bat` from the main folder of this release, or it can be placed individually in your GIMP plugins directory. The standard location for this is `C:\Users\(your user)\AppData\Roaming\GIMP\2.10\plug-ins`. Check the main `README.md` file in this project for more details on proper installation.
+ 1. This script can be installed using `update.bat` from the main folder of this release. Check the main `README.md` file in this project for more details on proper installation.
 
 ### Usage
 1. Start with an image open in GIMP that you would like to export. See the "Compatibility" section above for details on the image type.
@@ -26,7 +26,7 @@ This script will only work correctly if the image has been saved as a .xcf file.
 	  - `PC only`: Choose if you want to export textures for the PC versions only.
 	- **Alchemy Version**:
 	  - `Alchemy 2.5`: Choose if you're using the older Alchemy 2.5 tool to add advanced textures.
-	  - `Alchemy 5`: Choose if you're using the newer Alchemy 5 tool to add advanced textures.
+	  - `Alchemy 5`: Choose if you're using the newer Alchemy 5 tool to add advanced textures (recommended).
 	- **Steam/360 Normal Map Color**:
 	  - `Yellow`: Choose this if you want the normal map to be the yellow format that is common to most Steam and Xbox 360 models.
 	  - `Blue`: Choose this if you want the normal map to be the blue format that is common to fewer Steam and Xbox 360 models.
@@ -37,7 +37,10 @@ This script will only work correctly if the image has been saved as a .xcf file.
 
 ## Export Types
  - **PC**:
-   - Textures over 256x256 will be exported as DXT1 dds files, and 256x256 or less will export as PNG8 files. This threshold can be modified by other settings.
+   - Textures will be exported as DXT1 dds files or as PNG8 .png files depending on the settings.
+   - **Primary Texture Size**:
+     - `256x256 or less`: Exports as a PNG8 .png file.
+	 - `Over 256x256`: Exports as a DXT1 .dds file.
    - **Advanced Texture Type**:
 	 - `Normal Map`: Changes the export to DXT5 .dds. Adds "_n" to the end of the file name.
 	 - `Specular Map`: Adds "_s" to the end of the file name.
@@ -78,8 +81,11 @@ This script will only work correctly if the image has been saved as a .xcf file.
      - `Alchemy 5`: This option will not RGB-BGR swap PS3 textures.
    - **Steam/360 Normal Map Color** has no impact on PC textures.
  - **Xbox 360**:
-   - Textures over 256x256 will be exported as DXT1 dds files, and 256x256 or less will export as PNG8 files. This threshold can be modified by other settings.
+   - Textures will be exported as DXT1 dds files or as PNG8 .png files depending on the settings.
    - Xbox 360 textures will presumably work on the Xbox One re-release, but this hasn't been confirmed.
+   - **Primary Texture Size**:
+     - `256x256 or less`: Exports as a PNG8 .png file.
+	 - `Over 256x256`: Exports as a DXT1 .dds file.
    - **Advanced Texture Type**:
 	 - `Normal Map`: Modifies the texture to the yellow normal map style required by the Xbox 360 version. Adds "_n" to the end of the file name.
 	 - `Specular Map`: Adds "_s" to the end of the file name.
