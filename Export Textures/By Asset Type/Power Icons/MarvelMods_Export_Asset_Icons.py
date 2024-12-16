@@ -11,6 +11,7 @@
 #
 #   History:
 #   v1.0: 01Feb2023: First published version.
+#   v2.0: 12Dec2024: Full redesign for improved performance using an external module for common operations.
 
 #   This program is free software; you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License as published by
@@ -30,215 +31,124 @@
 # ####### #
 # IMPORTS #
 # ####### #
-# To be able to check file paths
-import os
-# To be able to execute GIMP scripts
-from gimpfu import*
+# GIMP module
+from gimpfu import *
+# Marvel Mods Operations
+import Marvel_Mods_Basic_Gimp_Procedures as MMBGP
 
 
 # ######### #
 # FUNCTIONS #
 # ######### #
-# Define the function for RGB-BGR swapping
-def RGB_BGR(image, layer):
-    # Perform the swap
-    pdb.plug_in_colors_channel_mixer(image, layer, FALSE, 0, 0, 1, 0, 1, 0, 1, 0, 0)
-    # Display the changes
-    pdb.gimp_displays_flush()
-    
-# Define the function for indexing colors
-def convertIndexed(image, colors):
-    # Index the colors
-    pdb.gimp_image_convert_indexed(image, CONVERT_DITHER_NONE, CONVERT_PALETTE_GENERATE, colors, FALSE, FALSE, "")
-    # Display the changes
-    pdb.gimp_displays_flush()
-    # Get the active layer
-    layer = pdb.gimp_image_get_active_layer(image)
-    # return the new layer
-    return layer
-    
-# Define the function for resizing to half size
-def resizeHalf(image, layer, newSize):
-    # scale the image accordingly
-    pdb.gimp_image_scale(image, newSize, newSize)
-    # Resize the layer to the image size
-    pdb.gimp_layer_resize_to_image_size(layer)
-    # Display the changes
-    pdb.gimp_displays_flush()
-
-# Define the folder checking operation
-def folderCheck(dirname, newFolder):
-    # Append the paths
-    outFolder = os.path.join(dirname, newFolder)
-    # Check if the path exists
-    outFolderExists = os.path.exists(outFolder)
-    # If the path doesn't exist, create the new folder
-    if outFolderExists == False:
-        os.mkdir(outFolder)
-    # Return the new path
-    return outFolder
-    
-# Define the function for exporting as a png
-def exportPNG(image, layer, dirname, newFolder, fileName, icons2):
-    # Check if the export folder exists and create it if needed
-    outFolder = folderCheck(dirname, newFolder)
-    # Get the new file name
-    if icons2 == True:
-        outFileName = fileName[0:-5] + "2.png"
-    else:
-        outFileName = fileName[0:-3] + "png"
-    # Get the full save file path
-    outFilePath = os.path.join(outFolder, outFileName)
-    # Export the image
-    pdb.file_png_save(image, layer, outFilePath, outFilePath, 0, 9, 0, 0, 0, 0, 0)
-
-# Define the function for exporting as a DXT1 dds
-def exportDXT1(image, layer, dirname, newFolder, fileName, icons2):
-    # Check if the export folder exists and create it if needed
-    outFolder = folderCheck(dirname, newFolder)
-    # Get the new file name
-    if icons2 == True:
-        outFileName = fileName[0:-5] + "2.dds"
-    else:
-        outFileName = fileName[0:-3] + "dds"
-    # Get the full save file path
-    outFilePath = os.path.join(outFolder, outFileName)
-    # Export the image
-    pdb.file_dds_save(image, layer, outFilePath, outFilePath, 1, 0, 4, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0)
-
 # Define the main operation
-def exportIcons(baseImage, baseLayer, console, game):
-    # Get the file path of the original image
-    filePath = pdb.gimp_image_get_filename(baseImage)    
-    # Save the file in its original format before proceeding
-    pdb.gimp_file_save(baseImage, baseLayer, filePath, filePath)
-    # Get the folder and file name from the file path
-    dirname = os.path.dirname(filePath)
-    fileName = os.path.basename(filePath)
-    # Create a duplicate image that can be manipulated
-    image = pdb.gimp_image_duplicate(baseImage)
-    # Get the active layer of the new image
-    layer = pdb.gimp_image_get_active_layer(image)
-    # Clear the selection (This is done just in case there is a selection, but there shouldn't be)
-    pdb.gimp_selection_none(image)
-    # Get the current dimensions of the image
-    currentWidth = image.width
-    currentHeight = image.height
-    # Begin the Export
-    # Pick the console
-    if game == 0:
-        # XML1
-        # Flatten the Image
-        layer = pdb.gimp_image_flatten(image)
-        # Ensure that the image is the proper size
-        # Determine if the image is oversized
-        if (currentWidth > 128) or (currentHeight > 128):
-            resizeHalf(image, layer, 128)
-        # Index the colors
-        layer = convertIndexed(image, 256)
-        # Export the image
-        exportPNG(image, layer, dirname, "All", fileName, False)
-    elif game == 1:
-        # XML2
-        # Flatten the Image
-        layer = pdb.gimp_image_flatten(image)
-        # Determine if an icons2 file is needed
-        if (currentWidth > 128) or (currentHeight > 128):
-            icons2 = True
-        else:
-            icons2 = False
-        # Decide what icons are needed
-        if icons2 == True:
-            # Export icons2
-            # Pick the console
-            if console == 1:
-                # PC Only
-                # Determine if PC needs high res icons
-                if (currentWidth > 256) or (currentHeight > 256):
-                    # 512x512 icons, export the PC as a dds
-                    exportDXT1(image, layer, dirname, newFolder, "icons2 (PC)", True)
-                else:
-                    # 256x256 icons, export as PNG8
-                    # Index the colors
-                    layer = convertIndexed(image, 256)
-                    # Export the image
-                    exportPNG(image, layer, dirname, "icons2 (PC)", fileName, True)
-                    # Color mode back to RGB
-                    pdb.gimp_image_convert_rgb(image)
-                # Resize to 128x128
-                resizeHalf(image, layer, 128)
-                # Index the colors
-                layer = convertIndexed(image, 256)
-                # Export the image
-                exportPNG(image, layer, dirname, "icons1 (PC)", fileName, False)
+def exportIcons(image, layer, console, game):
+    # Perform the initial operations
+    (okayToExport, xcfPath) = MMBGP.initialOps(image, layer, checkSquare=True)
+    # Verify that it's okay to export
+    if okayToExport == True:
+        # It's okay to export
+        # Export a plain png copy as a preview
+        MMBGP.exportTextureMM(image, layer, xcfPath, ".png", transparent=True, subFolder="Preview")
+        # Pick the console
+        if game == 0:
+            # XML1
+            # Determine if the image is oversized (only check width because it was confirmed to be square)
+            if image.width > 128:
+                # The image is oversized, so set the scaleFactor
+                scaleFactor = 128 / float(image.width)
             else:
-                # All consoles
-                # Determine if PC needs high res icons
-                if (currentWidth > 256) or (currentHeight > 256):
-                    # 512x512 icons, export the PC as a dds
-                    exportDXT1(image, layer, dirname, newFolder, "icons2 (PC)", True)
-                    # Scale to 256x256
-                    resizeHalf(image, layer, 256)
-                    # Index the colors
-                    layer = convertIndexed(image, 256)
+                # No scaling is needed
+                scaleFactor = 1
+            # Export the image
+            MMBGP.exportTextureMM(image, layer, xcfPath, ".png", scale_factor=scaleFactor, indexColors=256, subFolder="All")
+        elif game == 1:
+            # XML2
+            # Determine if an icons2 file is needed
+            if image.width > 128:
+                icons2 = True
+            else:
+                icons2 = False
+            # Decide what icons are needed
+            if icons2 == True:
+                # Export icons2
+                # Pick the console
+                if console == 1:
+                    # PC Only
+                    # Determine if the icons are high-res
+                    if image.width > 256:
+                        # 512x512 icons, export the PC as a dds
+                        MMBGP.exportTextureMM(image, layer, xcfPath, ".dds", fileNameSuffix="2", subFolder="PC")
+                    else:
+                        # 256x256 icons, export as PNG8
+                        MMBGP.exportTextureMM(image, layer, xcfPath, ".png", indexColors=256, fileNameSuffix="2", subFolder="PC")
+                    # Get the scale factor for the icons1 file
+                    scaleFactor = 128 / float(image.width)
                     # Export the image
-                    exportPNG(image, layer, dirname, "icons2 (PSP, XB)", fileName, True)
+                    MMBGP.exportTextureMM(image, layer, xcfPath, ".png", indexColors=256, fileNameSuffix="1", subFolder="PC")
                 else:
-                    # 256x256 icons, export the PC with Xbox
-                    # Index the colors
-                    layer = convertIndexed(image, 256)
+                    # All consoles
+                    # Determine if PC needs high res icons
+                    if image.width > 256:
+                        # 512x512 icons, export the PC as a dds
+                        MMBGP.exportTextureMM(image, layer, xcfPath, ".dds", fileNameSuffix="2", subFolder="PC")
+                        # Get the scale factor for 256x256
+                        scaleFactor = 256 / float(image.width)
+                        # Export the console textures
+                        MMBGP.exportTextureMM(image, layer, xcfPath, ".png", scale_factor=scaleFactor, indexColors=256, fileNameSuffix="2", subFolder="Xbox")
+                        MMBGP.exportTextureMM(image, layer, xcfPath, ".png", scale_factor=scaleFactor, indexColors=256, fileNameSuffix="1", subFolder="PSP")
+                    else:
+                        # 256x256 icons, export the PC with Xbox
+                        # Export the image
+                        MMBGP.exportTextureMM(image, layer, xcfPath, ".png", indexColors=256, fileNameSuffix="2", subFolder="PC and Xbox")
+                        MMBGP.exportTextureMM(image, layer, xcfPath, ".png", indexColors=256, fileNameSuffix="1", subFolder="PSP")
+                    # Get the scale factor for 128x128
+                    scaleFactor = 128 / float(image.width)
                     # Export the image
-                    exportPNG(image, layer, dirname, "icons2 (All)", fileName, True)
-                # Color mode back to RGB
-                pdb.gimp_image_convert_rgb(image)
-                # Resize to 128x128
-                resizeHalf(image, layer, 128)
-                # Index the colors
-                layer = convertIndexed(image, 256)
-                # Export the image
-                exportPNG(image, layer, dirname, "icons1 (All)", fileName, False)
-        else: 
-            # Do not export icons2
-            # Index the colors
-            layer = convertIndexed(image, 256)
+                    MMBGP.exportTextureMM(image, layer, xcfPath, ".png", scale_factor=scaleFactor, indexColors=256, fileNameSuffix="1", subFolder="All except PSP")
+            else: 
+                # Do not export icons2
+                # Determine the console
+                if console == 1:
+                    # PC only
+                    # Export the image
+                    MMBGP.exportTextureMM(image, layer, xcfPath, ".png", indexColors=256, fileNameSuffix="1", subFolder="PC")
+                else:
+                    # All consoles
+                    # Export the image
+                    MMBGP.exportTextureMM(image, layer, xcfPath, ".png", indexColors=256, fileNameSuffix="1", subFolder="All")
+        elif game == 2:
+            # MUA1
+            # Determine if the image is oversized
+            if image.width > 256:
+                scaleFactor = 256 / float(image.width)
+            else:
+                scaleFactor = 1
             # Determine the console
+            if console == 0:
+                # All
+                # Export the image
+                MMBGP.exportTextureMM(image, layer, xcfPath, ".png", scale_factor=scaleFactor, transparent=True, subFolder="PC, Steam, PS3, and 360")
+                # Get the scale factor for 128x128
+                scaleFactor = 128 / float(image.width)
+                # Export the last-gen textures
+                MMBGP.exportTextureMM(image, layer, xcfPath, ".png", scale_factor=scaleFactor, transparent=True, subFolder="Wii and Xbox")
+                MMBGP.exportTextureMM(image, layer, xcfPath, ".png", scale_factor=scaleFactor, transparent=True, subFolder="PS2 and PSP", alphaIndexed=True)
             if console == 1:
                 # PC only
                 # Export the image
-                exportPNG(image, layer, dirname, "icons1 (PC)", fileName, False)
+                MMBGP.exportTextureMM(image, layer, xcfPath, ".png", scale_factor=scaleFactor, transparent=True, subFolder="PC and Steam")   
+        else:
+            # MUA2
+            # Determine if the image is oversized
+            if image.width > 128:
+                scaleFactor = 128 / float(image.width)
             else:
-                # All consoles
-                # Export the image
-                exportPNG(image, layer, dirname, "icons1 (All)", fileName, False)
-    elif game == 2:
-        # MUA1
-        # Determine if the image is oversized
-        if (currentWidth > 256) or (currentHeight > 256):
-            resizeHalf(image, layer, 256)
-        # merge the layers
-        layer = pdb.gimp_image_merge_visible_layers(image, 1)
-        # Determine the console
-        if console == 0:
-            # All
+                scaleFactor = 1
             # Export the image
-            exportPNG(image, layer, dirname, "NG", fileName, False)
-            # Resize the image
-            resizeHalf(image, layer, 128)
-            # Export the image
-            exportPNG(image, layer, dirname, "LG", fileName, False)
-        if console == 1:
-            # PC only
-            # Export the image
-            exportPNG(image, layer, dirname, "PC", fileName, False)            
-    else:
-        # MUA2
-        # Determine if the image is oversized
-        if (currentWidth > 128) or (currentHeight > 128):
-            resizeHalf(image, layer, 128)
-        # merge the layers
-        layer = pdb.gimp_image_merge_visible_layers(image, 1)
-        # Export the image
-        exportPNG(image, layer, dirname, "All", fileName, False)
+            MMBGP.exportTextureMM(image, layer, xcfPath, ".png", scale_factor=scaleFactor, transparent=True, subFolder="Wii")
+            MMBGP.exportTextureMM(image, layer, xcfPath, ".png", scale_factor=scaleFactor, transparent=True, subFolder="PS2 and PSP", alphaIndexed=True)
+        # Print the success message
+        pdb.gimp_message("SUCCESS: exported " + xcfPath)
 
 
 # ######## #
@@ -251,14 +161,14 @@ register(
     "Exports a power icons texture in multiple formats.",
     "BaconWizard17",
     "BaconWizard17",
-    "February 2023",
+    "December 2024",
     "Export Power Icons",
     "*",
     [
         (PF_IMAGE, "image", "Input image", None),
         (PF_DRAWABLE, "layer", "Layer, mask or channel", None),
-        (PF_OPTION, "console", "Console:", 0, ["All","PC Only"]),
-        (PF_OPTION, "game", "Game:", 0, ["XML1","XML2","MUA1","MUA2"])
+        (PF_OPTION, "console", "Console:", 0, ["All", "PC Only"]),
+        (PF_OPTION, "game", "Game:", 0, ["XML1", "XML2", "MUA1", "MUA2"])
     ],
     [],
     exportIcons,
