@@ -4,8 +4,8 @@ REM * Section 0 - User Input *
 REM **************************
 REM enter the path to your plugins folder in AppData:
 set appDataPluginFolder="C:\users\your_user\AppData\Roaming\GIMP\2.10\plug-ins"
-REM enter the path to the scripts folder in the GIMP installation:
-set gimpScriptsFolder="C:\Program Files\GIMP 2\share\gimp\2.0\scripts"
+REM enter the path to the GIMP installation:
+set gimpInstallFolder="C:\Program Files\Gimp 2"
 
 
 REM ******************************
@@ -23,8 +23,16 @@ if not %appDataPluginFolder%=="" (
 
 		REM copy python plugins to the "plugins" folder in GIMP's AppData folder
 		echo Copying Python plugins . . .
-		for /r %%x in (*.py) do (
-			copy >nul "%%x" %appDataPluginFolder%
+		for %%f in ("Export Textures","Image Scaling","Skin Previews","Utilities") do (
+			cd %~dp0\%%f
+			for /r %%x in (*.py) do (
+				copy >nul "%%x" %appDataPluginFolder%
+			)
+		)
+		REM Copy the basic procedures module to GIMP's python installation
+		cd %~dp0\Supporting Modules
+		for %%f in (Marvel_Mods_Basic_Gimp_Procedures, Marvel_Mods_Export_Previews, Marvel_Mods_Export_Textures) do (
+			xcopy %%f %gimpInstallFolder%"\lib\python2.7\site-packages\%%f" /q /y /i
 		)
 		
 		REM announce completion
@@ -48,6 +56,8 @@ if not %appDataPluginFolder%=="" (
 )
 REM add a blank line as a spacer
 echo.
+REM Set the path to the scripts folder
+set gimpScriptsFolder=%gimpInstallFolder%"\share\gimp\2.0\scripts"
 REM Verify that a scripts folder was entered
 if not %gimpScriptsFolder%=="" (
 	REM a folder was entered
