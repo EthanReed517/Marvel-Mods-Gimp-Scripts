@@ -11,6 +11,8 @@
 #
 #   History:
 #   v1.0: 25Jan2024: First published version.
+#   v1.1: 06Dec2024: Last-gen DXT1 normal maps are replaced with plain PNG, since Alchemy 2.5 doesn't support DXT1 normal maps
+#   v2.0: 12Dec2024: Full redesign for improved performance using an external module for common operations.
 
 #   This program is free software; you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License as published by
@@ -30,65 +32,49 @@
 # ####### #
 # IMPORTS #
 # ####### #
-# To be able to check file paths
-import os
-# To be able to execute GIMP scripts
-from gimpfu import*
+# GIMP module
+from gimpfu import *
+# Marvel Mods Operations
+import Marvel_Mods_Basic_Gimp_Procedures as MMBGP
 
 
 # ######### #
 # FUNCTIONS #
 # ######### #
 # Define the function to check for image errors
-def errorCheck(image, layer):
-    # Get the current dimensions of the image
-    currentWidth = image.width
-    currentHeight = image.height
-    # Set the initial error state
-    canProceed = False
-    # Check if the dimensions are powers of 2
-    powerOf2 = pdb.python_fu_marvelmods_basic_p02check(image, layer)
-    # Determine next steps based on power of 2 check
-    if powerOf2 == True:
-        # Image dimensions are powers of 2, can proceed
-        # Check if the image dimensions are the same
-        if currentWidth == currentHeight:
-            # Dimensions are the same, can proceed
-            # Check if the image is too big
-            if currentWidth > 128:
-                # The image is too big
-                # Warn the player
-                pdb.gimp_message("WARNING: The image size is greater than 128x128. The maximum recommended size is 128x128. Larger images will be reduced in size.")
-            # Initialize a variable to keep track of the number of correctly named layers
-            goodLayers = 0
-            # List the layers to check
-            for layerName in ["Up", "Down", "Left", "Right", "Front", "Back"]:
-                # Look for layers based on name
-                testLayer = pdb.gimp_image_get_layer_by_name(image, layerName)
-                # Check if the layer exists
-                if testLayer == None:
-                    # The layer does not exist
-                    # Announce the error
-                    pdb.gimp_message("ERROR: There is no layer named \"" + layerName + "\".")
-                else:
-                    # The layer exists
-                    # Increase the count of good layers
-                    goodLayers += 1
-            # Check the number of layers that are named correctly
-            if goodLayers == 6:
-                # Layers with all 3 names are present
-                # Allow the user to proceed
-                canProceed = True
-        else:
-            # Dimensions are not the same
-            # Give error message
-            pdb.gimp_message("ERROR: Image dimensions are not equal. Equal image dimensions are needed for environment maps.")
-    else:
-        # Image dimensions are not powers of 2
-        # Give error message
-        pdb.gimp_message("ERROR: One or both image dimensions are not a power of 2. Alchemy only supports image dimensions that are powers of 2.\n\nPowers of 2: 1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048, 4096, and so on.")
+def errorCheck(image, okayToExport):
+    # Check if any errors were found before
+    if okayToExport == True:
+        # No errors were found before
+        # Check if the image is too big
+        if image.width > 128:
+            # The image is too big
+            # Warn the player
+            pdb.gimp_message("WARNING: The image size is greater than 128x128. The maximum recommended size is 128x128. Larger images will be reduced in size.")
+        # Initialize a variable to keep track of the number of correctly named layers
+        goodLayers = 0
+        # List the layers to check
+        for layerName in ["Up", "Down", "Left", "Right", "Front", "Back"]:
+            # Look for layers based on name
+            testLayer = pdb.gimp_image_get_layer_by_name(image, layerName)
+            # Check if the layer exists
+            if testLayer == None:
+                # The layer does not exist
+                # Announce the error
+                pdb.gimp_message("ERROR: There is no layer named \"" + layerName + "\".")
+                # Update that it's not okay to export
+                okayToExport = False
+            else:
+                # The layer exists
+                # Increase the count of good layers
+                goodLayers += 1
+        # Check the number of layers that are named correctly
+        if not(goodLayers == 6):
+            # Layers with all 6 names are not present
+            # Don't allow the user to proceed
+            okayToExport = False
     # Return whether or not the script can proceed, as well as the width and height
-    return canProceed, currentWidth
+    return okayToExport
 
 # Define the size checking operation
 def sizeCheck(currentWidth):
@@ -105,85 +91,61 @@ def sizeCheck(currentWidth):
     return oversized
 
 # Define the operation for exporting the maps
-def exportEnvMaps(image, layer, folderName, subFolderName, fileName, format):
+def exportEnvMaps(image, layer, xcfPath, subFolderName, format, **kwargs):
     # Define the list of layer names
     layerNames = ["Up", "Down", "Left", "Right", "Front", "Back"]
     # Define the list of export suffixes
     suffixes = ["UP", "DN", "LF", "RT", "FR", "BK"]
     # Go through the layers
-    for layerName, suffix in zip(layerNames, suffixes):
-        # Create a duplicate image that can be manipulated
-        exportImage = pdb.gimp_image_duplicate(image)
-        # Get the active layer of the new image
-        exportLayer = pdb.gimp_image_get_active_layer(exportImage)
-        # List the layers that need to be removed
+    for layerName, envSuffix in zip(layerNames, suffixes):
+        # Create the list of layers that can be removed
+        layersForRemoval = []
         for layerRemoveName in layerNames:
-            # Determine if the layer should be removed
             if not(layerRemoveName == layerName):
-                # Layer should be removed
-                # Get the layer by the name
-                layerToRemove = pdb.gimp_image_get_layer_by_name(exportImage, layerRemoveName)
-                # Remove the layer
-                pdb.gimp_image_remove_layer(exportImage, layerToRemove)
-        # Set up the file name
-        outFileName = fileName + "_" + suffix
+                layersForRemoval.append(layerRemoveName)
+        # Get the full suffix
+        fullSuffix = "_" + envSuffix
         # Determine the export method
         if format == "PNG4":
             # PNG4 format
-            # Flatten the image
-            exportLayer = pdb.gimp_image_flatten(exportImage)
             # Export the image
-            pdb.python_fu_marvelmods_basic_exportPNG(exportImage, exportLayer, folderName, subFolderName, outFileName, 1)
+            MMBGP.exportTextureMM(image, layer, xcfPath, ".png", indexColors=16, subFolder=subFolderName, scale_factor=kwargs.get("scaleFactor", 1), fileNameSuffix=fullSuffix, layersToRemove=layersForRemoval)
         elif format == "PNG8":
             # PNG8 format
-            # Flatten the image
-            exportLayer = pdb.gimp_image_flatten(exportImage)
             # Export the image
-            pdb.python_fu_marvelmods_basic_exportPNG(exportImage, exportLayer, folderName, subFolderName, outFileName, 2)
+            MMBGP.exportTextureMM(image, layer, xcfPath, ".png", indexColors=256, subFolder=subFolderName, scale_factor=kwargs.get("scaleFactor", 1), fileNameSuffix=fullSuffix, layersToRemove=layersForRemoval)
         elif format == "Plain PNG":
             # Plain PNG format
-            # Get the active layer of the new image
-            exportLayer = pdb.gimp_image_get_active_layer(exportImage)
             # Export the image
-            pdb.python_fu_marvelmods_basic_exportPNG(exportImage, exportLayer, folderName, subFolderName, outFileName, 0)
+            MMBGP.exportTextureMM(image, layer, xcfPath, ".png", subFolder=subFolderName, scale_factor=kwargs.get("scaleFactor", 1), fileNameSuffix=fullSuffix, layersToRemove=layersForRemoval)
         elif format == "DXT1 RGB":
             # DXT1 RGB
-            # Flatten the image
-            exportLayer = pdb.gimp_image_flatten(exportImage)
             # Export the image
-            pdb.python_fu_marvelmods_basic_exportDDS(exportImage, exportLayer, folderName, subFolderName, outFileName, 0, 0)
+            MMBGP.exportTextureMM(image, layer, xcfPath, ".dds", subFolder=subFolderName, scale_factor=kwargs.get("scaleFactor", 1), fileNameSuffix=fullSuffix, layersToRemove=layersForRemoval)
         else:
             # DXT1 BGR
-            # Flatten the image
-            exportLayer = pdb.gimp_image_flatten(exportImage)
             # Export the image
-            pdb.python_fu_marvelmods_basic_exportDDS(exportImage, exportLayer, folderName, subFolderName, outFileName, 0, 1)
+            MMBGP.exportTextureMM(image, layer, xcfPath, ".dds", RGB_BGR=True, subFolder=subFolderName, scale_factor=kwargs.get("scaleFactor", 1), fileNameSuffix=fullSuffix, layersToRemove=layersForRemoval)
 
 # Define the main operation
 def exportSkinEnv(image, layer, primarySize, console, alchemyVersion, pspFormat):
-    # Save the file and get its path and name
-    (folderName, fileName) = pdb.python_fu_marvelmods_basic_get_path_save(image, layer)
-    # Check for errors
-    (canProceed, currentWidth) = errorCheck(image, layer)
+    # Perform the initial operations
+    (okayToExport, xcfPath) = MMBGP.initialOps(image, layer, checkSquare=True)
+    okayToExport = errorCheck(image, okayToExport)
     # Determine if it's okay to proceed
-    if canProceed == True:
+    if okayToExport == True:
         # No errors, can proceed
-        # Clear the selection (This is done just in case there is a selection, but there shouldn't be)
-        pdb.gimp_selection_none(image)
         # Determine if the image is oversized
-        oversized = sizeCheck(currentWidth)
-        # Create a duplicate image that can be manipulated
-        exportImage = pdb.gimp_image_duplicate(image)
-        # Get the active layer of the new image
-        exportLayer = pdb.gimp_image_get_active_layer(exportImage)
-        # Begin the export
+        oversized = sizeCheck(image.width)
         # Determine if the image is oversized
         if oversized == True:
             # The image is oversized
             # Get the scale factor
-            scaleFactor = currentWidth / 128
-            # Reduce the image size
-            pdb.python_fu_marvelmods_scaling_scaleAny(exportImage, exportLayer, scaleFactor)
+            scaleFactor = 128 / float(image.width)
+        else:
+            # The image is not oversized
+            # No scale factor is needed
+            scaleFactor = 1
         # Determine the console
         if console == 1:
             # PC Only
@@ -191,33 +153,33 @@ def exportSkinEnv(image, layer, primarySize, console, alchemyVersion, pspFormat)
             if primarySize == 0:
                 # 256x256 or less
                 # Export for PC
-                exportEnvMaps(exportImage, exportLayer, folderName, "PC", fileName, "PNG8")
+                exportEnvMaps(image, layer, xcfPath, "PC", "PNG8")
                 # Determine the version of Alchemy
                 if alchemyVersion == 0:
                     # Alchemy 2.5
                     # Export for Steam
-                    exportEnvMaps(exportImage, exportLayer, folderName, "Steam", fileName, "DXT1 BGR")
+                    exportEnvMaps(image, layer, xcfPath, "Steam", "DXT1 RGB")
                 else:
                     # Alchemy 5 (either)
                     # Export for Steam
-                    exportEnvMaps(exportImage, exportLayer, folderName, "Steam", fileName, "DXT1 RGB")
+                    exportEnvMaps(image, layer, xcfPath, "Steam", "DXT1 RGB")
             else:
                 # over 256x256
                 # Determine the version of Alchemy
                 if alchemyVersion == 0:
                     # Alchemy 2.5
                     # Export for XML2 PC
-                    exportEnvMaps(exportImage, exportLayer, folderName, "XML2 PC", fileName, "Plain PNG")
+                    exportEnvMaps(image, layer, xcfPath, "XML2 PC", "Plain PNG")
                     # Export for MUA1 PC and Steam
-                    exportEnvMaps(exportImage, exportLayer, folderName, "MUA1 PC and Steam", fileName, "DXT1 BGR")
+                    exportEnvMaps(image, layer, xcfPath, "MUA1 PC and Steam", "DXT1 RGB")
                 else:
                     # Alchemy 5 (either)
                     # Export for MUA1 PC and Steam
-                    exportEnvMaps(exportImage, exportLayer, folderName, "MUA1 PC and Steam", fileName, "DXT1 RGB")                
+                    exportEnvMaps(image, layer, xcfPath, "MUA1 PC and Steam", "DXT1 RGB")                
         else:
             # All consoles
             # Determine the width
-            if currentWidth > 32:
+            if image.width > 32:
                 # Normal size
                 # Determine the version of Alchemy
                 if alchemyVersion == 0:
@@ -226,81 +188,72 @@ def exportSkinEnv(image, layer, primarySize, console, alchemyVersion, pspFormat)
                     if primarySize == 0:
                         # 256x256 or less
                         # Export for PC and MUA1 360
-                        exportEnvMaps(exportImage, exportLayer, folderName, "PC and MUA1 360", fileName, "PNG8")
+                        exportEnvMaps(image, layer, xcfPath, "PC and MUA1 360", "PNG8")
                         # Export for Steam and PS3
-                        exportEnvMaps(exportImage, exportLayer, folderName, "MUA1 Steam and PS3", fileName, "DXT1 BGR")
+                        exportEnvMaps(image, layer, xcfPath, "MUA1 Steam and PS3", "DXT1 RGB")
                         # Get the scale factor
-                        scaleFactor = currentWidth / 32
-                        # Reduce the image size
-                        pdb.python_fu_marvelmods_scaling_scaleAny(exportImage, exportLayer, scaleFactor)
+                        scaleFactor = 32 / float(image.width)
                         # Export for Xbox
-                        exportEnvMaps(exportImage, exportLayer, folderName, "Xbox", fileName, "PNG8")
+                        exportEnvMaps(image, layer, xcfPath, "Xbox", "PNG8", scale_factor=scaleFactor)
                         # Export for Wii
-                        exportEnvMaps(exportImage, exportLayer, folderName, "Wii", fileName, "Plain PNG")
+                        exportEnvMaps(image, layer, xcfPath, "Wii", "Plain PNG", scale_factor=scaleFactor)
                     else:
                         # over 256x256
                         # Export for XML2 PC
-                        exportEnvMaps(exportImage, exportLayer, folderName, "XML2 PC", fileName, "Plain PNG")
+                        exportEnvMaps(image, layer, xcfPath, "XML2 PC", "Plain PNG")
                         # Export for MUA1 PC, Steam, 360, and PS3
-                        exportEnvMaps(exportImage, exportLayer, folderName, "MUA1 PC, Steam, 360, and PS3", fileName, "DXT1 BGR")
+                        exportEnvMaps(image, layer, xcfPath, "MUA1 PC, Steam, 360, and PS3", "DXT1 RGB")
                         # Get the scale factor
-                        scaleFactor = currentWidth / 32
-                        # Reduce the image size
-                        pdb.python_fu_marvelmods_scaling_scaleAny(exportImage, exportLayer, scaleFactor)
+                        scaleFactor = image.width / 32
                         # Export for Xbox and Wii
-                        exportEnvMaps(exportImage, exportLayer, folderName, "Xbox and Wii", fileName, "Plain PNG")
+                        exportEnvMaps(image, layer, xcfPath, "Xbox and Wii", "Plain PNG", scale_factor=scaleFactor)
                     # Resize to half size
-                    pdb.python_fu_marvelmods_scaling_scaleHalf(exportImage, exportLayer)
+                    scaleFactor = scaleFactor * 0.5
                     # Export for PS2
-                    exportEnvMaps(exportImage, exportLayer, folderName, "PS2", fileName, "PNG8")
+                    exportEnvMaps(image, layer, xcfPath, "PS2", "PNG8", scale_factor=scaleFactor)
                     # Resize to half size
-                    pdb.python_fu_marvelmods_scaling_scaleHalf(exportImage, exportLayer)
+                    scaleFactor = scaleFactor * 0.5
                     # Determine the PSP format
                     if pspFormat == 0:
                         # PSP is PNG4
                         # Export for PSP
-                        exportEnvMaps(exportImage, exportLayer, folderName, "PSP", fileName, "PNG4")
+                        exportEnvMaps(image, layer, xcfPath, "PSP", "PNG4", scale_factor=scaleFactor)
                         # Export for GameCube and MUA2 PS2
-                        exportEnvMaps(exportImage, exportLayer, folderName, "GameCube and MUA2 PS2", fileName, "PNG8")
+                        exportEnvMaps(image, layer, xcfPath, "GameCube and MUA2 PS2", "PNG8", scale_factor=scaleFactor)
                     else:
                         # PSP is PNG8
                         # Export for GameCube, PSP, and MUA2 PS2
-                        exportEnvMaps(exportImage, exportLayer, folderName, "GameCube, PSP, and MUA2 PS2", fileName, "PNG8")
+                        exportEnvMaps(image, layer, xcfPath, "GameCube, PSP, and MUA2 PS2", "PNG8", scale_factor=scaleFactor)
                 else:
-                    # Alchemy 5 (either)
+                    # Alchemy 5
                     # Determine the size of the primary texture
                     if primarySize == 0:
                         # 256x256 or smaller
                         # Export for PC and MUA1 360
-                        exportEnvMaps(exportImage, exportLayer, folderName, "PC and MUA1 360", fileName, "PNG8")
+                        exportEnvMaps(image, layer, xcfPath, "PC and MUA1 360", "PNG8")
                         # Export for Steam and PS3
-                        exportEnvMaps(exportImage, exportLayer, folderName, "MUA1 Steam and PS3", fileName, "DXT1 RGB")
+                        exportEnvMaps(image, layer, xcfPath, "MUA1 Steam and PS3", "DXT1 RGB")
                     else:
                         # over 256x256
                         # Export for MUA1 PC, Steam, 360, and PS3
-                        exportEnvMaps(exportImage, exportLayer, folderName, "MUA1 PC, Steam, 360, and PS3", fileName, "DXT1 RGB")                        
-                    # Determine which alchemy 5 version was picked
-                    if alchemyVersion == 1:
-                        # Alchemy 5 in 3ds Max
-                        # Get the scale factor
-                        scaleFactor = currentWidth / 32
-                        # Reduce the image size
-                        pdb.python_fu_marvelmods_scaling_scaleAny(exportImage, exportLayer, scaleFactor)
-                        # Export for Wii
-                        exportEnvMaps(exportImage, exportLayer, folderName, "Wii", fileName, "DXT1 RGB")
-                        # Resize to quarter size
-                        pdb.python_fu_marvelmods_scaling_scaleQuarter(exportImage, exportLayer)
-                        # Determine the PSP format
-                        if pspFormat == 0:
-                            # PSP is PNG4
-                            # Export for PSP
-                            exportEnvMaps(exportImage, exportLayer, folderName, "PSP", fileName, "PNG4")
-                            # Export for GameCube and MUA2 PS2
-                            exportEnvMaps(exportImage, exportLayer, folderName, "MUA2 PS2", fileName, "PNG8")
-                        else:
-                            # PSP is PNG8
-                            # Export for GameCube, PSP, and MUA2 PS2
-                            exportEnvMaps(exportImage, exportLayer, folderName, "PSP and MUA2 PS2", fileName, "PNG8")
+                        exportEnvMaps(image, layer, xcfPath, "MUA1 PC, Steam, 360, and PS3", "DXT1 RGB")
+                    # Get the scale factor
+                    scaleFactor = 32 / float(image.width)
+                    # Export for Wii
+                    exportEnvMaps(image, layer, xcfPath, "Wii", "DXT1 RGB", scale_factor=scaleFactor)
+                    # Resize to quarter size
+                    scaleFactor = scaleFactor * 0.25
+                    # Determine the PSP format
+                    if pspFormat == 0:
+                        # PSP is PNG4
+                        # Export for PSP
+                        exportEnvMaps(image, layer, xcfPath, "PSP", "PNG4", scale_factor=scaleFactor)
+                        # Export for GameCube and MUA2 PS2
+                        exportEnvMaps(image, layer, xcfPath, "MUA2 PS2", "PNG8", scale_factor=scaleFactor)
+                    else:
+                        # PSP is PNG8
+                        # Export for GameCube, PSP, and MUA2 PS2
+                        exportEnvMaps(image, layer, xcfPath, "PSP and MUA2 PS2", "PNG8", scale_factor=scaleFactor)
             else:
                 # Size is 32x32 or less
                 # Determine the version of Alchemy
@@ -310,79 +263,66 @@ def exportSkinEnv(image, layer, primarySize, console, alchemyVersion, pspFormat)
                     if primarySize == 0:
                         # 256x256 or less
                         # Export for Steam and PS3
-                        exportEnvMaps(exportImage, exportLayer, folderName, "MUA1 Steam and PS3", fileName, "DXT1 BGR")
+                        exportEnvMaps(image, layer, xcfPath, "MUA1 Steam and PS3", "DXT1 RGB")
                         # Export for Xbox
-                        exportEnvMaps(exportImage, exportLayer, folderName, "PC, Xbox, and MUA1 360", fileName, "PNG8")
+                        exportEnvMaps(image, layer, xcfPath, "PC, Xbox, and MUA1 360", "PNG8")
                         # Export for Wii
-                        exportEnvMaps(exportImage, exportLayer, folderName, "Wii", fileName, "DXT1 RGB")
+                        exportEnvMaps(image, layer, xcfPath, "Wii", "DXT1 RGB")
                     else:
                         # over 256x256
                         # Export for MUA1 PC, Steam, 360, and PS3
-                        exportEnvMaps(exportImage, exportLayer, folderName, "MUA1 PC, Steam, 360, and PS3", fileName, "DXT1 BGR")
+                        exportEnvMaps(image, layer, xcfPath, "MUA1 PC, Steam, 360, and PS3", "DXT1 RGB")
                         # Export for Xbox and Wii
-                        exportEnvMaps(exportImage, exportLayer, folderName, "Xbox, Wii, and XML2 PC", fileName, "DXT1 RGB")                        
+                        exportEnvMaps(image, layer, xcfPath, "Xbox, Wii, and XML2 PC", "Plain PNG")                        
                     # Resize to half size
-                    pdb.python_fu_marvelmods_scaling_scaleHalf(exportImage, exportLayer)
+                    scaleFactor = float(image.width) * 0.5
                     # Export for PS2
-                    exportEnvMaps(exportImage, exportLayer, folderName, "PS2", fileName, "PNG8")
+                    exportEnvMaps(image, layer, xcfPath, "PS2", "PNG8", scale_factor=scaleFactor)
                     # Resize to half size
-                    pdb.python_fu_marvelmods_scaling_scaleHalf(exportImage, exportLayer)
+                    scaleFactor = scaleFactor * 0.5
                     # Determine the PSP format
                     if pspFormat == 0:
                         # PSP is PNG4
                         # Export for PSP
-                        exportEnvMaps(exportImage, exportLayer, folderName, "PSP", fileName, "PNG4")
+                        exportEnvMaps(image, layer, xcfPath, "PSP", "PNG4", scale_factor=scaleFactor)
                         # Export for GameCube and MUA2 PS2
-                        exportEnvMaps(exportImage, exportLayer, folderName, "GameCube and MUA2 PS2", fileName, "PNG8")
+                        exportEnvMaps(image, layer, xcfPath, "GameCube and MUA2 PS2", "PNG8", scale_factor=scaleFactor)
                     else:
                         # PSP is PNG8
                         # Export for GameCube, PSP, and MUA2 PS2
-                        exportEnvMaps(exportImage, exportLayer, folderName, "GameCube, PSP, and MUA2 PS2", fileName, "PNG8")
+                        exportEnvMaps(image, layer, xcfPath, "GameCube, PSP, and MUA2 PS2", "PNG8", scale_factor=scaleFactor)
                 elif alchemyVersion == 1:
-                    # Alchemy 5 in 3ds Max
+                    # Alchemy 5
                     # Determine the size of the primary texture
                     if primarySize == 0:
                         # 256x256 or less
                         # Export for PC
-                        exportEnvMaps(exportImage, exportLayer, folderName, "PC and MUA1 360", fileName, "PNG8")
+                        exportEnvMaps(image, layer, xcfPath, "PC and MUA1 360", "PNG8")
+                        # Export for Next-Gen
+                        exportEnvMaps(image, layer, xcfPath, "MUA1 Steam and PS3", "DXT1 RGB")
                         # Export for Wii
-                        exportEnvMaps(exportImage, exportLayer, folderName, "Wii, MUA1 Steam and PS3", fileName, "DXT1 RGB")
+                        exportEnvMaps(image, layer, xcfPath, "Wii", "DXT1 RGB")
                     else:
                         # over 256x256
+                        # Export for PC
+                        exportEnvMaps(image, layer, xcfPath, "MUA1 PC, Steam, 360, and PS3", "DXT1 RGB")
                         # Export for Wii
-                        exportEnvMaps(exportImage, exportLayer, folderName, "Wii, MUA1 PC, Steam, 360, and PS3", fileName, "DXT1 RGB")
+                        exportEnvMaps(image, layer, xcfPath, "Wii", "DXT1 RGB")
                     # Resize to quarter size
-                    pdb.python_fu_marvelmods_scaling_scaleQuarter(exportImage, exportLayer)
+                    scaleFactor = float(image.width) * 0.25
                     # Determine the PSP format
                     if pspFormat == 0:
                         # PSP is PNG4
                         # Export for PSP
-                        exportEnvMaps(exportImage, exportLayer, folderName, "PSP", fileName, "PNG4")
+                        exportEnvMaps(image, layer, xcfPath, "PSP", "PNG4", scale_factor=scaleFactor)
                         # Export for GameCube and MUA2 PS2
-                        exportEnvMaps(exportImage, exportLayer, folderName, "MUA2 PS2", fileName, "PNG8")
+                        exportEnvMaps(image, layer, xcfPath, "MUA2 PS2", "PNG8", scale_factor=scaleFactor)
                     else:
                         # PSP is PNG8
                         # Export for GameCube, PSP, and MUA2 PS2
-                        exportEnvMaps(exportImage, exportLayer, folderName, "PSP and MUA2 PS2", fileName, "PNG8")
-                else:
-                    # Alchemy 5 raven setup
-                    # Determine the size of the primary texture
-                    if primarySize == 0:
-                        # 256x256 or less
-                        # Export for PC
-                        exportEnvMaps(exportImage, exportLayer, folderName, "PC and MUA1 360", fileName, "PNG8")
-                        # Export for Wii
-                        exportEnvMaps(exportImage, exportLayer, folderName, "MUA1 Steam and PS3", fileName, "DXT1 RGB")
-                    else:
-                        # over 256x256
-                        # Export for Wii
-                        exportEnvMaps(exportImage, exportLayer, folderName, "MUA1 PC, Steam, 360, and PS3", fileName, "DXT1 RGB")
-        # Announce completion
-        pdb.gimp_message(folderName + "\\" + fileName + ".xcf was successfully exported.")
-    else:
-        # Errors, cannot proceed
-        # Display an error message
-        pdb.gimp_message(folderName + "\\" + fileName + ".xcf could not be exported.")
+                        exportEnvMaps(image, layer, xcfPath, "PSP and MUA2 PS2", "PNG8", scale_factor=scaleFactor)
+        # Print the success message
+        pdb.gimp_message("SUCCESS: exported " + xcfPath)
 
 
 # ######## #
@@ -395,16 +335,16 @@ register(
     "Exports a skin texture in multiple formats. Also works on 3D head textures and mannequin textures.",
     "BaconWizard17",
     "BaconWizard17",
-    "September 2023",
+    "December 2024",
     "Export Environment Maps",
     "*",
     [
         (PF_IMAGE, "image", "Input image", None),
         (PF_DRAWABLE, "layer", "Layer, mask or channel", None),
-        (PF_OPTION, "primarySize", "Primary Texture Size:", 0, ["256x256 or less","Over 256x256"]),
-        (PF_OPTION, "console", "Console:", 0, ["All","PC Only"]),
-        (PF_OPTION, "alchemyVersion", "Alchemy Version:", 0, ["Alchemy 2.5","Alchemy 5 (3ds Max)","Alchemy 5 (Raven Set Up Material)"]),
-        (PF_OPTION, "pspFormat", "PSP Texture Compression:", 1, ["PNG4","PNG8"])
+        (PF_OPTION, "primarySize", "Primary Texture Size:", 0, ["256x256 or less", "Over 256x256"]),
+        (PF_OPTION, "console", "Console:", 0, ["All", "PC Only"]),
+        (PF_OPTION, "alchemyVersion", "3ds Max Version:", 0, ["3ds Max 5 (Alchemy 2.5)", "3ds Max 10 or 12 (Alchemy 5)"]),
+        (PF_OPTION, "pspFormat", "PSP Texture Compression:", 1, ["PNG4", "PNG8"])
     ],
     [],
     exportSkinEnv,
