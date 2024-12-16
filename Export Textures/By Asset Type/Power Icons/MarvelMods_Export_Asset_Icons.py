@@ -60,7 +60,7 @@ def exportIcons(image, layer, console, game):
                 # No scaling is needed
                 scaleFactor = 1
             # Export the image
-            MMBGP.exportTextureMM(image, layer, xcfPath, ".png", scale_factor=scaleFactor, indexColors=256, subFolder="All")
+            MMBGP.exportTextureMM(image, layer, xcfPath, ".png", scale_factor=scaleFactor, indexColors=256, subFolder="XML1 All")
         elif game == 1:
             # XML2
             # Determine if an icons2 file is needed
@@ -77,45 +77,43 @@ def exportIcons(image, layer, console, game):
                     # Determine if the icons are high-res
                     if image.width > 256:
                         # 512x512 icons, export the PC as a dds
-                        MMBGP.exportTextureMM(image, layer, xcfPath, ".dds", fileNameSuffix="2", subFolder="PC")
+                        MMBGP.exportTextureMM(image, layer, xcfPath, ".dds", fileNameSuffix="2", subFolder="XML2 PC")
                     else:
                         # 256x256 icons, export as PNG8
-                        MMBGP.exportTextureMM(image, layer, xcfPath, ".png", indexColors=256, fileNameSuffix="2", subFolder="PC")
+                        MMBGP.exportTextureMM(image, layer, xcfPath, ".png", indexColors=256, fileNameSuffix="2", subFolder="XML2 PC")
                     # Get the scale factor for the icons1 file
                     scaleFactor = 128 / float(image.width)
                     # Export the image
-                    MMBGP.exportTextureMM(image, layer, xcfPath, ".png", indexColors=256, fileNameSuffix="1", subFolder="PC")
+                    MMBGP.exportTextureMM(image, layer, xcfPath, ".png", indexColors=256, fileNameSuffix="1", subFolder="XML2 PC")
                 else:
                     # All consoles
                     # Determine if PC needs high res icons
                     if image.width > 256:
                         # 512x512 icons, export the PC as a dds
-                        MMBGP.exportTextureMM(image, layer, xcfPath, ".dds", fileNameSuffix="2", subFolder="PC")
+                        MMBGP.exportTextureMM(image, layer, xcfPath, ".dds", fileNameSuffix="2", subFolder="XML2 PC")
                         # Get the scale factor for 256x256
                         scaleFactor = 256 / float(image.width)
                         # Export the console textures
-                        MMBGP.exportTextureMM(image, layer, xcfPath, ".png", scale_factor=scaleFactor, indexColors=256, fileNameSuffix="2", subFolder="Xbox")
-                        MMBGP.exportTextureMM(image, layer, xcfPath, ".png", scale_factor=scaleFactor, indexColors=256, fileNameSuffix="1", subFolder="PSP")
+                        MMBGP.exportTextureMM(image, layer, xcfPath, ".png", scale_factor=scaleFactor, indexColors=256, fileNameSuffix="2", subFolder="XML2 Xbox")
                     else:
                         # 256x256 icons, export the PC with Xbox
                         # Export the image
-                        MMBGP.exportTextureMM(image, layer, xcfPath, ".png", indexColors=256, fileNameSuffix="2", subFolder="PC and Xbox")
-                        MMBGP.exportTextureMM(image, layer, xcfPath, ".png", indexColors=256, fileNameSuffix="1", subFolder="PSP")
+                        MMBGP.exportTextureMM(image, layer, xcfPath, ".png", indexColors=256, fileNameSuffix="2", subFolder="XML2 PC and Xbox")
                     # Get the scale factor for 128x128
                     scaleFactor = 128 / float(image.width)
                     # Export the image
-                    MMBGP.exportTextureMM(image, layer, xcfPath, ".png", scale_factor=scaleFactor, indexColors=256, fileNameSuffix="1", subFolder="All except PSP")
+                    MMBGP.exportTextureMM(image, layer, xcfPath, ".png", scale_factor=scaleFactor, indexColors=256, fileNameSuffix="1", subFolder="XML2 All")
             else: 
                 # Do not export icons2
                 # Determine the console
                 if console == 1:
                     # PC only
                     # Export the image
-                    MMBGP.exportTextureMM(image, layer, xcfPath, ".png", indexColors=256, fileNameSuffix="1", subFolder="PC")
+                    MMBGP.exportTextureMM(image, layer, xcfPath, ".png", indexColors=256, fileNameSuffix="1", subFolder="XML2 PC")
                 else:
                     # All consoles
                     # Export the image
-                    MMBGP.exportTextureMM(image, layer, xcfPath, ".png", indexColors=256, fileNameSuffix="1", subFolder="All")
+                    MMBGP.exportTextureMM(image, layer, xcfPath, ".png", indexColors=256, fileNameSuffix="1", subFolder="XML2 All")
         elif game == 2:
             # MUA1
             # Determine if the image is oversized
@@ -127,16 +125,16 @@ def exportIcons(image, layer, console, game):
             if console == 0:
                 # All
                 # Export the image
-                MMBGP.exportTextureMM(image, layer, xcfPath, ".png", scale_factor=scaleFactor, transparent=True, subFolder="PC, Steam, PS3, and 360")
+                MMBGP.exportTextureMM(image, layer, xcfPath, ".png", scale_factor=scaleFactor, transparent=True, subFolder="MUA1 PC, Steam, PS3, and 360")
                 # Get the scale factor for 128x128
                 scaleFactor = 128 / float(image.width)
                 # Export the last-gen textures
-                MMBGP.exportTextureMM(image, layer, xcfPath, ".png", scale_factor=scaleFactor, transparent=True, subFolder="Wii and Xbox")
-                MMBGP.exportTextureMM(image, layer, xcfPath, ".png", scale_factor=scaleFactor, transparent=True, subFolder="PS2 and PSP", alphaIndexed=True)
-            if console == 1:
+                MMBGP.exportTextureMM(image, layer, xcfPath, ".png", scale_factor=scaleFactor, transparent=True, subFolder="MUA1 Wii and Xbox")
+                MMBGP.exportTextureMM(image, layer, xcfPath, ".png", scale_factor=scaleFactor, transparent=True, subFolder="MUA1 PS2 and PSP", alphaIndexed=True)
+            else:
                 # PC only
                 # Export the image
-                MMBGP.exportTextureMM(image, layer, xcfPath, ".png", scale_factor=scaleFactor, transparent=True, subFolder="PC and Steam")   
+                MMBGP.exportTextureMM(image, layer, xcfPath, ".png", scale_factor=scaleFactor, transparent=True, subFolder="MUA1 PC and Steam")   
         else:
             # MUA2
             # Determine if the image is oversized
@@ -145,8 +143,8 @@ def exportIcons(image, layer, console, game):
             else:
                 scaleFactor = 1
             # Export the image
-            MMBGP.exportTextureMM(image, layer, xcfPath, ".png", scale_factor=scaleFactor, transparent=True, subFolder="Wii")
-            MMBGP.exportTextureMM(image, layer, xcfPath, ".png", scale_factor=scaleFactor, transparent=True, subFolder="PS2 and PSP", alphaIndexed=True)
+            MMBGP.exportTextureMM(image, layer, xcfPath, ".png", scale_factor=scaleFactor, transparent=True, subFolder="MUA2 Wii")
+            MMBGP.exportTextureMM(image, layer, xcfPath, ".png", scale_factor=scaleFactor, transparent=True, subFolder="MUA2 PS2 and PSP", alphaIndexed=True)
         # Print the success message
         pdb.gimp_message("SUCCESS: exported " + xcfPath)
 
