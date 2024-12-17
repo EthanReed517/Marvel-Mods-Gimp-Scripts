@@ -48,7 +48,7 @@ def exportIcons(image, layer, console, game):
     if okayToExport == True:
         # It's okay to export
         # Export a plain png copy as a preview
-        MMBGP.exportTextureMM(image, layer, xcfPath, ".png", transparent=True, subFolder="Preview")
+        MMBGP.exportTextureMM(image, layer, xcfPath, ".png", transparent=True, subFolder="!Preview")
         # Pick the console
         if game == 0:
             # XML1

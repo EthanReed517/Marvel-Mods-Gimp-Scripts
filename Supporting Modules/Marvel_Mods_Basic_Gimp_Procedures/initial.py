@@ -60,8 +60,25 @@ def initialOps(image, layer, **kwargs):
         # Warn the user
         pdb.gimp_message("ERROR: The image will not be exported.")
     # Get the file path of the image
-    filePath = pdb.gimp_image_get_filename(image)
+    xcfPath = pdb.gimp_image_get_filename(image)
     # Save the file as an xcf
-    pdb.gimp_file_save(image, layer, filePath, filePath)
+    pdb.gimp_file_save(image, layer, xcfPath, xcfPath)
     # Return the necessary values
-    return (okayToExport, filePath)
+    return (okayToExport, xcfPath)
+
+# Define the function for the initial operations for a comic cover
+def initialOpsComic(image, layer):
+    # Clear the selection (This is done just in case there is a selection, but there shouldn't be)
+    pdb.gimp_selection_none(image)
+    # Check if the size is greater than the minimum value
+    if image.height < 885:
+        pdb.gimp_message("WARNING: The image is shorter than 885 pixels in height. The image will still be exported, but it may appear blurry in the resulting textures.")
+    # Check if the aspect ratio is correct
+    if not(((float(image.height) / image.width) > 1.52) and ((float(image.height) / image.width) < 1.55)):
+        pdb.gimp_message("WARNING: The image does not have the correct aspect ration (approximately 1.54). The image will still be exported, but it may appear squashed or stretched in the resulting texture.")
+    # Get the file path of the image
+    xcfPath = pdb.gimp_image_get_filename(image)
+    # Save the file as an xcf
+    pdb.gimp_file_save(image, layer, xcfPath, xcfPath)
+    # Return the necessary values
+    return xcfPath
