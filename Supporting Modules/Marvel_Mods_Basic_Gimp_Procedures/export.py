@@ -76,6 +76,11 @@ def exportTextureMM(image, layer, xcfPath, extension, **kwargs):
         # Get the layer by the name and remove it
         layerToRemove = pdb.gimp_image_get_layer_by_name(exportImage, layer)
         pdb.gimp_image_remove_layer(exportImage, layerToRemove)
+    # Determine if an outline is needed
+    if kwargs.get("portraitOutline", None) is not None:
+        # An outline is needed
+        # Generate an outline
+        MMBGP.generatePortraitOutline(exportImage, kwargs["portraitOutline"])
     # Determine if the image uses transparency
     if kwargs.get("transparent", False) == True:
         # Transparency is needed
@@ -105,7 +110,7 @@ def exportTextureMM(image, layer, xcfPath, extension, **kwargs):
     # Get the out file path
     xcfFolder = os.path.dirname(xcfPath)
     fileName = os.path.splitext(os.path.basename(xcfPath))[0]
-    outFilePath = os.path.join(xcfFolder, kwargs.get("subFolder", ""), fileName + kwargs.get("fileNameSuffix", "") + extension)
+    outFilePath = os.path.join(xcfFolder, kwargs.get("subFolder", ""), kwargs.get("fileNamePrefix","") + fileName + kwargs.get("fileNameSuffix", "") + extension)
     # Export based on the file extension
     if extension == ".png":
         pdb.file_png_save(exportImage, exportLayer, outFilePath, outFilePath, 0, 9, 0, 0, 0, 0, 0)
