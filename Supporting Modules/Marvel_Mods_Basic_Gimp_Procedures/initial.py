@@ -82,3 +82,64 @@ def initialOpsComic(image, layer):
     pdb.gimp_file_save(image, layer, xcfPath, xcfPath)
     # Return the necessary values
     return xcfPath
+
+# Define the function for the initial operations for a loading screen
+def initialOpsLoading(image, layer):
+    # Begin an initial assumption that it's okay to export the image
+    okayToExport = True
+    # Initialize a value for the aspect ratio
+    aspectRatio = None
+    # Initialize a value for the guide position
+    guidePosition = None
+    # Clear the selection (This is done just in case there is a selection, but there shouldn't be)
+    pdb.gimp_selection_none(image)
+    # Determine if the image's height is an appropriate value
+    if not(image.height in [512, 1024, 2048]):
+        # The image is not an acceptable height
+        # It's not okay to export
+        okayToExport = False
+        # Warn the user
+        pdb.gimp_message("ERROR: The image is not an appropriate height (512, 1024, or 2048). Only these heights can be used for loading screens.")
+    else:
+        # The image is an acceptable height
+        # Create the dictionary of possible widths
+        widthDict = {
+            "512": {"4:3": 683, "16:9": 910, "maxGuidePos": 227},
+            "1024": {"4:3": 1365, "16:9": 1820, "maxGuidePos": 455},
+            "2048": {"4:3": 2731, "16:9": 3641, "maxGuidePos": 910}
+        }
+        # Check the aspect ratio
+        if image.width == widthDict[str(image.height)]["4:3"]:
+            # This is a 4:3 image
+            # Set the aspect ratio
+            aspectRatio = "4:3"
+        elif image.width == widthDict[str(image.height)]["16:9"]:
+            # This is a 16:9 image
+            # Set the aspect ratio
+            aspectRatio = "16:9"
+            # Determine if there is a guide in the image
+            next_guide = pdb.gimp_image_find_next_guide(image, 0)
+            # Determine if anything was found
+            if next_guide > 0:
+                # A guide was found
+                # Determine the guide's position
+                guidePosition = pdb.gimp_image_get_guide_position(image, next_guide)
+                # Verify that the guide's position is okay
+                if guidePosition > widthDict[str(image.height)]["maxGuidePos"]:
+                    # The position is not okay
+                    # It's not okay to export
+                    okayToExport = False
+                    # Warn the user
+                    pdb.gimp_message("ERROR: The image has a guide that is in an improper position. For a 16:9 image that's " + str(image.height) + ", the guide should be no further than " + str(widthDict[str(image.height)]["maxGuidePos"]) + ".")
+        else:
+            # The aspect ratio does not match
+            # It's not okay to export
+            okayToExport = False
+            # Warn the user
+            pdb.gimp_message("ERROR: The image does not have the correct width. For a loading screen with a height of " + str(image.height) + ", a 4:3 loading screen should have a width of " + str(widthDict[str(image.height)]["4:3"]) + ", and a 16:9 loading screen should have a width of " + str(widthDict[str(image.height)]["16:9"]) + ".")
+    # Get the file path of the image
+    xcfPath = pdb.gimp_image_get_filename(image)
+    # Save the file as an xcf
+    pdb.gimp_file_save(image, layer, xcfPath, xcfPath)
+    # Return the necessary values
+    return (okayToExport, xcfPath, aspectRatio, guidePosition)
