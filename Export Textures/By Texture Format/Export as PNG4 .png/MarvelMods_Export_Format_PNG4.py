@@ -12,6 +12,7 @@
 #   History:
 #   v1.0: 30Jan2023: First published version.
 #   v2.0: 22Jan2024: Full rewrite to include error checking and basic procedures.
+#   v3.0: 12Dec2024: Full redesign for improved performance using an external module for common operations.
 
 #   This program is free software; you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License as published by
@@ -31,56 +32,33 @@
 # ####### #
 # IMPORTS #
 # ####### #
-# To be able to execute GIMP scripts
-from gimpfu import*
+# GIMP module
+from gimpfu import *
+# Marvel Mods Operations
+import Marvel_Mods_Basic_Gimp_Procedures as MMBGP
 
 
 # ######### #
 # FUNCTIONS #
 # ######### #
-# Define the function to check for image errors
-def errorCheck(image, layer):
-    # Get the current dimensions of the image
-    currentWidth = image.width
-    currentHeight = image.height
-    # Set the initial error state
-    canProceed = False
-    # Check if the dimensions are powers of 2
-    powerOf2 = pdb.python_fu_marvelmods_basic_p02check(image, layer)
-    # Determine next steps based on power of 2 check
-    if powerOf2 == True:
-        # Image dimensions are powers of 2, can proceed
-        canProceed = True
-    else:
-        # Image dimensions are not powers of 2
-        # Give error message
-        pdb.gimp_message("ERROR: One or both image dimensions are not a power of 2. Alchemy only supports image dimensions that are powers of 2.\n\nPowers of 2: 1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048, 4096, and so on.")
-    # Return whether or not the script can proceed, as well as the width and height
-    return canProceed
-
 # Define the main operation
-def exportPNG4(image, layer):
-    # Save the file and get its path and name
-    (folderName, fileName) = pdb.python_fu_marvelmods_basic_get_path_save(image, layer)
-    # Check for errors
-    canProceed = errorCheck(image, layer)
+def exportPNG4(image, layer, transparent):
+    # Perform the initial operations
+    (okayToExport, xcfPath) = MMBGP.initialOps(image, layer)
     # Determine if it's okay to proceed
-    if canProceed == True:
+    if okayToExport == True:
         # No errors, can proceed
-        # Create a duplicate image for the export
-        exportImage = pdb.gimp_image_duplicate(image)
-        # Get the active layer of the new image
-        exportLayer = pdb.gimp_image_get_active_layer(exportImage)
-        # Flatten the image
-        exportLayer = pdb.gimp_image_flatten(exportImage)
-        # Export the image
-        pdb.python_fu_marvelmods_basic_exportPNG(exportImage, exportLayer, folderName, "PNG4", fileName, 1)
-        # Announce completion
-        pdb.gimp_message(folderName + "\\" + fileName + ".xcf was successfully exported.")
-    else:
-        # Errors, cannot proceed
-        # Display an error message
-        pdb.gimp_message(folderName + "\\" + fileName + ".xcf could not be exported.")
+        # Determine if the image is transparent
+        if transparent == 0:
+            # Not transparent
+            # Export the image
+            MMBGP.exportTextureMM(image, layer, xcfPath, ".png", indexColors=16, subFolder="PNG4")
+        else:
+            # Transparent
+            # Export the image
+            MMBGP.exportTextureMM(image, layer, xcfPath, ".png", transparent=True, subFolder="PNG4", alphaIndexed=True, alphaIndexColors=16)
+        # Print the success message
+        pdb.gimp_message("SUCCESS: exported " + xcfPath)
 
 
 # ######## #
@@ -93,12 +71,13 @@ register(
     "Exports a texture to PNG4 format.",
     "BaconWizard17",
     "BaconWizard17",
-    "January 2024",
+    "December 2024",
     "Export as PNG4 .png",
     "*",
     [
         (PF_IMAGE, "image", "Input image", None),
-        (PF_DRAWABLE, "drawable", "Layer, mask or channel", None)
+        (PF_DRAWABLE, "drawable", "Layer, mask or channel", None),
+        (PF_TOGGLE, "transparent", "Export with transparency?", 0)
     ],
     [],
     exportPNG4,

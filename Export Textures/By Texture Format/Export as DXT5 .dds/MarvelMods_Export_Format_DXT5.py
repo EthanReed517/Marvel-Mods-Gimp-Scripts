@@ -11,6 +11,7 @@
 #
 #   History:
 #   v1.0: 30Jan2023: First published version.
+#   v2.0: 12Dec2024: Full redesign for improved performance using an external module for common operations.
 
 #   This program is free software; you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License as published by
@@ -30,81 +31,62 @@
 # ####### #
 # IMPORTS #
 # ####### #
-# To be able to execute GIMP scripts
-from gimpfu import*
+# GIMP module
+from gimpfu import *
+# Marvel Mods Operations
+import Marvel_Mods_Basic_Gimp_Procedures as MMBGP
 
 
 # ######### #
 # FUNCTIONS #
 # ######### #
-# Define the function to check for image errors
-def errorCheck(image, layer):
-    # Get the current dimensions of the image
-    currentWidth = image.width
-    currentHeight = image.height
-    # Set the initial error state
-    canProceed = False
-    # Check if the dimensions are powers of 2
-    powerOf2 = pdb.python_fu_marvelmods_basic_p02check(image, layer)
-    # Determine next steps based on power of 2 check
-    if powerOf2 == True:
-        # Image dimensions are powers of 2, can proceed
-        canProceed = True
-    else:
-        # Image dimensions are not powers of 2
-        # Give error message
-        pdb.gimp_message("ERROR: One or both image dimensions are not a power of 2. Alchemy only supports image dimensions that are powers of 2.\n\nPowers of 2: 1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048, 4096, and so on.")
-    # Return whether or not the script can proceed, as well as the width and height
-    return canProceed
-
 # Define the main operation
 def exportDXT5(image, layer, alchemyVersion, exportRGB, exportBGR, flattenChoice):
-    # Save the file and get its path and name
-    (folderName, fileName) = pdb.python_fu_marvelmods_basic_get_path_save(image, layer)
-    # Check for errors
-    canProceed = errorCheck(image, layer)
+    # Perform the initial operations
+    (okayToExport, xcfPath) = MMBGP.initialOps(image, layer)
     # Determine if it's okay to proceed
-    if canProceed == True:
+    if okayToExport == True:
         # No errors, can proceed
-        # Create a duplicate image for the export
-        exportImage = pdb.gimp_image_duplicate(image)
-        # Get the active layer of the new image
-        exportLayer = pdb.gimp_image_get_active_layer(exportImage)
-        # Determine if it's necessary to flatten the image
-        if flattenChoice == 1:
-            # Image needs to be flattened
-            # Flatten the image
-            exportLayer = pdb.gimp_image_flatten(exportImage)
-        else:
-            # Image is not flattened
-            # Check if Alchemy 2.5 is in use
-            if alchemyVersion == 0:
-                # Alchemy 2.5 is in use
-                # Warn the user
-                pdb.gimp_message("WARNING: The Alchemy 2.5 exporter does not support DXT5 textures with partial transparency very well. Only turn off image flattening if the texture has sections that are fully transparent, or if the texture is a normal map that will be applied after export.")
         # Determine if an RGB version needs to be exported
         if exportRGB == 1:
             # RGB version needs to be exported
-            # Export the RGB version
-            pdb.python_fu_marvelmods_basic_exportDDS(exportImage, exportLayer, folderName, "DXT5 RGB", fileName, 2, 0)
+            # Determine if the image needs to be flattened
+            if flattenChoice == 1:
+                # The image needs to be flattened
+                # Export the RGB version
+                MMBGP.exportTextureMM(image, layer, xcfPath, ".dds", ddsCompression="DXT5", subFolder="DXT5 RGB")
+            else:
+                # The image does not need to be flattened (transparent)
+                # Determine the alchemy version
+                if alchemyVersion == 0:
+                    # Alchemy 2.5
+                    # Warn the user
+                    pdb.gimp_message("WARNING: The Alchemy 2.5 exporter does not support DXT5 textures with partial transparency very well. Only turn off image flattening if the texture has sections that are fully transparent, or if the texture is a normal map that will be applied after export.")
+                # Export the RGB version with transparency
+                MMBGP.exportTextureMM(image, layer, xcfPath, ".dds", transparent=True, ddsCompression="DXT5", subFolder="DXT5 RGB")
         # Determine if a BGR version needs to be exported
         if exportBGR == 1:
             # BGR version needs to be exported
             # Check the Alchemy version
             if alchemyVersion == 0:
                 # Alchemy 2.5
-                # Export the BGR version
-                pdb.python_fu_marvelmods_basic_exportDDS(exportImage, exportLayer, folderName, "DXT5 BGR", fileName, 2, 1)
+                # Determine if the image needs to be flattened
+                if flattenChoice == 1:
+                    # The image needs to be flattened
+                    # Export the BGR version
+                    MMBGP.exportTextureMM(image, layer, xcfPath, ".dds", ddsCompression="DXT5", RGB_BGR=True, subFolder="DXT5 BGR")
+                else:
+                    # The image does not need to be flattened
+                    # Warn the user
+                    pdb.gimp_message("WARNING: The Alchemy 2.5 exporter does not support DXT5 textures with partial transparency very well. Only turn off image flattening if the texture has sections that are fully transparent, or if the texture is a normal map that will be applied after export.")
+                    # Export the RGB version with transparency
+                    MMBGP.exportTextureMM(image, layer, xcfPath, ".dds", transparent=True, RGB_BGR=True, ddsCompression="DXT5", subFolder="DXT5 RGB")
             else:
                 # Alchemy 5
                 # Display the warning.
                 pdb.gimp_message("WARNING: It is not necessary to RGB-BGR swap colors with Alchemy 5. No RGB-BGR-swapped texture was exported.")
-        # Announce completion
-        pdb.gimp_message(folderName + "\\" + fileName + ".xcf was successfully exported.")
-    else:
-        # Errors, cannot proceed
-        # Display an error message
-        pdb.gimp_message(folderName + "\\" + fileName + ".xcf could not be exported.")
+        # Print the success message
+        pdb.gimp_message("SUCCESS: exported " + xcfPath)
 
 
 # ######## #
@@ -117,7 +99,7 @@ register(
     "Exports a texture to DXT5 format as a .dds.",
     "BaconWizard17",
     "BaconWizard17",
-    "January 2024",
+    "December 2024",
     "Export as DXT5 .dds",
     "*",
     [
