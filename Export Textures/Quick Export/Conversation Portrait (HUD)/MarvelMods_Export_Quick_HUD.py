@@ -11,6 +11,7 @@
 #
 #   History:
 #   v1.0: 17Jan2024: First published version.
+#   v2.0: 20Dec2024: Updated to use an external module to increase speed
 
 #   This program is free software; you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License as published by
@@ -30,8 +31,10 @@
 # ####### #
 # IMPORTS #
 # ####### #
-# To be able to execute GIMP scripts
-from gimpfu import*
+# GIMP module
+from gimpfu import *
+# Marvel Mods Operations
+import Marvel_Mods_Export_Textures as MMET
 
 
 # ######### #
@@ -41,14 +44,14 @@ from gimpfu import*
 def exportHUD(image, layer):
     # Define the remaining properties
     console = 0
+    alchemyVersion = 0
     plainChoice = 0
     nextGenChoice = 1
     heroOutlineChoice = 1
     redVillainOutlineChoice = 0
     greenVillainOutlineChoice = 0
-    alchemyVersion = 0
     # Call the main script
-    pdb.python_fu_marvelmods_export_asset_hud(image, layer, console, plainChoice, nextGenChoice, heroOutlineChoice, redVillainOutlineChoice, greenVillainOutlineChoice, alchemyVersion)
+    MMET.exportPortraits(image, layer, console, alchemyVersion, plainChoice, nextGenChoice, heroOutlineChoice, redVillainOutlineChoice, greenVillainOutlineChoice, 0, 0, "HUD")
 
 
 # ######## #
@@ -61,7 +64,7 @@ register(
     "Exports a conversation portrait (HUD) texture in multiple formats.",
     "BaconWizard17",
     "BaconWizard17",
-    "January 2024",
+    "December 2024",
     "Export Conversation Portrait (HUD)",
     "*",
     [

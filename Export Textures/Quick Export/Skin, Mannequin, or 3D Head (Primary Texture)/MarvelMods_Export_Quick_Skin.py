@@ -15,6 +15,7 @@
 #   v1.2: 06Sep2023: Now checks if image dimensions are a power of 2 and gives an error if not.
 #   v2.0: 10Jan2024: Simplified to call the main script but with pre-selected parameters
 #   v2.1: 01Mar2024: Focused purely on primary textures to simplify the code
+#   v3.0: 20Dec2024: Updated to use an external module to increase speed
 
 #   This program is free software; you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License as published by
@@ -34,8 +35,10 @@
 # ####### #
 # IMPORTS #
 # ####### #
-# To be able to execute GIMP scripts
-from gimpfu import*
+# GIMP module
+from gimpfu import *
+# Marvel Mods Operations
+import Marvel_Mods_Export_Textures as MMET
 
 
 # ######### #
@@ -49,9 +52,9 @@ def exportSkin(image, layer):
     charSize = 0
     alchemyVersion = 0
     transparency = 1
-    PSPFormat = 1
+    pspFormat = 1
     # Call the main script
-    pdb.python_fu_marvelmods_export_asset_skin(image, layer, console, skinType, charSize, alchemyVersion, transparency, PSPFormat)
+    MMET.exportSkin(image, layer, console, skinType, charSize, alchemyVersion, transparency, pspFormat, True)
 
 
 # ######## #
@@ -64,7 +67,7 @@ register(
     "Exports a skin texture in multiple formats. Also works on 3D head textures and mannequin textures.",
     "BaconWizard17",
     "BaconWizard17",
-    "March 2024",
+    "December 2024",
     "Export Skin, Mannequin, or 3D Head (Primary Texture)",
     "*",
     [

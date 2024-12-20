@@ -11,6 +11,7 @@
 #
 #   History:
 #   v1.0: 21Jan2024: First published version.
+#   v2.0: 20Dec2024: Updated to use an external module to increase speed
 
 #   This program is free software; you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License as published by
@@ -30,8 +31,10 @@
 # ####### #
 # IMPORTS #
 # ####### #
-# To be able to execute GIMP scripts
-from gimpfu import*
+# GIMP module
+from gimpfu import *
+# Marvel Mods Operations
+import Marvel_Mods_Export_Textures as MMET
 
 
 # ######### #
@@ -41,10 +44,11 @@ from gimpfu import*
 def exportCSP(image, layer):
     # Define the remaining properties
     console = 0
+    alchemyVersion = 0
     xml1Choice = 0
     xml2Choice = 1
     # Call the main script
-    pdb.python_fu_marvelmods_export_asset_csp(image, layer, console, xml1Choice, xml2Choice)
+    MMET.exportPortraits(image, layer, console, alchemyVersion, 0, 0, 0, 0, 0, xml1Choice, xml2Choice, "CSP")
 
 
 # ######## #
@@ -57,7 +61,7 @@ register(
     "Exports a character select portrait (CSP) texture in\nmultiple formats.",
     "BaconWizard17",
     "BaconWizard17",
-    "January 2024",
+    "December 2024",
     "Export Character Select Portrait (CSP)",
     "*",
     [

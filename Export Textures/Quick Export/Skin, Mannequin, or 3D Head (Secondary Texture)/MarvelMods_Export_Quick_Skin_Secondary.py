@@ -11,6 +11,7 @@
 #
 #   History:
 #   v1.0: 01Mar2024: First published version.
+#   v2.0: 20Dec2024: Updated to use an external module to increase speed
 
 #   This program is free software; you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License as published by
@@ -30,8 +31,10 @@
 # ####### #
 # IMPORTS #
 # ####### #
-# To be able to execute GIMP scripts
-from gimpfu import*
+# GIMP module
+from gimpfu import *
+# Marvel Mods Operations
+import Marvel_Mods_Export_Textures as MMET
 
 
 # ######### #
@@ -46,9 +49,10 @@ def exportSkinSecondary(image, layer):
     charSize = 0
     alchemyVersion = 0
     transparency = 1
-    PSPFormat = 1
+    pspFormat = 1
     # Call the main script
-    pdb.python_fu_marvelmods_export_asset_skin_secondary(image, layer, primarySize, console, skinType, charSize, alchemyVersion, transparency, PSPFormat)
+    primarySizeList = [False, True]
+    MMET.exportSkin(image, layer, console, skinType, charSize, alchemyVersion, transparency, pspFormat, False, primary_size=primarySizeList[primarySize])
 
 
 # ######## #
@@ -61,7 +65,7 @@ register(
     "Exports a skin texture in multiple formats. Also works on 3D head textures and mannequin textures.",
     "BaconWizard17",
     "BaconWizard17",
-    "March 2024",
+    "December 2024",
     "Export Skin, Mannequin, or 3D Head (Secondary Texture)",
     "*",
     [
