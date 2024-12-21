@@ -78,6 +78,11 @@ def errorCheck(image, layer, okayToExport, layerList):
 
 # Define the function for exporting a standard portrait
 def exportStandardPortrait(xcfPath, image, layer, console, alchemyVersion, template, prefix, **kwargs):
+    # Determine if the suffix is needed
+    if "_conversation" in xcfPath:
+        suffix = ""
+    else:
+        suffix = "_conversation"
     # Determine the list of layers that need to be removed
     if template == "Combo":
         layersForRemoval = ["XML1 CSP Frame", "XML1 CSP Background", "XML2 CSP Background"]
@@ -92,22 +97,22 @@ def exportStandardPortrait(xcfPath, image, layer, console, alchemyVersion, templ
             # Determine the console
             if console == 1:
                 # PC only
-                MMBGP.exportTextureMM(image, layer, xcfPath, ".png", indexColors=256, subFolder="PC", fileNamePrefix=prefix, layersToRemove=layersForRemoval, portraitOutline=kwargs.get("outlineChoice", None))
-                MMBGP.exportTextureMM(image, layer, xcfPath, ".dds", RGB_BGR=True, subFolder="MUA1 Steam", fileNamePrefix=prefix, layersToRemove=layersForRemoval, portraitOutline=kwargs.get("outlineChoice", None))
+                MMBGP.exportTextureMM(image, layer, xcfPath, ".png", indexColors=256, subFolder="PC", fileNamePrefix=prefix, fileNameSuffix=suffix, layersToRemove=layersForRemoval, portraitOutline=kwargs.get("outlineChoice", None))
+                MMBGP.exportTextureMM(image, layer, xcfPath, ".dds", RGB_BGR=True, subFolder="MUA1 Steam", fileNamePrefix=prefix, fileNameSuffix=suffix, layersToRemove=layersForRemoval, portraitOutline=kwargs.get("outlineChoice", None))
             else:
                 # All consoles
-                MMBGP.exportTextureMM(image, layer, xcfPath, ".png", indexColors=256, subFolder="Main", fileNamePrefix=prefix, layersToRemove=layersForRemoval, portraitOutline=kwargs.get("outlineChoice", None))
-                MMBGP.exportTextureMM(image, layer, xcfPath, ".dds", subFolder="Wii", fileNamePrefix=prefix, layersToRemove=layersForRemoval, portraitOutline=kwargs.get("outlineChoice", None))
-                MMBGP.exportTextureMM(image, layer, xcfPath, ".dds", RGB_BGR=True, subFolder="MUA1 PS3 and Steam", fileNamePrefix=prefix, layersToRemove=layersForRemoval, portraitOutline=kwargs.get("outlineChoice", None))
+                MMBGP.exportTextureMM(image, layer, xcfPath, ".png", indexColors=256, subFolder="Main", fileNamePrefix=prefix, fileNameSuffix=suffix, layersToRemove=layersForRemoval, portraitOutline=kwargs.get("outlineChoice", None))
+                MMBGP.exportTextureMM(image, layer, xcfPath, ".dds", subFolder="Wii", fileNamePrefix=prefix, fileNameSuffix=suffix, layersToRemove=layersForRemoval, portraitOutline=kwargs.get("outlineChoice", None))
+                MMBGP.exportTextureMM(image, layer, xcfPath, ".dds", RGB_BGR=True, subFolder="MUA1 PS3 and Steam", fileNamePrefix=prefix, fileNameSuffix=suffix, layersToRemove=layersForRemoval, portraitOutline=kwargs.get("outlineChoice", None))
         else:
             # Alchemy 5
             # Determine the console
             if console == 1:
                 # PC Only
-                MMBGP.exportTextureMM(image, layer, xcfPath, ".tga", subFolder="MUA1 PC and Steam", fileNamePrefix=prefix, layersToRemove=layersForRemoval, portraitOutline=kwargs.get("outlineChoice", None))
+                MMBGP.exportTextureMM(image, layer, xcfPath, ".tga", subFolder="MUA1 PC and Steam", fileNamePrefix=prefix, fileNameSuffix=suffix, layersToRemove=layersForRemoval, portraitOutline=kwargs.get("outlineChoice", None))
             else:
                 # All consoles
-                MMBGP.exportTextureMM(image, layer, xcfPath, ".tga", subFolder="All", fileNamePrefix=prefix, layersToRemove=layersForRemoval, portraitOutline=kwargs.get("outlineChoice", None))
+                MMBGP.exportTextureMM(image, layer, xcfPath, ".tga", subFolder="All", fileNamePrefix=prefix, fileNameSuffix=suffix, layersToRemove=layersForRemoval, portraitOutline=kwargs.get("outlineChoice", None))
     elif image.height == 128:
         # Standard resolution
         # Determine the Alchemy version
@@ -116,24 +121,24 @@ def exportStandardPortrait(xcfPath, image, layer, console, alchemyVersion, templ
             # Determine the console
             if console == 1:
                 # PC only
-                MMBGP.exportTextureMM(image, layer, xcfPath, ".png", indexColors=256, subFolder="PC", fileNamePrefix=prefix, layersToRemove=layersForRemoval, portraitOutline=kwargs.get("outlineChoice", None))
-                MMBGP.exportTextureMM(image, layer, xcfPath, ".dds", RGB_BGR=True, subFolder="MUA1 Steam", fileNamePrefix=prefix, layersToRemove=layersForRemoval, portraitOutline=kwargs.get("outlineChoice", None))
+                MMBGP.exportTextureMM(image, layer, xcfPath, ".png", indexColors=256, subFolder="PC", fileNamePrefix=prefix, fileNameSuffix=suffix, layersToRemove=layersForRemoval, portraitOutline=kwargs.get("outlineChoice", None))
+                MMBGP.exportTextureMM(image, layer, xcfPath, ".dds", RGB_BGR=True, subFolder="MUA1 Steam", fileNamePrefix=prefix, fileNameSuffix=suffix, layersToRemove=layersForRemoval, portraitOutline=kwargs.get("outlineChoice", None))
             else:
                 # All consoles
-                MMBGP.exportTextureMM(image, layer, xcfPath, ".png", indexColors=256, subFolder="Main except PSP", fileNamePrefix=prefix, layersToRemove=layersForRemoval, portraitOutline=kwargs.get("outlineChoice", None))
-                MMBGP.exportTextureMM(image, layer, xcfPath, ".dds", subFolder="Wii", fileNamePrefix=prefix, layersToRemove=layersForRemoval, portraitOutline=kwargs.get("outlineChoice", None))
-                MMBGP.exportTextureMM(image, layer, xcfPath, ".dds", RGB_BGR=True, subFolder="MUA1 PS3 and Steam", fileNamePrefix=prefix, layersToRemove=layersForRemoval, portraitOutline=kwargs.get("outlineChoice", None))
-                MMBGP.exportTextureMM(image, layer, xcfPath, ".png", indexColors=256, scale_factor=0.5, subFolder="PSP", fileNamePrefix=prefix, layersToRemove=layersForRemoval, portraitOutline=kwargs.get("outlineChoice", None))
+                MMBGP.exportTextureMM(image, layer, xcfPath, ".png", indexColors=256, subFolder="Main except PSP", fileNamePrefix=prefix, fileNameSuffix=suffix, layersToRemove=layersForRemoval, portraitOutline=kwargs.get("outlineChoice", None))
+                MMBGP.exportTextureMM(image, layer, xcfPath, ".dds", subFolder="Wii", fileNamePrefix=prefix, fileNameSuffix=suffix, layersToRemove=layersForRemoval, portraitOutline=kwargs.get("outlineChoice", None))
+                MMBGP.exportTextureMM(image, layer, xcfPath, ".dds", RGB_BGR=True, subFolder="MUA1 PS3 and Steam", fileNamePrefix=prefix, fileNameSuffix=suffix, layersToRemove=layersForRemoval, portraitOutline=kwargs.get("outlineChoice", None))
+                MMBGP.exportTextureMM(image, layer, xcfPath, ".png", indexColors=256, scale_factor=0.5, subFolder="PSP", fileNamePrefix=prefix, fileNameSuffix=suffix, layersToRemove=layersForRemoval, portraitOutline=kwargs.get("outlineChoice", None))
         else:
             # Alchemy 5
             # Determine the console
             if console == 1:
                 # PC Only
-                MMBGP.exportTextureMM(image, layer, xcfPath, ".tga", subFolder="MUA1 PC and Steam", fileNamePrefix=prefix, layersToRemove=layersForRemoval, portraitOutline=kwargs.get("outlineChoice", None))
+                MMBGP.exportTextureMM(image, layer, xcfPath, ".tga", subFolder="MUA1 PC and Steam", fileNamePrefix=prefix, fileNameSuffix=suffix, layersToRemove=layersForRemoval, portraitOutline=kwargs.get("outlineChoice", None))
             else:
                 # All consoles
-                MMBGP.exportTextureMM(image, layer, xcfPath, ".tga", subFolder="Main", fileNamePrefix=prefix, layersToRemove=layersForRemoval, portraitOutline=kwargs.get("outlineChoice", None))
-                MMBGP.exportTextureMM(image, layer, xcfPath, ".tga", scale_factor=0.5, subFolder="PSP", fileNamePrefix=prefix, layersToRemove=layersForRemoval, portraitOutline=kwargs.get("outlineChoice", None))
+                MMBGP.exportTextureMM(image, layer, xcfPath, ".tga", subFolder="Main", fileNamePrefix=prefix, fileNameSuffix=suffix, layersToRemove=layersForRemoval, portraitOutline=kwargs.get("outlineChoice", None))
+                MMBGP.exportTextureMM(image, layer, xcfPath, ".tga", scale_factor=0.5, subFolder="PSP", fileNamePrefix=prefix, fileNameSuffix=suffix, layersToRemove=layersForRemoval, portraitOutline=kwargs.get("outlineChoice", None))
     else:
         # HD resolution
         # Determine the scale factors
@@ -143,31 +148,36 @@ def exportStandardPortrait(xcfPath, image, layer, console, alchemyVersion, templ
         if alchemyVersion == 0:
             # Alchemy 2.5
             # XML2 PC is the same regardless of console choice
-            MMBGP.exportTextureMM(image, layer, xcfPath, ".dds", subFolder="XML2 PC", fileNamePrefix=prefix, layersToRemove=layersForRemoval, portraitOutline=kwargs.get("outlineChoice", None))
+            MMBGP.exportTextureMM(image, layer, xcfPath, ".dds", subFolder="XML2 PC", fileNamePrefix=prefix, fileNameSuffix=suffix, layersToRemove=layersForRemoval, portraitOutline=kwargs.get("outlineChoice", None))
             # Determine the console
             if console == 1:
                 # PC Only
-                MMBGP.exportTextureMM(image, layer, xcfPath, ".dds", RGB_BGR=True, subFolder="MUA1 PC and Steam", fileNamePrefix=prefix, layersToRemove=layersForRemoval, portraitOutline=kwargs.get("outlineChoice", None))
+                MMBGP.exportTextureMM(image, layer, xcfPath, ".dds", RGB_BGR=True, subFolder="MUA1 PC and Steam", fileNamePrefix=prefix, fileNameSuffix=suffix, layersToRemove=layersForRemoval, portraitOutline=kwargs.get("outlineChoice", None))
             else:
                 # All consoles
-                MMBGP.exportTextureMM(image, layer, xcfPath, ".dds", RGB_BGR=True, subFolder="MUA1 PC and Next-Gen", fileNamePrefix=prefix, layersToRemove=layersForRemoval, portraitOutline=kwargs.get("outlineChoice", None))
-                MMBGP.exportTextureMM(image, layer, xcfPath, ".dds", scale_factor=lastGenScaleFactor, subFolder="Wii", fileNamePrefix=prefix, layersToRemove=layersForRemoval, portraitOutline=kwargs.get("outlineChoice", None))
-                MMBGP.exportTextureMM(image, layer, xcfPath, ".png", indexColors=256, scale_factor=lastGenScaleFactor, subFolder="GC, PS2, and Xbox", fileNamePrefix=prefix, layersToRemove=layersForRemoval, portraitOutline=kwargs.get("outlineChoice", None))
-                MMBGP.exportTextureMM(image, layer, xcfPath, ".png", indexColors=256, scale_factor=pspScaleFactor, subFolder="PSP", fileNamePrefix=prefix, layersToRemove=layersForRemoval, portraitOutline=kwargs.get("outlineChoice", None))
+                MMBGP.exportTextureMM(image, layer, xcfPath, ".dds", RGB_BGR=True, subFolder="MUA1 PC and Next-Gen", fileNamePrefix=prefix, fileNameSuffix=suffix, layersToRemove=layersForRemoval, portraitOutline=kwargs.get("outlineChoice", None))
+                MMBGP.exportTextureMM(image, layer, xcfPath, ".dds", scale_factor=lastGenScaleFactor, subFolder="Wii", fileNamePrefix=prefix, fileNameSuffix=suffix, layersToRemove=layersForRemoval, portraitOutline=kwargs.get("outlineChoice", None))
+                MMBGP.exportTextureMM(image, layer, xcfPath, ".png", indexColors=256, scale_factor=lastGenScaleFactor, subFolder="GC, PS2, and Xbox", fileNamePrefix=prefix, fileNameSuffix=suffix, layersToRemove=layersForRemoval, portraitOutline=kwargs.get("outlineChoice", None))
+                MMBGP.exportTextureMM(image, layer, xcfPath, ".png", indexColors=256, scale_factor=pspScaleFactor, subFolder="PSP", fileNamePrefix=prefix, fileNameSuffix=suffix, layersToRemove=layersForRemoval, portraitOutline=kwargs.get("outlineChoice", None))
         else:
             # Alchemy 5
             # Determine the console
             if console == 1:
                 # PC Only
-                MMBGP.exportTextureMM(image, layer, xcfPath, ".tga", subFolder="MUA1 PC and Steam", fileNamePrefix=prefix, layersToRemove=layersForRemoval, portraitOutline=kwargs.get("outlineChoice", None))
+                MMBGP.exportTextureMM(image, layer, xcfPath, ".tga", subFolder="MUA1 PC and Steam", fileNamePrefix=prefix, fileNameSuffix=suffix, layersToRemove=layersForRemoval, portraitOutline=kwargs.get("outlineChoice", None))
             else:
                 # All consoles
-                MMBGP.exportTextureMM(image, layer, xcfPath, ".tga", subFolder="Main", fileNamePrefix=prefix, layersToRemove=layersForRemoval, portraitOutline=kwargs.get("outlineChoice", None))
-                MMBGP.exportTextureMM(image, layer, xcfPath, ".tga", scale_factor=lastGenScaleFactor, subFolder="Wii and MUA2 PS2", fileNamePrefix=prefix, layersToRemove=layersForRemoval, portraitOutline=kwargs.get("outlineChoice", None))
-                MMBGP.exportTextureMM(image, layer, xcfPath, ".tga", scale_factor=pspScaleFactor, subFolder="PSP", fileNamePrefix=prefix, layersToRemove=layersForRemoval, portraitOutline=kwargs.get("outlineChoice", None))
+                MMBGP.exportTextureMM(image, layer, xcfPath, ".tga", subFolder="Main", fileNamePrefix=prefix, fileNameSuffix=suffix, layersToRemove=layersForRemoval, portraitOutline=kwargs.get("outlineChoice", None))
+                MMBGP.exportTextureMM(image, layer, xcfPath, ".tga", scale_factor=lastGenScaleFactor, subFolder="Wii and MUA2 PS2", fileNamePrefix=prefix, fileNameSuffix=suffix, layersToRemove=layersForRemoval, portraitOutline=kwargs.get("outlineChoice", None))
+                MMBGP.exportTextureMM(image, layer, xcfPath, ".tga", scale_factor=pspScaleFactor, subFolder="PSP", fileNamePrefix=prefix, fileNameSuffix=suffix, layersToRemove=layersForRemoval, portraitOutline=kwargs.get("outlineChoice", None))
 
 # Define the function for exporting a NG portrait
 def exportNGPortrait(xcfPath, image, layer, console, alchemyVersion, template):
+    # Determine if the suffix is needed
+    if "_conversation" in xcfPath:
+        suffix = ""
+    else:
+        suffix = "_conversation"
     # Determine the list of layers that need to be removed
     if template == "Combo":
         layersForRemoval = ["XML1 CSP Frame", "HUD Frame", "HUD Background", "XML1 CSP Background", "XML2 CSP Background"]
@@ -182,20 +192,20 @@ def exportNGPortrait(xcfPath, image, layer, console, alchemyVersion, template):
             # Determine the console
             if console == 1:
                 # PC only
-                MMBGP.exportTextureMM(image, layer, xcfPath, ".png", transparent=True, subFolder="PC and MUA1 Steam", fileNamePrefix="ng_", layersToRemove=layersForRemoval)
+                MMBGP.exportTextureMM(image, layer, xcfPath, ".png", transparent=True, subFolder="PC and MUA1 Steam", fileNamePrefix="ng_", fileNameSuffix=suffix, layersToRemove=layersForRemoval)
             else:
                 # All consoles
-                MMBGP.exportTextureMM(image, layer, xcfPath, ".png", transparent=True, subFolder="All except GC, PS2, and PSP", fileNamePrefix="ng_", layersToRemove=layersForRemoval)
-                MMBGP.exportTextureMM(image, layer, xcfPath, ".png", transparent=True, subFolder="GC, PS2, and PSP", fileNamePrefix="ng_", layersToRemove=layersForRemoval, alphaIndexed=True)
+                MMBGP.exportTextureMM(image, layer, xcfPath, ".png", transparent=True, subFolder="All except GC, PS2, and PSP", fileNamePrefix="ng_", fileNameSuffix=suffix, layersToRemove=layersForRemoval)
+                MMBGP.exportTextureMM(image, layer, xcfPath, ".png", transparent=True, subFolder="GC, PS2, and PSP", fileNamePrefix="ng_", fileNameSuffix=suffix, layersToRemove=layersForRemoval, alphaIndexed=True)
         else:
             # Alchemy 5
             # Determine the console
             if console == 1:
                 # PC only
-                MMBGP.exportTextureMM(image, layer, xcfPath, ".tga", transparent=True, subFolder="MUA1 PC and Steam", fileNamePrefix="ng_", layersToRemove=layersForRemoval)
+                MMBGP.exportTextureMM(image, layer, xcfPath, ".tga", transparent=True, subFolder="MUA1 PC and Steam", fileNamePrefix="ng_", fileNameSuffix=suffix, layersToRemove=layersForRemoval)
             else:
                 # All consoles
-                MMBGP.exportTextureMM(image, layer, xcfPath, ".tga", transparent=True, subFolder="All", fileNamePrefix="ng_", layersToRemove=layersForRemoval)
+                MMBGP.exportTextureMM(image, layer, xcfPath, ".tga", transparent=True, subFolder="All", fileNamePrefix="ng_", fileNameSuffix=suffix, layersToRemove=layersForRemoval)
     elif image.height == 128:
         # Standard resolution
         # Determine the Alchemy version
@@ -204,22 +214,22 @@ def exportNGPortrait(xcfPath, image, layer, console, alchemyVersion, template):
             # Determine the console
             if console == 1:
                 # PC only
-                MMBGP.exportTextureMM(image, layer, xcfPath, ".png", transparent=True, subFolder="PC and MUA1 Steam", fileNamePrefix="ng_", layersToRemove=layersForRemoval)
+                MMBGP.exportTextureMM(image, layer, xcfPath, ".png", transparent=True, subFolder="PC and MUA1 Steam", fileNamePrefix="ng_", fileNameSuffix=suffix, layersToRemove=layersForRemoval)
             else:
                 # All consoles
-                MMBGP.exportTextureMM(image, layer, xcfPath, ".png", transparent=True, subFolder="All except GC, PS2, and PSP", fileNamePrefix="ng_", layersToRemove=layersForRemoval)
-                MMBGP.exportTextureMM(image, layer, xcfPath, ".png", transparent=True, subFolder="GC and PS2", fileNamePrefix="ng_", layersToRemove=layersForRemoval, alphaIndexed=True)
-                MMBGP.exportTextureMM(image, layer, xcfPath, ".png", transparent=True, scale_factor=0.5, subFolder="PSP", fileNamePrefix="ng_", layersToRemove=layersForRemoval, alphaIndexed=True)
+                MMBGP.exportTextureMM(image, layer, xcfPath, ".png", transparent=True, subFolder="All except GC, PS2, and PSP", fileNamePrefix="ng_", fileNameSuffix=suffix, layersToRemove=layersForRemoval)
+                MMBGP.exportTextureMM(image, layer, xcfPath, ".png", transparent=True, subFolder="GC and PS2", fileNamePrefix="ng_", fileNameSuffix=suffix, layersToRemove=layersForRemoval, alphaIndexed=True)
+                MMBGP.exportTextureMM(image, layer, xcfPath, ".png", transparent=True, scale_factor=0.5, subFolder="PSP", fileNamePrefix="ng_", fileNameSuffix=suffix, layersToRemove=layersForRemoval, alphaIndexed=True)
         else:
             # Alchemy 5
             # Determine the console
             if console == 1:
                 # PC only
-                MMBGP.exportTextureMM(image, layer, xcfPath, ".tga", transparent=True, subFolder="MUA1 PC and Steam", fileNamePrefix="ng_", layersToRemove=layersForRemoval)
+                MMBGP.exportTextureMM(image, layer, xcfPath, ".tga", transparent=True, subFolder="MUA1 PC and Steam", fileNamePrefix="ng_", fileNameSuffix=suffix, layersToRemove=layersForRemoval)
             else:
                 # All consoles
-                MMBGP.exportTextureMM(image, layer, xcfPath, ".tga", transparent=True, subFolder="All except PSP", fileNamePrefix="ng_", layersToRemove=layersForRemoval)
-                MMBGP.exportTextureMM(image, layer, xcfPath, ".tga", transparent=True, scale_factor=0.5, subFolder="PSP", fileNamePrefix="ng_", layersToRemove=layersForRemoval)
+                MMBGP.exportTextureMM(image, layer, xcfPath, ".tga", transparent=True, subFolder="All except PSP", fileNamePrefix="ng_", fileNameSuffix=suffix, layersToRemove=layersForRemoval)
+                MMBGP.exportTextureMM(image, layer, xcfPath, ".tga", transparent=True, scale_factor=0.5, subFolder="PSP", fileNamePrefix="ng_", fileNameSuffix=suffix, layersToRemove=layersForRemoval)
     else:
         # HD resolution
         # Determine the scale factors
@@ -231,24 +241,24 @@ def exportNGPortrait(xcfPath, image, layer, console, alchemyVersion, template):
             # Determine the console
             if console == 1:
                 # PC Only
-                MMBGP.exportTextureMM(image, layer, xcfPath, ".png", transparent=True, subFolder="PC and MUA1 Steam", fileNamePrefix="ng_", layersToRemove=layersForRemoval)
+                MMBGP.exportTextureMM(image, layer, xcfPath, ".png", transparent=True, subFolder="PC and MUA1 Steam", fileNamePrefix="ng_", fileNameSuffix=suffix, layersToRemove=layersForRemoval)
             else:
                 # All consoles
-                MMBGP.exportTextureMM(image, layer, xcfPath, ".png", transparent=True, subFolder="PC and MUA1 Next-Gen", fileNamePrefix="ng_", layersToRemove=layersForRemoval)
-                MMBGP.exportTextureMM(image, layer, xcfPath, ".png", transparent=True, scale_factor=lastGenScaleFactor, subFolder="Wii and Xbox", fileNamePrefix="ng_", layersToRemove=layersForRemoval)
-                MMBGP.exportTextureMM(image, layer, xcfPath, ".png", transparent=True, scale_factor=lastGenScaleFactor, subFolder="GC and PS2", fileNamePrefix="ng_", layersToRemove=layersForRemoval, alphaIndexed=True)
-                MMBGP.exportTextureMM(image, layer, xcfPath, ".png", transparent=True, scale_factor=pspScaleFactor, subFolder="PSP", fileNamePrefix="ng_", layersToRemove=layersForRemoval, alphaIndexed=True)
+                MMBGP.exportTextureMM(image, layer, xcfPath, ".png", transparent=True, subFolder="PC and MUA1 Next-Gen", fileNamePrefix="ng_", fileNameSuffix=suffix, layersToRemove=layersForRemoval)
+                MMBGP.exportTextureMM(image, layer, xcfPath, ".png", transparent=True, scale_factor=lastGenScaleFactor, subFolder="Wii and Xbox", fileNamePrefix="ng_", fileNameSuffix=suffix, layersToRemove=layersForRemoval)
+                MMBGP.exportTextureMM(image, layer, xcfPath, ".png", transparent=True, scale_factor=lastGenScaleFactor, subFolder="GC and PS2", fileNamePrefix="ng_", fileNameSuffix=suffix, layersToRemove=layersForRemoval, alphaIndexed=True)
+                MMBGP.exportTextureMM(image, layer, xcfPath, ".png", transparent=True, scale_factor=pspScaleFactor, subFolder="PSP", fileNamePrefix="ng_", fileNameSuffix=suffix, layersToRemove=layersForRemoval, alphaIndexed=True)
         else:
             # Alchemy 5
             # Determine the console
             if console == 1:
                 # PC only
-                MMBGP.exportTextureMM(image, layer, xcfPath, ".png", transparent=True, subFolder="MUA1 PC and Steam", fileNamePrefix="ng_", layersToRemove=layersForRemoval)
+                MMBGP.exportTextureMM(image, layer, xcfPath, ".png", transparent=True, subFolder="MUA1 PC and Steam", fileNamePrefix="ng_", fileNameSuffix=suffix, layersToRemove=layersForRemoval)
             else:
                 # All consoles
-                MMBGP.exportTextureMM(image, layer, xcfPath, ".tga", transparent=True, subFolder="MUA1 PC and Next-Gen", fileNamePrefix="ng_", layersToRemove=layersForRemoval)
-                MMBGP.exportTextureMM(image, layer, xcfPath, ".tga", transparent=True, scale_factor=lastGenScaleFactor, subFolder="PS2 and Wii", fileNamePrefix="ng_", layersToRemove=layersForRemoval)
-                MMBGP.exportTextureMM(image, layer, xcfPath, ".tga", transparent=True, scale_factor=pspScaleFactor, subFolder="PSP", fileNamePrefix="ng_", layersToRemove=layersForRemoval)
+                MMBGP.exportTextureMM(image, layer, xcfPath, ".tga", transparent=True, subFolder="MUA1 PC and Next-Gen", fileNamePrefix="ng_", fileNameSuffix=suffix, layersToRemove=layersForRemoval)
+                MMBGP.exportTextureMM(image, layer, xcfPath, ".tga", transparent=True, scale_factor=lastGenScaleFactor, subFolder="PS2 and Wii", fileNamePrefix="ng_", fileNameSuffix=suffix, layersToRemove=layersForRemoval)
+                MMBGP.exportTextureMM(image, layer, xcfPath, ".tga", transparent=True, scale_factor=pspScaleFactor, subFolder="PSP", fileNamePrefix="ng_", fileNameSuffix=suffix, layersToRemove=layersForRemoval)
 
 # Define the function for exporting an XML1 CSP
 def exportXML1CSP(xcfPath, image, layer, console, alchemyVersion, template):
