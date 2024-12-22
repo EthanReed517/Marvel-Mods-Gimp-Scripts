@@ -110,5 +110,21 @@ if exist %gimpScriptsFolder% (
 	echo Scheme scripts were not installed.
 )
 
+REM Check if the necessary dependencies are needed
+if not exist C:\Windows\pngquant.exe (
+	REM pngquant doesn't exist
+	REM displa the error message
+	echo WARNING: pngquant.exe does not exist in C:\Windows. This program is required for certain scripts to function. For more information, see the main README.md file included with the release.
+	echo.
+)
+if not exist %appDataPluginFolder%\"gegl-python-fu & gegl_graph.py" (
+	REM the GEGL script doesn't exist
+	REM displa the error message
+	echo WARNING: MareroQ's GEGL python script does not exist in %appDataPluginFolder%. This script is required for certain scripts to function. For more information, see the main README.md file included with the release.
+	echo.
+)
+
+
 REM pause to show status
+echo All processes complete.
 pause
