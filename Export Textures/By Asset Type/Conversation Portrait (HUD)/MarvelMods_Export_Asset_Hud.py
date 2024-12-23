@@ -64,8 +64,8 @@ register(
     [
         (PF_IMAGE, "image", "Input image", None),
         (PF_DRAWABLE, "layer", "Layer, mask or channel", None),
-        (PF_OPTION, "console", "Console:", 0, ["All","PC Only"]),,
-        (PF_OPTION, "alchemyVersion", "Alchemy Version:", 0, ["Alchemy 2.5","Alchemy 5"])
+        (PF_OPTION, "console", "Console:", 0, ["All","PC Only"]),
+        (PF_OPTION, "alchemyVersion", "Alchemy Version:", 0, ["Alchemy 2.5","Alchemy 5"]),
         (PF_TOGGLE, "plainChoice", "Export a plain portrait?", 0),
         (PF_TOGGLE, "nextGenChoice", "Export an MUA1 next-gen\nstyle portrait?", 1),
         (PF_TOGGLE, "heroOutlineChoice", "Export a portrait with a\nhero outline?", 1),
