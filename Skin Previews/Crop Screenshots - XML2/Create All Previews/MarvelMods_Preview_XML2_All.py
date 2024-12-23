@@ -42,7 +42,7 @@ import os.path
 # FUNCTION #
 # ######## #
 # Define the main operation
-def fullPreview(image, layer, game):
+def fullPreview(image, layer):
     MMEP.fullPreview(image, layer, "XML")
 
 
