@@ -4,7 +4,8 @@ by BaconWizard17
 This plugin exports a power icons texture in several optimized formats. It supports XML1, XML2, MUA1, and MUA2 power icons. If you're using Alchemy 5, it's recommended to use the [Alchemy 5 Texture Replacement Method](https://marvelmods.com/forum/index.php/topic,11009.0.html) instead.
 
 ### Compatibility
-This script will only work correctly if the image has been saved as a .xcf file. The texture should be square. Use one of the provided templates to get the correct size and layout for each game.
+This script will only work correctly if the image has been saved as a .xcf file. The texture should be square. Use one of the provided templates to get the correct size and layout for each game. For XML2, the script will automatically add a `1` or `2` to the end of the texture name depending on if the icon is suitable for use as an icons2 file. The .xcf file does not need to include a number at the end of the file name. 
+- For example, Cyclops's icons would just need to be saved as `cyclops_icons.xcf`. The larger texture size will be exported as `cyclops_icons2.png`, and the smaller texture size will be exported as `cyclops_icons1.png`.
 
 ### Installation
  1. This script can be installed using `update.bat` from the main folder of this release. Check the main `README.md` file in this project for more details on proper installation.
