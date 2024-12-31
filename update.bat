@@ -19,7 +19,7 @@ if exist %appDataPluginFolder% (
 	REM move to the xcf folder
 	cd %~dp0\"Supporting Templates"
 	REM copy the .xcf files
-	echo Copying supporting GIMP templates.
+	echo Copying supporting GIMP templates . . .
 	if not exist %appDataPluginFolder%\"MarvelModsTemplates" (
 		mkdir %appDataPluginFolder%\"MarvelModsTemplates"
 	)
@@ -30,6 +30,22 @@ if exist %appDataPluginFolder% (
 	REM announce completion
 	echo Installation of supporting GIMP templates is complete.
 	echo.
+	
+	REM move to the folder of the script
+	cd %~dp0
+	REM check if the folder exists
+	if exist "Screenshot XML Files" (
+		echo Copying screenshot xml files . . .
+		if not exist %appDataPluginFolder%\"Screenshot XML Files" (
+			mkdir %appDataPluginFolder%\"Screenshot XML Files"
+		)
+		cd %~dp0\"Screenshot XML Files"
+		for %%f in (*.xml) do (
+			copy >nul "%%f" %appDataPluginFolder%\"Screenshot XML Files"
+		)
+		echo Installation of screenshot xml files is complete.
+		echo.
+	)
 	
 	REM move to the folder of the script
 	cd %~dp0
