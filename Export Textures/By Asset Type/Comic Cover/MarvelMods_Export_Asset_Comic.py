@@ -194,7 +194,7 @@ def exportComic(image, layer, console, alchemyVersion, xml1Choice, xml2Choice, m
         # Scale the image accordingly for the game
         pdb.gimp_image_scale(coverImage, gameInfoDict[game]["width"], gameInfoDict[game]["height"])
         # Open the game-specific image and get its active layer
-        gameImage = pdb.gimp_xcf_load(0, os.path.join("MarvelModsTemplates", gameInfoDict[game]["templateFileName"]), os.path.join("MarvelModsTemplates", gameInfoDict[game]["templateFileName"]))
+        gameImage = pdb.gimp_xcf_load(0, os.path.join(gimp.directory, "plug-ins", "MarvelModsTemplates", gameInfoDict[game]["templateFileName"]), os.path.join("MarvelModsTemplates", gameInfoDict[game]["templateFileName"]))
         gameLayer = pdb.gimp_image_get_active_layer(gameImage)
         # Copy the asset layer and paste it in the new image
         pdb.gimp_edit_copy(coverLayer)
