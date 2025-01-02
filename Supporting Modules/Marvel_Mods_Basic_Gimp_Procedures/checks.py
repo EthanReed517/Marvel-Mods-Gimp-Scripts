@@ -34,7 +34,7 @@
 from gimpfu import *
 # External modules
 import math
-from os import mkdir
+from os import makedirs
 import os.path
 
 
@@ -95,4 +95,4 @@ def folderCheck(xcfPath, subFolder):
     subFolderPath = os.path.join(xcfFolderPath, subFolder)
     # If the path doesn't exist, create the new folder
     if os.path.exists(subFolderPath) == False:
-        mkdir(subFolderPath)
+        makedirs(subFolderPath)

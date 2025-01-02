@@ -62,7 +62,7 @@ def initialOps(image, layer, **kwargs):
     # Get the file path of the image
     xcfPath = pdb.gimp_image_get_filename(image)
     # Save the file as an xcf
-    pdb.gimp_file_save(image, layer, xcfPath, xcfPath)
+    pdb.gimp_xcf_save(0, image, layer, xcfPath, xcfPath)
     # Return the necessary values
     return (okayToExport, xcfPath)
 
@@ -140,6 +140,6 @@ def initialOpsLoading(image, layer):
     # Get the file path of the image
     xcfPath = pdb.gimp_image_get_filename(image)
     # Save the file as an xcf
-    pdb.gimp_file_save(image, layer, xcfPath, xcfPath)
+    pdb.gimp_xcf_save(0, image, layer, xcfPath, xcfPath)
     # Return the necessary values
     return (okayToExport, xcfPath, aspectRatio, guidePosition)
