@@ -3,7 +3,7 @@ REM **************************
 REM * Section 0 - User Input *
 REM **************************
 REM enter the path to your plugins folder in AppData:
-set appDataPluginFolder="C:\users\your_user\AppData\Roaming\GIMP\2.10\plug-ins"
+set appDataPluginFolder="C:\users\ethan\AppData\Roaming\GIMP\2.10\plug-ins"
 REM enter the path to the GIMP installation:
 set gimpInstallFolder="C:\Program Files\Gimp 2"
 
@@ -25,6 +25,24 @@ if exist %appDataPluginFolder% (
 	)
 	for %%f in (*.xcf) do (
 		copy >nul "%%f" %appDataPluginFolder%\"MarvelModsTemplates"
+	)
+	if exist %~dp0\"Supporting Templates\Logos\Big" (
+		cd %~dp0\"Supporting Templates\Logos\Big"
+		if not exist %appDataPluginFolder%\"MarvelModsTemplates\Logos\Big" (
+			mkdir %appDataPluginFolder%\"MarvelModsTemplates\Logos\Big"
+		)
+		for %%f in (*.xcf) do (
+			copy >nul "%%f" %appDataPluginFolder%\"MarvelModsTemplates\Logos\Big"
+		)
+	)
+	if exist %~dp0\"Supporting Templates\Logos\Small" (
+		cd %~dp0\"Supporting Templates\Logos\Small"
+		if not exist %appDataPluginFolder%\"MarvelModsTemplates\Logos\Small" (
+			mkdir %appDataPluginFolder%\"MarvelModsTemplates\Logos\Small"
+		)
+		for %%f in (*.xcf) do (
+			copy >nul "%%f" %appDataPluginFolder%\"MarvelModsTemplates\Logos\Small"
+		)
 	)
 	
 	REM announce completion
