@@ -105,7 +105,7 @@ def createPersonalComic(image, layer, xml1Choice, xml2Choice, mua1Choice, charSq
     # Flush displays
     #pdb.gimp_displays_flush()
     # Set up the file path
-    xcfPath = os.path.join(directory, "Comic Covers", desc, os.path.basename(directory).replace(" ", "_") + "_cov.xcf")
+    xcfPath = os.path.join(directory, "Comic Covers", desc, os.path.basename(directory).replace(" ", "_").lower() + "_cov.xcf")
     # Check if the folder exists
     if os.path.exists(os.path.dirname(xcfPath)) == False:
         makedirs(os.path.dirname(xcfPath))
@@ -133,7 +133,7 @@ register(
         (PF_IMAGE, "image", "Input image", None),
         (PF_DRAWABLE, "layer", "Layer, mask or channel", None),
         (PF_TOGGLE, "xml1Choice", "Create an XML1 comic cover?", 0),
-        (PF_TOGGLE, "xml2Choice", "Create an XML2 comic cover?", 0),
+        (PF_TOGGLE, "xml2Choice", "Create an XML2 comic cover?", 1),
         (PF_TOGGLE, "mua1Choice", "Create an MUA1 comic cover?", 1),
         (PF_FLOAT, "charSquat", "Squat modifier:", 1.00),
         (PF_FILE, "bigLogo", "Big Logo:", os.path.join(gimp.directory, "plug-ins", "MarvelModsTemplates", "Logos", "Big", "X-Men.xcf")),
