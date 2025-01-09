@@ -113,7 +113,7 @@ def createPersonalComic(image, layer, xml1Choice, xml2Choice, mua1Choice, charSq
     pdb.gimp_xcf_save(0, templateImage, templateLayer, xcfPath, xcfPath)
     pdb.gimp_image_set_filename(templateImage, xcfPath)
     # Export the image
-    MMET.exportComic(templateImage, templateLayer, 0, 0, xml1Choice, xml2Choice, mua1Choice)
+    MMET.exportComic(templateImage, templateLayer, 0, 0, xml1Choice, xml2Choice, mua1Choice, personalPreview=True)
 
 
 # ######## #

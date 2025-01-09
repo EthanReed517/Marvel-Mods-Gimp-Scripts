@@ -39,6 +39,58 @@ import Marvel_Mods_Basic_Gimp_Procedures as MMBGP
 # ######### #
 # FUNCTIONS #
 # ######### #
+# Define the function for exporting a personal preview
+def exportPersonalPreview(image, layer, xcfPath, desc, width, personalPreview):
+    # Determine if the preview is needed
+    if personalPreview == True:
+        # A personal preview is needed
+        # Create a duplicate of the image
+        smallImage = pdb.gimp_image_duplicate(image)
+        # Get the active layer of the image
+        smallLayer = pdb.gimp_image_get_active_layer(smallImage)
+        # Scale the image accordingly
+        pdb.gimp_image_scale(smallImage, width, 282)
+        # Start the new image
+        newImage = pdb.gimp_image_new(502, 282, 0)
+        # Create a new layer for this image
+        newLayer = pdb.gimp_layer_new(newImage, 502, 282, 1, "New Layer", 100, 28)
+        # Get the active layer of the image
+        activeLayer = pdb.gimp_image_get_active_layer(newImage)
+        # Apply the new layer to the active layer
+        pdb.gimp_image_insert_layer(newImage, newLayer, activeLayer, 0)
+        # Get the new active layer
+        newLayer = pdb.gimp_image_get_active_layer(newImage)
+        # Copy the asset layer and paste it in the new image
+        pdb.gimp_edit_copy(smallLayer)
+        floatingLayer = pdb.gimp_edit_paste(newLayer, False)
+        # Determine the offsets
+        xOffset, yOffset = floatingLayer.offsets
+        xOffset = ((502 - width) / 2) - xOffset
+        yOffset = 30 - yOffset
+        pdb.gimp_layer_translate(floatingLayer, xOffset, yOffset)
+        # Anchor the layer
+        pdb.gimp_floating_sel_anchor(floatingLayer)
+        # Get the new active layer
+        newLayer = pdb.gimp_image_get_active_layer(newImage)
+        # Set the foreground fill color
+        pdb.gimp_context_set_foreground((255, 255, 255))
+        # Set up the dicitonary of X positions
+        xPosDict = {
+            "XML1/XML2 (not PSP)": 14,
+            "XML2 PSP/MUA1/MUA2": 6
+        }
+        # Create the text
+        text_layer = pdb.gimp_text_fontname(newImage, newLayer, xPosDict[desc], 0, desc, 0, True, 31, 1, "Gunship")
+        # Merge the layer
+        pdb.gimp_floating_sel_anchor(text_layer)
+        # Set up the suffixes
+        suffixDict = {
+            "XML1/XML2 (not PSP)": "4-3",
+            "XML2 PSP/MUA1/MUA2": "16-9"
+        }
+        # Export the preview
+        MMBGP.exportTextureMM(newImage, newLayer, xcfPath, ".png", transparent=True, subFolder="!Preview", fileNamePrefix="0Personal_", fileNameSuffix=" (" + suffixDict[desc] + ")")
+
 # Define the function for exporting an XML2 PSP loading screen
 def exportXML2PSPLoad(image, layer, xcfPath, alchemyVersion):
     # Create a duplicate image of the loading screen and get its active layer
@@ -83,9 +135,11 @@ def exportXML2PSPLoad(image, layer, xcfPath, alchemyVersion):
         MMBGP.exportTextureMM(blackImage, blackLayer, xcfPath, ".tga", subFolder="XML2 PSP")
 
 # Define the function for exporting the 16:9 loading screen
-def export16_9Loading(image, layer, console, alchemyVersion, xcfPath, type):
+def export16_9Loading(image, layer, console, alchemyVersion, xcfPath, type, personalPreview):
     # Export a plain png copy as a preview
     MMBGP.exportTextureMM(image, layer, xcfPath, ".png", transparent=True, subFolder="!Preview", fileNameSuffix=" (16-9)")
+    # Export the personal preview
+    exportPersonalPreview(image, layer, xcfPath, "XML2 PSP/MUA1/MUA2", 502, personalPreview)
     # Create a duplicate for the next-gen image
     nextGenImage = pdb.gimp_image_duplicate(image)
     nextGenLayer = pdb.gimp_image_get_active_layer(nextGenImage)
@@ -220,7 +274,7 @@ def export16_9Loading(image, layer, console, alchemyVersion, xcfPath, type):
                     MMBGP.exportTextureMM(lastGenImage, lastGenLayer, xcfPath, ".tga", scale_factor=(1024/float(image.height)), subFolder="MUA1 Wii")
 
 # Define the function for cropping the 16:9 screen to 4:3 and exporting
-def crop16_9to4_3AndExport(image, layer, console, alchemyVersion, xcfPath, guidePosition):
+def crop16_9to4_3AndExport(image, layer, console, alchemyVersion, xcfPath, guidePosition, personalPreview):
     # Create a duplicate for the export image
     exportImage = pdb.gimp_image_duplicate(image)
     exportLayer = pdb.gimp_image_get_active_layer(exportImage)
@@ -231,12 +285,14 @@ def crop16_9to4_3AndExport(image, layer, console, alchemyVersion, xcfPath, guide
     # Resize the layer to the image size
     pdb.gimp_layer_resize_to_image_size(exportLayer)
     # Export the image
-    export4_3Loading(exportImage, exportLayer, console, alchemyVersion, xcfPath)
+    export4_3Loading(exportImage, exportLayer, console, alchemyVersion, xcfPath, personalPreview)
 
 # Define the function for exporting a 4:3 loading screen
-def export4_3Loading(image, layer, console, alchemyVersion, xcfPath):
+def export4_3Loading(image, layer, console, alchemyVersion, xcfPath, personalPreview):
     # Export a plain png copy as a preview
     MMBGP.exportTextureMM(image, layer, xcfPath, ".png", transparent=True, subFolder="!Preview", fileNameSuffix=" (4-3)")
+    # Export the personal preview
+    exportPersonalPreview(image, layer, xcfPath, "XML1/XML2 (not PSP)", 376, personalPreview)
     # Create a duplicate for the export image
     exportImage = pdb.gimp_image_duplicate(image)
     exportLayer = pdb.gimp_image_get_active_layer(exportImage)
@@ -268,7 +324,9 @@ def export4_3Loading(image, layer, console, alchemyVersion, xcfPath):
             MMBGP.exportTextureMM(exportImage, exportLayer, xcfPath, ".dds", subFolder="XML2 PC")
 
 # Define the main operation
-def exportConceptLoading(image, layer, console, alchemyVersion, type):
+def exportConceptLoading(image, layer, console, alchemyVersion, type, **kwargs):
+    # Determine if personal previews are needed
+    personalPreview = kwargs.get("personalPreview", False)
     # Perform the initial operations
     (okayToExport, xcfPath, aspectRatio, guidePosition) = MMBGP.initialOpsLoading(image, layer)
     # Determine if it's okay to export
@@ -278,15 +336,15 @@ def exportConceptLoading(image, layer, console, alchemyVersion, type):
         if aspectRatio == "16:9":
             # This is a 16:9 loading screen
             # Export the loading screen
-            export16_9Loading(image, layer, console, alchemyVersion, xcfPath, type)
+            export16_9Loading(image, layer, console, alchemyVersion, xcfPath, type, personalPreview)
             # Determine if a 4:3 loading screen is needed
             if guidePosition is not None:
                 # There is a guide
                 # Export a 4:3 loading screen
-                crop16_9to4_3AndExport(image, layer, console, alchemyVersion, xcfPath, guidePosition)
+                crop16_9to4_3AndExport(image, layer, console, alchemyVersion, xcfPath, guidePosition, personalPreview)
         else:
             # This is a 4:3 loading screen
             # Export the loading screen
-            export4_3Loading(image, layer, console, alchemyVersion, xcfPath)
+            export4_3Loading(image, layer, console, alchemyVersion, xcfPath, personalPreview)
         # Print the success message
         pdb.gimp_message("SUCCESS: exported " + xcfPath)

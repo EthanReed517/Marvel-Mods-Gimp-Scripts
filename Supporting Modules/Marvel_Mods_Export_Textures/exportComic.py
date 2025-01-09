@@ -41,8 +41,57 @@ import os.path
 # ######### #
 # FUNCTIONS #
 # ######### #
+# Define the function for exporting a personal preview
+def exportPersonalPreview(image, layer, xcfPath, desc, width, personalPreview):
+    # Determine if the preview is needed
+    if personalPreview == True:
+        # A personal preview is needed
+        # Create a duplicate of the image
+        smallImage = pdb.gimp_image_duplicate(image)
+        # Get the active layer of the image
+        smallLayer = pdb.gimp_image_get_active_layer(smallImage)
+        # Scale the image accordingly
+        pdb.gimp_image_scale(smallImage, width, 141)
+        # Start the new image
+        newImage = pdb.gimp_image_new(251, 171, 0)
+        # Create a new layer for this image
+        newLayer = pdb.gimp_layer_new(newImage, 251, 171, 1, "New Layer", 100, 28)
+        # Get the active layer of the image
+        activeLayer = pdb.gimp_image_get_active_layer(newImage)
+        # Apply the new layer to the active layer
+        pdb.gimp_image_insert_layer(newImage, newLayer, activeLayer, 0)
+        # Get the new active layer
+        newLayer = pdb.gimp_image_get_active_layer(newImage)
+        # Copy the asset layer and paste it in the new image
+        pdb.gimp_edit_copy(smallLayer)
+        floatingLayer = pdb.gimp_edit_paste(newLayer, False)
+        # Determine the offsets
+        xOffset, yOffset = floatingLayer.offsets
+        xOffset = ((251 - width) / 2) - xOffset
+        yOffset = 30 - yOffset
+        pdb.gimp_layer_translate(floatingLayer, xOffset, yOffset)
+        # Anchor the layer
+        pdb.gimp_floating_sel_anchor(floatingLayer)
+        # Get the new active layer
+        newLayer = pdb.gimp_image_get_active_layer(newImage)
+        # Set the foreground fill color
+        pdb.gimp_context_set_foreground((255, 255, 255))
+        # Set up the dicitonary of X positions
+        xPosDict = {
+            "XML1": 73,
+            "XML2": 63,
+            "XML2 PSP": 16,
+            "MUA1": 71
+        }
+        # Create the text
+        text_layer = pdb.gimp_text_fontname(newImage, newLayer, xPosDict[desc], 0, desc, 0, True, 31, 1, "Gunship")
+        # Merge the layer
+        pdb.gimp_floating_sel_anchor(text_layer)
+        # Export the preview
+        MMBGP.exportTextureMM(newImage, newLayer, xcfPath, ".png", transparent=True, subFolder="!Preview", fileNamePrefix="0Personal_", fileNameSuffix=" (" + desc + " Personal)")
+
 # Define the operation for exporting the XML1 texture
-def exportXML1Cov(xcfPath, image, console, alchemyVersion):
+def exportXML1Cov(xcfPath, image, console, alchemyVersion, personalPreview):
     # Determine if the correct console was picked
     if console == 0:
         # Determine if the correct Alchemy version was picked
@@ -52,6 +101,8 @@ def exportXML1Cov(xcfPath, image, console, alchemyVersion):
             layer = pdb.gimp_image_get_active_layer(image)
             # Export a plain png copy as a preview
             MMBGP.exportTextureMM(image, layer, xcfPath, ".png", transparent=True, subFolder="!Preview", fileNameSuffix=" (XML1)")
+            # Export a personal preview
+            exportPersonalPreview(image, layer, xcfPath, "XML1", 188, personalPreview)
             # Scale the image accordingly
             pdb.gimp_image_scale(image, 1024, 1024)
             # Export for Xbox
@@ -62,7 +113,7 @@ def exportXML1Cov(xcfPath, image, console, alchemyVersion):
             MMBGP.exportTextureMM(image, layer, xcfPath, ".dds", scale_factor=0.5, subFolder="XML1 GC")
 
 # Define the operation for exporting the XML2 texture
-def exportXML2Cov(xcfPath, image, console, alchemyVersion):
+def exportXML2Cov(xcfPath, image, console, alchemyVersion, personalPreview):
     # Determine if the correct Alchemy version was picked
     if alchemyVersion == 0:
         # Get the active layer of the image
@@ -73,6 +124,8 @@ def exportXML2Cov(xcfPath, image, console, alchemyVersion):
         pdb.gimp_layer_resize_to_image_size(layer)
         # Export a plain png copy as a preview
         MMBGP.exportTextureMM(image, layer, xcfPath, ".png", transparent=True, subFolder="!Preview", fileNameSuffix=" (XML2)")
+        # Export a personal preview
+        exportPersonalPreview(image, layer, xcfPath, "XML2", 188, personalPreview)
         # Scale the image accordingly
         pdb.gimp_image_scale(image, 1024, 1024)
         # Determine which console was picked
@@ -90,13 +143,17 @@ def exportXML2Cov(xcfPath, image, console, alchemyVersion):
             MMBGP.exportTextureMM(image, layer, xcfPath, ".dds", subFolder="XML2 PC")
 
 # Define the operation for exporting the XML2 PSP texture
-def exportXML2PSPCov(xcfPath, image, console, alchemyVersion):
+def exportXML2PSPCov(xcfPath, image, console, alchemyVersion, personalPreview):
     # Determine if the correct console was picked
     if console == 0:
+        # Scale the image accordingly
+        pdb.gimp_image_scale(image, 910, 512)
         # Get the active layer of the image
         layer = pdb.gimp_image_get_active_layer(image)
         # Export a plain png copy as a preview
         MMBGP.exportTextureMM(image, layer, xcfPath, ".png", transparent=True, subFolder="!Preview", fileNameSuffix=" (XML2 PSP)")
+        # Export a personal preview
+        exportPersonalPreview(image, layer, xcfPath, "XML2 PSP", 251, personalPreview)
         # Scale the image accordingly
         pdb.gimp_image_scale(image, 512, 512)
         # Determine which version of Alchemy was picked
@@ -110,11 +167,13 @@ def exportXML2PSPCov(xcfPath, image, console, alchemyVersion):
             MMBGP.exportTextureMM(image, layer, xcfPath, ".tga", subFolder="XML2 PSP")
 
 # Define the function for exporting the next-gen MUA1 texture
-def exportMUA1NGCov(xcfPath, image, console, alchemyVersion):
+def exportMUA1NGCov(xcfPath, image, console, alchemyVersion, personalPreview):
     # Get the active layer of the image
     layer = pdb.gimp_image_get_active_layer(image)
     # Export a plain png copy as a preview
     MMBGP.exportTextureMM(image, layer, xcfPath, ".png", transparent=True, subFolder="!Preview", fileNameSuffix=" (MUA1)")
+    # Export a personal preview
+    exportPersonalPreview(image, layer, xcfPath, "MUA1", 251, personalPreview)
     # Scale the image accordingly
     pdb.gimp_image_scale(image, 2048, 1024)
     # Determine which console was picked
@@ -142,7 +201,7 @@ def exportMUA1NGCov(xcfPath, image, console, alchemyVersion):
             MMBGP.exportTextureMM(image, layer, xcfPath, ".tga", subFolder="MUA1 PC and Steam")
 
 # Define the function for exporting the last-gen MUA1 texture
-def exportMUA1LGCov(xcfPath, image, console, alchemyVersion):
+def exportMUA1LGCov(xcfPath, image, console, alchemyVersion, personalPreview):
     # Determine which console was picked
     if console == 0:
         # All consoles
@@ -165,7 +224,9 @@ def exportMUA1LGCov(xcfPath, image, console, alchemyVersion):
             MMBGP.exportTextureMM(image, layer, xcfPath, ".tga", scale_factor=0.5, subFolder="MUA1 PSP")
 
 # Define the main operation
-def exportComic(image, layer, console, alchemyVersion, xml1Choice, xml2Choice, mua1Choice):
+def exportComic(image, layer, console, alchemyVersion, xml1Choice, xml2Choice, mua1Choice, **kwargs):
+    # Determine if personal previews are needed
+    personalPreview = kwargs.get("personalPreview", False)
     # Perform initial operations on the comic cover
     xcfPath = MMBGP.initialOpsComic(image, layer)
     # Create the list of consoles
@@ -207,6 +268,6 @@ def exportComic(image, layer, console, alchemyVersion, xml1Choice, xml2Choice, m
         # Anchor the layer
         pdb.gimp_floating_sel_anchor(floatingLayer)
         # Export the image
-        gameInfoDict[game]["exportFunction"](xcfPath, gameImage, console, alchemyVersion)
+        gameInfoDict[game]["exportFunction"](xcfPath, gameImage, console, alchemyVersion, personalPreview)
     # Print the success message
     pdb.gimp_message("SUCCESS: exported " + xcfPath)

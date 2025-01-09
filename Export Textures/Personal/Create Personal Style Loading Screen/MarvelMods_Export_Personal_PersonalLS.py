@@ -171,7 +171,7 @@ def createPersonalLS(image, layer, hero4_3choice, vill4_3choice, hero16_9choice,
             pdb.gimp_xcf_save(0, templateImage, templateLayer, xcfPath, xcfPath)
             pdb.gimp_image_set_filename(templateImage, xcfPath)
             # Export the image
-            MMET.exportConceptLoading(templateImage, templateLayer, 0, 0, "loading")
+            MMET.exportConceptLoading(templateImage, templateLayer, 0, 0, "loading", personalPreview=True)
 
 
 # ######## #
