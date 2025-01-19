@@ -65,7 +65,8 @@ def exportMap(image, layer, console, alchemyVersion, transparency, nextGenSize):
                         MMBGP.exportTextureMM(image, layer, xcfPath, ".png", transparent=True, scale_factor=0.25, subFolder="PSP", alphaIndexed=True, alphaIndexColors=16)
                     else:
                         # Same Size
-                        MMBGP.exportTextureMM(image, layer, xcfPath, ".png", transparent=True, subFolder="PC, Wii, Xbox, MUA1 Steam, PS3, and 360")
+                        MMBGP.exportTextureMM(image, layer, xcfPath, ".png", transparent=True, subFolder="MUA1 PC, Steam, PS3, and 360")
+                        MMBGP.exportTextureMM(image, layer, xcfPath, ".png", transparent=True, subFolder="Wii, Xbox, and XML2 PC")
                         MMBGP.exportTextureMM(image, layer, xcfPath, ".png", transparent=True, scale_factor=0.5, subFolder="GameCube", alphaIndexed=True)
                         MMBGP.exportTextureMM(image, layer, xcfPath, ".png", transparent=True, scale_factor=0.5, subFolder="PS2", alphaIndexed=True)
                         MMBGP.exportTextureMM(image, layer, xcfPath, ".png", transparent=True, scale_factor=0.5, subFolder="PSP", alphaIndexed=True, alphaIndexColors=16)
@@ -116,7 +117,8 @@ def exportMap(image, layer, console, alchemyVersion, transparency, nextGenSize):
                         MMBGP.exportTextureMM(image, layer, xcfPath, ".png", indexColors=16, scale_factor=0.25, subFolder="PSP")
                     else:
                         # Same size
-                        MMBGP.exportTextureMM(image, layer, xcfPath, ".dds", subFolder="Wii and MUA1 PC, Steam, PS3, and 360")
+                        MMBGP.exportTextureMM(image, layer, xcfPath, ".dds", subFolder="MUA1 PC, Steam, PS3, and 360")
+                        MMBGP.exportTextureMM(image, layer, xcfPath, ".dds", subFolder="Wii")
                         MMBGP.exportTextureMM(image, layer, xcfPath, ".png", indexColors=256, scale_factor=0.5, subFolder="MUA2 PS2")
                         MMBGP.exportTextureMM(image, layer, xcfPath, ".png", indexColors=16, scale_factor=0.5, subFolder="PSP")
         else:
@@ -134,7 +136,8 @@ def exportMap(image, layer, console, alchemyVersion, transparency, nextGenSize):
                         MMBGP.exportTextureMM(image, layer, xcfPath, ".png", transparent=True, scale_factor=0.5, subFolder="XML2 PC")
                     else:
                         # Same size
-                        MMBGP.exportTextureMM(image, layer, xcfPath, ".png", transparent=True, subFolder="PC and MUA1 Steam")
+                        MMBGP.exportTextureMM(image, layer, xcfPath, ".png", transparent=True, subFolder="MUA1 PC and Steam")
+                        MMBGP.exportTextureMM(image, layer, xcfPath, ".png", transparent=True, subFolder="XML2 PC")
                 else:
                     # Not transparent
                     # Determine the next-gen size
