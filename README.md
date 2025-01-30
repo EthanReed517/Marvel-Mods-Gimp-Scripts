@@ -7,7 +7,8 @@ These plugins can be used with GIMP to perform a variety of functions. These are
 GIMP (primarily verified with GIMP 2.10)
 
 ### Prerequisites
-You must have [gegl-python-fu & gegl_graph Ver.3.0.zip](http://gimpchat.com/viewtopic.php?f=9&t=20613&start=80#p285476) by MareroQ installed for certain scripts to function.
+You must have [gegl-python-fu & gegl_graph Ver.3.0.zip](http://gimpchat.com/viewtopic.php?f=9&t=20613&start=80#p285476) by MareroQ installed in your GIMP plug-ins folder (usually `C:\Users\(your user)\AppData\Roaming\GIMP\2.10\plug-ins`) for certain scripts to function.
+You must have [pngquant.exe](https://pngquant.org) (choose the "Binary for Windows" option) installed in `C:\Windows` for certain scripts to function.
 
 ### Installation
  1. Open `update.bat` with Notepad++ or another text editor.
