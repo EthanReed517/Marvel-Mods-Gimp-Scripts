@@ -1,0 +1,87 @@
+[center][size=18pt]Marvel Mods GIMP Scripts[/size][/center]
+
+This is a set of scripts for GIMP that automate several processes used with modding, including setting up textures, exporting textures, and editing skin screenshots.
+
+[center][size=14pt][url="https://github.com/EthanReed517/Marvel-Mods-Gimp-Scripts/releases/latest"]Download Link[/url][/size][/center]
+
+[u][b]Features[/b][/u]:
+[list]
+[li]A set of scripts for GIMP with the following features:
+[list]
+[li]Export textures by asset type or texture format[/li]
+[li]Crop skin screenshots and set up skin previews[/li]
+[li]Scale images[/li]
+[li]Prepare textures[/li]
+[/list]
+[/li]
+[/list]
+
+[u][b]Changelog[/b][/u]:
+[spoiler="Expand to see changelog"]
+[list]
+[li]Version 1.0.0:
+[list]
+[li]Initial Release[/li]
+[/list]
+[/li]
+[li]Version 1.1.0:
+[list]
+[li]Added MUA Normal Map Conversion script by ak2yny. Exporters for skins are now split into primary and secondary texture options, which allows secondary textures to be exported in the same format as primary textures, regardless of their size.[/li]
+[/list]
+[/li]
+[li]Version 1.1.1:
+[list]
+[li]Environment map processing now has a correct option to match the format to the primary texture, benefitting igbFinisher.[/li]
+[/list]
+[/li]
+[li]Version 1.2.0:
+[list]
+[li]Added the ability to export the yellow-colored normal maps used by the Xbox 360 and Steam versions of MUA1. Both green and yellow normal maps can be exported from a green normal map.[/li]
+[/list]
+[/li]
+[li]Version 1.2.1:
+[list]
+[li]Added the ability to pick between yellow or blue normal maps for Steam/360. Both work the same way, but the blue ones have their blue channels full of white instead of black. Both are in the Steam/360 version, so both are supported by the script now.[/li]
+[/list]
+[/li]
+[li]Version 2.0.0:
+[list]
+[li]Redesigned all scripts so that all common processes are handled in an external process, greatly increasing processing speed.[/li]
+[li]Added export scripts for power icons, comic covers, loading screens, concept art, and map models.[/li]
+[li]Added support for indexed-alpha textures using pngquant.[/li]
+[li]Changed processing for environment maps to use plain png textures instead of dds textures because 3ds Max 5 doesn't support dds environment maps.[/li]
+[li]Added a script that crops and exports game screenshots based on layer names.[/li]
+[/list]
+[/li]
+[/list]
+[/spoiler]
+
+
+[u][b]Installation Instructions[/b][/u]:
+[spoiler="Expand to see installation instructions for this tool"]
+[list type=decimal]
+[li]Download [url="https://www.gimp.org/downloads/"]GIMP[/url] (version 2.10.10 or later required).[/li]
+[li]Install [url="http://gimpchat.com/viewtopic.php?f=9&t=20613&start=80#p285476"]gegl-python-fu & gegl_graph Ver.3.0.zip by MareroQ[/url] and install it to your GIMP plugins directory (default location is [b][font=Courier New][color=#ba8bff]C:\Users\(Your Username)\AppData\Roaming\GIMP\2.10\plug-ins[/color][/font][/b]).[/li]
+[li]Install download [url="https://pngquant.org"]pngquant[/url] (the "Binary for Windows" version) and install it to [b][font=Courier New][color=#ba8bff]C:\Windows[/color][/font][/b][/li]
+[li]Download the Marvel Mods GIMP Scripts.[/li]
+[li]Open [b][font=Courier New][color=#ba8bff]update.bat[/color][/font][/b] with Notepad++ or another text editor.[/li]
+[li]Edit the file paths in line 6 and line 8 to reflect your GIMP configuration.[/li]
+[li]Save [b][font=Courier New][color=#ba8bff]update.bat[/color][/font][/b][/li]
+[li]Run [b][font=Courier New][color=#ba8bff]update.bat[/color][/font][/b] as an administrator, which will allow you to access the necessary folders.[/li]
+[/list]
+[/spoiler]
+
+
+[u][b]Tutorials[/b][/u]:
+[spoiler="Expand to see tutorials featuring this tool"]
+[list]
+[li][url="https://marvelmods.com/forum/index.php/topic,10797.0.html"]Marvel Mods Modeling Tutorial[/url][/li]
+[/list]
+[/spoiler]
+
+
+[u][b]Credits[/b][/u]:
+[list]
+[li][u]ak2yny[/u]: Early script assistance, MUA Normal Map Conversion script[/li]
+[li][u]BaconWizard17[/u]: Script creation[/li]
+[/list]
