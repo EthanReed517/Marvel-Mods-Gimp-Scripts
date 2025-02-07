@@ -268,20 +268,18 @@ def exportSkin(image, layer, console, skinType, charSize, alchemyVersion, transp
                             # Primary skin
                             # No scale factor is needed
                             scaleFactor = 1
-                            # Export for main consoles
-                            MMBGP.exportTextureMM(image, layer, xcfPath, ".png", transparent=True, subFolder="PC, PS2, Xbox, Wii, MUA1 Steam, PS3, and 360")
                         else:
                             # Secondary skin
-                            # Export for main consoles (not PS2)
-                            MMBGP.exportTextureMM(image, layer, xcfPath, ".png", transparent=True, subFolder="PC, Xbox, Wii, MUA1 Steam, PS3, and 360")
                             # Resize to half size
                             scaleFactor = 0.5
-                            # Export for PS2
-                            MMBGP.exportTextureMM(image, layer, xcfPath, ".png", transparent=True, scale_factor=scaleFactor, subFolder="PS2")
+                        # Export for main consoles (not PS2)
+                        MMBGP.exportTextureMM(image, layer, xcfPath, ".png", transparent=True, subFolder="PC, Xbox, Wii, MUA1 Steam, PS3, and 360")
+                        # Export for PS2
+                        MMBGP.exportTextureMM(image, layer, xcfPath, ".png", transparent=True, scale_factor=scaleFactor, subFolder="PS2", alphaIndexed=True)
                         # Halve the scalefactor again
                         scaleFactor = scaleFactor * 0.5
                         # Export for GameCube, PSP, and MUA2 PS2
-                        MMBGP.exportTextureMM(image, layer, xcfPath, ".png", transparent=True, scale_factor=scaleFactor, subFolder="GameCube, PSP, and MUA2 PS2")
+                        MMBGP.exportTextureMM(image, layer, xcfPath, ".png", transparent=True, scale_factor=scaleFactor, subFolder="GameCube, PSP, and MUA2 PS2", alphaIndexed=True)
                     else:
                         # Alchemy 5
                         # Export for Wii, PC, and 360
