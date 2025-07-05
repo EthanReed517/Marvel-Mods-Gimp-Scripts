@@ -1,0 +1,223 @@
+<packs>
+	<!-- XML2 Default -->
+	<pack subFolder="XML2 Default" name="Cable" rows="3" columns="3" source="XML2" >
+		<!-- 90s -->
+		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - XML1, XML2\Cable\3. 90s\115XX (Skin).png" row="1" column="1" desc="Skin: 11501" />
+		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Default Portraits - XML1, XML2\Cable\3. 90s\hud_head_115XX.png" row="1" column="1" pos="1" />
+		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - XML1, XML2\Cable\3. 90s\115XX (3D Head).png" row="1" column="1" pos="2" />
+		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Default Portraits - XML1, XML2\Cable\3. 90s\115XX (Character Select Portrait).png" row="1" column="1" pos="3" />
+		<!-- Techno -->
+		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - XML1, XML2\Cable\15. Techno\115XX (Skin).png" row="1" column="2" desc="Skin_astonishing: 11502" />
+		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Default Portraits - XML1, XML2\Cable\15. Techno\hud_head_115XX.png" row="1" column="2" pos="1" />
+		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - XML1, XML2\Cable\15. Techno\115XX (3D Head).png" row="1" column="2" pos="2" />
+		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Default Portraits - XML1, XML2\Cable\3. 90s\115XX (Character Select Portrait).png" row="1" column="2" pos="3" />
+		<!-- Blank -->
+		<screenshot row="1" column="3" desc="Skin_aoa: 11503" />
+		<!-- New Mutants -->
+		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - XML1, XML2\Cable\4. New Mutants\115XX (Skin).png" row="2" column="1" desc="skin_60s: 11504" />
+		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Default Portraits - XML1, XML2\Cable\4. New Mutants\hud_head_115XX.png" row="2" column="1" pos="1" />
+		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - XML1, XML2\Cable\4. New Mutants\115XX (3D Head).png" row="2" column="1" pos="2" />
+		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Default Portraits - XML1, XML2\Cable\3. 90s\115XX (Character Select Portrait).png" row="2" column="1" pos="3" />
+		<!-- X-Force -->
+		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - XML1, XML2\Cable\5. X-Force\115XX (Skin).png" row="2" column="2" desc="skin_70s: 11505" />
+		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Default Portraits - XML1, XML2\Cable\5. X-Force\hud_head_115XX.png" row="2" column="2" pos="1" />
+		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - XML1, XML2\Cable\5. X-Force\115XX (3D Head).png" row="2" column="2" pos="2" />
+		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Default Portraits - XML1, XML2\Cable\3. 90s\115XX (Character Select Portrait).png" row="2" column="1" pos="3" />
+		<!-- Classic -->
+		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - XML1, XML2\Cable\7. Classic\115XX (Skin).png" row="2" column="3" desc="skin_weaponx: 11506" />
+		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Default Portraits - XML1, XML2\Cable\7. Classic\hud_head_115XX.png" row="2" column="3" pos="1" />
+		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - XML1, XML2\Cable\7. Classic\115XX (3D Head).png" row="2" column="3" pos="2" />
+		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Default Portraits - XML1, XML2\Cable\3. 90s\115XX (Character Select Portrait).png" row="2" column="3" pos="3" />
+		<!-- X-Treme Gear -->
+		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - XML1, XML2\Cable\A6. X-Treme Gear\115XX (Skin).png" row="3" column="1" desc="skin_future: 11507" />
+		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Default Portraits - XML1, XML2\Cable\A6. X-Treme Gear\hud_head_115XX.png" row="3" column="1" pos="1" />
+		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - XML1, XML2\Cable\A6. X-Treme Gear\115XX (3D Head).png" row="3" column="1" pos="2" />
+		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Default Portraits - XML1, XML2\Cable\3. 90s\115XX (Character Select Portrait).png" row="3" column="1" pos="3" />
+		<!-- Ultimate -->
+		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - XML1, XML2\Cable\A5. Ultimate\115XX (Skin).png" row="3" column="2" desc="skin_weaponx: 11508" />
+		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Default Portraits - XML1, XML2\Cable\A5. Ultimate\hud_head_115XX.png" row="3" column="2" pos="1" />
+		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - XML1, XML2\Cable\A5. Ultimate\115XX (3D Head).png" row="3" column="2" pos="2" />
+		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Default Portraits - XML1, XML2\Cable\3. 90s\115XX (Character Select Portrait).png" row="3" column="2" pos="3" />
+		<!-- Fatigues -->
+		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - XML1, XML2\Cable\12. Fatigues\115XX (Skin).png" row="3" column="3" desc="skin_civilian: 11509" />
+		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Default Portraits - XML1, XML2\Cable\12. Fatigues\hud_head_115XX.png" row="3" column="3" pos="1" />
+		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - XML1, XML2\Cable\12. Fatigues\115XX (3D Head).png" row="3" column="3" pos="2" />
+		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Default Portraits - XML1, XML2\Cable\3. 90s\115XX (Character Select Portrait).png" row="3" column="3" pos="3" />
+	</pack>
+	<!-- XML2 Redesign -->
+	<pack subFolder="XML2 Redesign" name="Cable" rows="3" columns="3" source="XML2" >
+		<!-- 90s -->
+		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - XML1, XML2\Cable\3. 90s\115XX (Skin).png" row="1" column="1" desc="Skin: 11501" />
+		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - XML1, XML2\Cable\3. 90s\hud_head_115XX.png" row="1" column="1" pos="1" />
+		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - XML1, XML2\Cable\3. 90s\115XX (3D Head).png" row="1" column="1" pos="2" />
+		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - XML1, XML2\Cable\3. 90s\115XX (Character Select Portrait).png" row="1" column="1" pos="3" />
+		<!-- Techno -->
+		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - XML1, XML2\Cable\15. Techno\115XX (Skin).png" row="1" column="2" desc="Skin_astonishing: 11502" />
+		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - XML1, XML2\Cable\15. Techno\hud_head_115XX.png" row="1" column="2" pos="1" />
+		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - XML1, XML2\Cable\15. Techno\115XX (3D Head).png" row="1" column="2" pos="2" />
+		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - XML1, XML2\Cable\3. 90s\115XX (Character Select Portrait).png" row="1" column="2" pos="3" />
+		<!-- Blank -->
+		<screenshot row="1" column="3" desc="Skin_aoa: 11503" />
+		<!-- New Mutants -->
+		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - XML1, XML2\Cable\4. New Mutants\115XX (Skin).png" row="2" column="1" desc="skin_60s: 11504" />
+		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - XML1, XML2\Cable\4. New Mutants\hud_head_115XX.png" row="2" column="1" pos="1" />
+		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - XML1, XML2\Cable\4. New Mutants\115XX (3D Head).png" row="2" column="1" pos="2" />
+		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - XML1, XML2\Cable\3. 90s\115XX (Character Select Portrait).png" row="2" column="1" pos="3" />
+		<!-- X-Force -->
+		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - XML1, XML2\Cable\5. X-Force\115XX (Skin).png" row="2" column="2" desc="skin_70s: 11505" />
+		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - XML1, XML2\Cable\5. X-Force\hud_head_115XX.png" row="2" column="2" pos="1" />
+		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - XML1, XML2\Cable\5. X-Force\115XX (3D Head).png" row="2" column="2" pos="2" />
+		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - XML1, XML2\Cable\3. 90s\115XX (Character Select Portrait).png" row="2" column="1" pos="3" />
+		<!-- Classic -->
+		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - XML1, XML2\Cable\7. Classic\115XX (Skin).png" row="2" column="3" desc="skin_weaponx: 11506" />
+		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - XML1, XML2\Cable\7. Classic\hud_head_115XX.png" row="2" column="3" pos="1" />
+		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - XML1, XML2\Cable\7. Classic\115XX (3D Head).png" row="2" column="3" pos="2" />
+		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - XML1, XML2\Cable\3. 90s\115XX (Character Select Portrait).png" row="2" column="3" pos="3" />
+		<!-- X-Treme Gear -->
+		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - XML1, XML2\Cable\A6. X-Treme Gear\115XX (Skin).png" row="3" column="1" desc="skin_future: 11507" />
+		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - XML1, XML2\Cable\A6. X-Treme Gear\hud_head_115XX.png" row="3" column="1" pos="1" />
+		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - XML1, XML2\Cable\A6. X-Treme Gear\115XX (3D Head).png" row="3" column="1" pos="2" />
+		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - XML1, XML2\Cable\3. 90s\115XX (Character Select Portrait).png" row="3" column="1" pos="3" />
+		<!-- Ultimate -->
+		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - XML1, XML2\Cable\A5. Ultimate\115XX (Skin).png" row="3" column="2" desc="skin_weaponx: 11508" />
+		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - XML1, XML2\Cable\A5. Ultimate\hud_head_115XX.png" row="3" column="2" pos="1" />
+		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - XML1, XML2\Cable\A5. Ultimate\115XX (3D Head).png" row="3" column="2" pos="2" />
+		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - XML1, XML2\Cable\3. 90s\115XX (Character Select Portrait).png" row="3" column="2" pos="3" />
+		<!-- Fatigues -->
+		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - XML1, XML2\Cable\12. Fatigues\115XX (Skin).png" row="3" column="3" desc="skin_civilian: 11509" />
+		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - XML1, XML2\Cable\12. Fatigues\hud_head_115XX.png" row="3" column="3" pos="1" />
+		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - XML1, XML2\Cable\12. Fatigues\115XX (3D Head).png" row="3" column="3" pos="2" />
+		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - XML1, XML2\Cable\3. 90s\115XX (Character Select Portrait).png" row="3" column="3" pos="3" />
+	</pack>
+	<!-- XML2 Custom -->
+	<pack subFolder="XML2 Redesign" name="Cable" rows="3" columns="3" source="XML2" >
+		<!-- Modern -->
+		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - XML1, XML2\Cable\17. Modern\115XX (Skin).png" row="1" column="1" desc="Skin: 11501" />
+		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - XML1, XML2\Cable\17. Modern\hud_head_115XX.png" row="1" column="1" pos="1" />
+		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - XML1, XML2\Cable\17. Modern\115XX (3D Head).png" row="1" column="1" pos="2" />
+		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - XML1, XML2\Cable\17. Modern\115XX (Character Select Portrait).png" row="1" column="1" pos="3" />
+		<!-- Techno -->
+		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - XML1, XML2\Cable\15. Techno\115XX (Skin).png" row="1" column="2" desc="Skin_astonishing: 11502" />
+		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - XML1, XML2\Cable\15. Techno\hud_head_115XX.png" row="1" column="2" pos="1" />
+		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - XML1, XML2\Cable\15. Techno\115XX (3D Head).png" row="1" column="2" pos="2" />
+		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - XML1, XML2\Cable\17. Modern\115XX (Character Select Portrait).png" row="1" column="2" pos="3" />
+		<!-- Blank -->
+		<screenshot row="1" column="3" desc="Skin_aoa: 11503" />
+		<!-- 90s -->
+		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - XML1, XML2\Cable\3. 90s\115XX (Skin).png" row="2" column="1" desc="skin_60s: 11504" />
+		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - XML1, XML2\Cable\3. 90s\hud_head_115XX.png" row="2" column="1" pos="1" />
+		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - XML1, XML2\Cable\3. 90s\115XX (3D Head).png" row="2" column="1" pos="2" />
+		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - XML1, XML2\Cable\17. Modern\115XX (Character Select Portrait).png" row="2" column="1" pos="3" />
+		<!-- X-Force -->
+		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - XML1, XML2\Cable\5. X-Force\115XX (Skin).png" row="2" column="2" desc="skin_70s: 11505" />
+		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - XML1, XML2\Cable\5. X-Force\hud_head_115XX.png" row="2" column="2" pos="1" />
+		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - XML1, XML2\Cable\5. X-Force\115XX (3D Head).png" row="2" column="2" pos="2" />
+		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - XML1, XML2\Cable\17. Modern\115XX (Character Select Portrait).png" row="2" column="1" pos="3" />
+		<!-- Classic -->
+		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - XML1, XML2\Cable\7. Classic\115XX (Skin).png" row="2" column="3" desc="skin_weaponx: 11506" />
+		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - XML1, XML2\Cable\7. Classic\hud_head_115XX.png" row="2" column="3" pos="1" />
+		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - XML1, XML2\Cable\7. Classic\115XX (3D Head).png" row="2" column="3" pos="2" />
+		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - XML1, XML2\Cable\17. Modern\115XX (Character Select Portrait).png" row="2" column="3" pos="3" />
+		<!-- Ultimate -->
+		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - XML1, XML2\Cable\A5. Ultimate\115XX (Skin).png" row="3" column="1" desc="skin_future: 11507" />
+		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - XML1, XML2\Cable\A5. Ultimate\hud_head_115XX.png" row="3" column="1" pos="1" />
+		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - XML1, XML2\Cable\A5. Ultimate\115XX (3D Head).png" row="3" column="1" pos="2" />
+		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - XML1, XML2\Cable\17. Modern\115XX (Character Select Portrait).png" row="3" column="1" pos="3" />
+		<!-- Blank -->
+		<screenshot row="3" column="2" desc="skin_weaponx: 11508" />
+		<!-- Blank -->
+		<screenshot row="3" column="3" desc="skin_civilian: 11509" />
+	</pack>
+	<!-- MUA1 Default (Last-Gen) -->
+	<pack subFolder="MUA1 Default (Last-Gen)" name="Cable" rows="2" columns="4" source="MUA1" >
+		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - MUA1, MUA2\Cable\3. 90s\210XX (Skin).png" row="1" column="1" desc="Skin: 21001" />
+		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - MUA1, MUA2\Cable\3. 90s\hud_head_210XX (Hero).png" row="1" column="1" pos="1" />
+		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - MUA1, MUA2\Cable\A4. Techno MUA2\210XX (Skin).png" row="1" column="2" desc="Skin: 21002" />
+		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - MUA1, MUA2\Cable\A4. Techno MUA2\hud_head_210XX (Hero).png" row="1" column="2" pos="1" />
+		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - MUA1, MUA2\Cable\7. Classic\210XX (Skin).png" row="1" column="3" desc="Skin: 21003" />
+		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - MUA1, MUA2\Cable\7. Classic\hud_head_210XX (Hero).png" row="1" column="3" pos="1" />
+		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - MUA1, MUA2\Cable\12. Fatigues\210XX (Skin).png" row="1" column="4" desc="Skin: 21004" />
+		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - MUA1, MUA2\Cable\12. Fatigues\hud_head_210XX (Hero).png" row="1" column="4" pos="1" />
+		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - MUA1, MUA2\Cable\3. 90s\210XX (Mannequin).png" row="2" column="4" />
+	</pack>
+	<!-- MUA1 Default (PC) -->
+	<pack subFolder="MUA1 Default (PC)" name="Cable" rows="2" columns="4" source="MUA1" >
+		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - MUA1, MUA2\Cable\3. 90s\210XX (Skin).png" row="1" column="1" desc="Skin: 21001" />
+		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - MUA1, MUA2\Cable\3. 90s\hud_head_210XX (Hero).png" row="1" column="1" pos="1" />
+		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - MUA1, MUA2\Cable\A4. Techno MUA2\210XX (Skin).png" row="1" column="2" desc="Skin: 21002" />
+		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - MUA1, MUA2\Cable\A4. Techno MUA2\hud_head_210XX (Hero).png" row="1" column="2" pos="1" />
+		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - MUA1, MUA2\Cable\7. Classic\210XX (Skin).png" row="1" column="3" desc="Skin: 21003" />
+		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - MUA1, MUA2\Cable\7. Classic\hud_head_210XX (Hero).png" row="1" column="3" pos="1" />
+		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - MUA1, MUA2\Cable\12. Fatigues\210XX (Skin).png" row="1" column="4" desc="Skin: 21004" />
+		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - MUA1, MUA2\Cable\12. Fatigues\hud_head_210XX (Hero).png" row="1" column="4" pos="1" />
+		<screenshot row="2" column="1" desc="Skin: 21005" />
+		<screenshot row="2" column="1" desc="Skin: 21006" />
+		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - MUA1, MUA2\Cable\3. 90s\210XX (Mannequin).png" row="2" column="4" />
+	</pack>
+	<!-- MUA1 Default (Next-Gen) -->
+	<pack subFolder="MUA1 Default (Next-Gen)" name="Cable" rows="2" columns="4" source="MUA1" >
+		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - MUA1, MUA2\Cable\3. 90s\210XX (Skin).png" row="1" column="1" desc="Skin: 21001" />
+		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - MUA1, MUA2\Cable\3. 90s\hud_head_210XX (Next-Gen Style).png" row="1" column="1" pos="1" />
+		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - MUA1, MUA2\Cable\A4. Techno MUA2\210XX (Skin).png" row="1" column="2" desc="Skin: 21002" />
+		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - MUA1, MUA2\Cable\A4. Techno MUA2\hud_head_210XX (Next-Gen Style).png" row="1" column="2" pos="1" />
+		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - MUA1, MUA2\Cable\7. Classic\210XX (Skin).png" row="1" column="3" desc="Skin: 21003" />
+		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - MUA1, MUA2\Cable\7. Classic\hud_head_210XX (Next-Gen Style).png" row="1" column="3" pos="1" />
+		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - MUA1, MUA2\Cable\12. Fatigues\210XX (Skin).png" row="1" column="4" desc="Skin: 21004" />
+		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - MUA1, MUA2\Cable\12. Fatigues\hud_head_210XX (Next-Gen Style).png" row="1" column="4" pos="1" />
+		<screenshot row="2" column="1" desc="Skin: 21005" />
+		<screenshot row="2" column="1" desc="Skin: 21006" />
+		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - MUA1, MUA2\Cable\3. 90s\210XX (Mannequin).png" row="2" column="4" />
+	</pack>
+	<!-- MUA1 Redesign (Last-Gen) -->
+	<pack subFolder="MUA1 Redesign (Last-Gen)" name="Cable" rows="2" columns="4" source="MUA1" >
+		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - MUA1, MUA2\Cable\3. 90s\210XX (Skin).png" row="1" column="1" desc="Skin: 21001" />
+		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - MUA1, MUA2\Cable\3. 90s\hud_head_210XX (Hero).png" row="1" column="1" pos="1" />
+		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - MUA1, MUA2\Cable\A4. Techno MUA2\210XX (Skin).png" row="1" column="2" desc="Skin: 21002" />
+		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - MUA1, MUA2\Cable\A4. Techno MUA2\hud_head_210XX (Hero).png" row="1" column="2" pos="1" />
+		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - MUA1, MUA2\Cable\7. Classic\210XX (Skin).png" row="1" column="3" desc="Skin: 21003" />
+		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - MUA1, MUA2\Cable\7. Classic\hud_head_210XX (Hero).png" row="1" column="3" pos="1" />
+		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - MUA1, MUA2\Cable\12. Fatigues\210XX (Skin).png" row="1" column="4" desc="Skin: 21004" />
+		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - MUA1, MUA2\Cable\12. Fatigues\hud_head_210XX (Hero).png" row="1" column="4" pos="1" />
+		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - MUA1, MUA2\Cable\3. 90s\210XX (Mannequin).png" row="2" column="4" />
+	</pack>
+	<!-- MUA1 Redesign (Next-Gen) -->
+	<pack subFolder="MUA1 Redesign (Next-Gen)" name="Cable" rows="2" columns="4" source="MUA1" >
+		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - MUA1, MUA2\Cable\3. 90s\210XX (Skin).png" row="1" column="1" desc="Skin: 21001" />
+		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - MUA1, MUA2\Cable\3. 90s\hud_head_210XX (Next-Gen Style).png" row="1" column="1" pos="1" />
+		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - MUA1, MUA2\Cable\A4. Techno MUA2\210XX (Skin).png" row="1" column="2" desc="Skin: 21002" />
+		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - MUA1, MUA2\Cable\A4. Techno MUA2\hud_head_210XX (Next-Gen Style).png" row="1" column="2" pos="1" />
+		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - MUA1, MUA2\Cable\7. Classic\210XX (Skin).png" row="1" column="3" desc="Skin: 21003" />
+		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - MUA1, MUA2\Cable\7. Classic\hud_head_210XX (Next-Gen Style).png" row="1" column="3" pos="1" />
+		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - MUA1, MUA2\Cable\12. Fatigues\210XX (Skin).png" row="1" column="4" desc="Skin: 21004" />
+		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - MUA1, MUA2\Cable\12. Fatigues\hud_head_210XX (Next-Gen Style).png" row="1" column="4" pos="1" />
+		<screenshot row="2" column="1" desc="Skin: 21005" />
+		<screenshot row="2" column="1" desc="Skin: 21006" />
+		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - MUA1, MUA2\Cable\3. 90s\210XX (Mannequin).png" row="2" column="4" />
+	</pack>
+	<!-- MUA1 Custom (Last-Gen) -->
+	<pack subFolder="MUA1 Custom (Last-Gen)" name="Cable" rows="2" columns="4" source="MUA1" >
+		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - MUA1, MUA2\Cable\17. Modern\210XX (Skin).png" row="1" column="1" desc="Skin: 21001" />
+		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - MUA1, MUA2\Cable\17. Modern\hud_head_210XX (Hero).png" row="1" column="1" pos="1" />
+		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - MUA1, MUA2\Cable\A4. Techno MUA2\210XX (Skin).png" row="1" column="2" desc="Skin: 21002" />
+		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - MUA1, MUA2\Cable\A4. Techno MUA2\hud_head_210XX (Hero).png" row="1" column="2" pos="1" />
+		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - MUA1, MUA2\Cable\7. Classic\210XX (Skin).png" row="1" column="3" desc="Skin: 21003" />
+		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - MUA1, MUA2\Cable\7. Classic\hud_head_210XX (Hero).png" row="1" column="3" pos="1" />
+		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - MUA1, MUA2\Cable\12. Fatigues\210XX (Skin).png" row="1" column="4" desc="Skin: 21004" />
+		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - MUA1, MUA2\Cable\12. Fatigues\hud_head_210XX (Hero).png" row="1" column="4" pos="1" />
+		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - MUA1, MUA2\Cable\17. Modern\210XX (Mannequin).png" row="2" column="4" />
+	</pack>
+	<!-- MUA1 Custom (Next-Gen) -->
+	<pack subFolder="MUA1 Custom (Next-Gen)" name="Cable" rows="2" columns="4" source="MUA1" >
+		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - MUA1, MUA2\Cable\17. Modern\210XX (Skin).png" row="1" column="1" desc="Skin: 21001" />
+		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - MUA1, MUA2\Cable\17. Modern\hud_head_210XX (Next-Gen Style).png" row="1" column="1" pos="1" />
+		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - MUA1, MUA2\Cable\A4. Techno MUA2\210XX (Skin).png" row="1" column="2" desc="Skin: 21002" />
+		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - MUA1, MUA2\Cable\A4. Techno MUA2\hud_head_210XX (Next-Gen Style).png" row="1" column="2" pos="1" />
+		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - MUA1, MUA2\Cable\7. Classic\210XX (Skin).png" row="1" column="3" desc="Skin: 21003" />
+		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - MUA1, MUA2\Cable\7. Classic\hud_head_210XX (Next-Gen Style).png" row="1" column="3" pos="1" />
+		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - MUA1, MUA2\Cable\12. Fatigues\210XX (Skin).png" row="1" column="4" desc="Skin: 21004" />
+		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - MUA1, MUA2\Cable\12. Fatigues\hud_head_210XX (Next-Gen Style).png" row="1" column="4" pos="1" />
+		<screenshot row="2" column="1" desc="Skin: 21005" />
+		<screenshot row="2" column="1" desc="Skin: 21006" />
+		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - MUA1, MUA2\Cable\17. Modern\210XX (Mannequin).png" row="2" column="4" />
+	</pack>
+</packs>
