@@ -1,64 +1,68 @@
 <packs>
 	<!-- XML1 -->
-	<pack subFolder="XML1 Default" name="Defaultman" rows="1" columns="2" source="XML2" >
+	<pack subFolder="1X1-1. XML1 Default" name="Defaultman" rows="1" columns="2" source="XML2" >
 		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - XML1, XML2\Defaultman\1. Classic\00XX (Skin - No Cel).png" row="1" column="1" desc="Skin: 0002" />
 		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - XML1, XML2\Defaultman\5. Ice Form\00XX (Skin - No Cel).png" row="1" column="2" desc="Skin: 0001" />
 	</pack>
-	<pack subFolder="XML1 Redesign" name="Defaultman" rows="1" columns="2" source="XML2" >
+	<pack subFolder="1X1-2. XML1 Redesign" name="Defaultman" rows="1" columns="2" source="XML2" >
 		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - XML1, XML2\Defaultman\1. Classic\00XX (Skin).png" row="1" column="1" desc="Skin: 0002" />
 		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - XML1, XML2\Defaultman\5. Ice Form\00XX (Skin).png" row="1" column="2" desc="Skin: 0001" />
 	</pack>
-	<pack subFolder="XML1 Custom" name="Defaultman" rows="1" columns="2" source="XML2" >
+	<pack subFolder="1X1-3. XML1 Custom" name="Defaultman" rows="1" columns="2" source="XML2" >
 		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - XML1, XML2\Defaultman\1. Classic\00XX (Skin).png" row="1" column="1" desc="Skin: 0002" />
 		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - XML1, XML2\Defaultman\5. Ice Form\00XX (Skin).png" row="1" column="2" desc="Skin: 0001" />
 	</pack>
 	<!-- XML2 -->
-	<pack subFolder="XML2 Default" name="Defaultman" rows="1" columns="3" source="XML2" >
+	<pack subFolder="2X2-1. XML2 Default" name="Defaultman" rows="1" columns="3" source="XML2" >
 		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - XML1, XML2\Defaultman\1. Classic\00XX (Skin - No Cel).png" row="1" column="1" desc="Skin: 0002" />
 		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Default Portraits - XML1, XML2\Defaultman\1. XML2 Default HUD\hud_head_00XX.png" row="1" column="1" pos="1" />
 		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - XML1, XML2\Defaultman\5. Ice Form\00XX (Skin - No Cel).png" row="1" column="2" desc="Skin: 0001" />
 		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - XML1, XML2\Defaultman\6. Metal Form\00XX (Skin - No Cel).png" row="1" column="3" desc="Skin: 2504" />
 	</pack>
-	<pack subFolder="XML2 Redesign" name="Defaultman" rows="1" columns="3" source="XML2" >
+	<pack subFolder="2X2-2. XML2 Redesign" name="Defaultman" rows="1" columns="3" source="XML2" >
 		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - XML1, XML2\Defaultman\1. Classic\00XX (Skin).png" row="1" column="1" desc="Skin: 0002" />
 		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Default Portraits - XML1, XML2\Defaultman\1. XML2 Default HUD\hud_head_00XX.png" row="1" column="1" pos="1" />
 		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - XML1, XML2\Defaultman\5. Ice Form\00XX (Skin).png" row="1" column="2" desc="Skin: 0001" />
 		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - XML1, XML2\Defaultman\6. Metal Form\00XX (Skin).png" row="1" column="3" desc="Skin: 2504" />
 	</pack>
-	<pack subFolder="XML2 Custom" name="Defaultman" rows="1" columns="3" source="XML2" >
+	<pack subFolder="2X2-3. XML2 Custom" name="Defaultman" rows="1" columns="3" source="XML2" >
 		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - XML1, XML2\Defaultman\1. Classic\00XX (Skin).png" row="1" column="1" desc="Skin: 0002" />
 		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Default Portraits - XML1, XML2\Defaultman\1. XML2 Default HUD\hud_head_00XX.png" row="1" column="1" pos="1" />
 		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - XML1, XML2\Defaultman\5. Ice Form\00XX (Skin).png" row="1" column="2" desc="Skin: 0001" />
 		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - XML1, XML2\Defaultman\6. Metal Form\00XX (Skin).png" row="1" column="3" desc="Skin: 2504" />
 	</pack>
 	<!-- MUA1 (Last-Gen) -->
-	<pack subFolder="MUA1 Default (Last-Gen)" name="Defaultman" rows="1" columns="1" source="MUA1" >
+	<pack subFolder="3M1-1c. MUA1 Default (Last-Gen)" name="Defaultman" rows="1" columns="1" source="MUA1" >
 		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - MUA1, MUA2\Defaultman\1. Classic\00XX (Skin).png" row="1" column="1" desc="Skin: 0002" />
 		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Default Portraits - MUA1, MUA2\Defaultman\3. MUA1 Default HUD\hud_head_00XX.png" row="1" column="1" pos="1" />
 	</pack>
-	<pack subFolder="MUA1 Redesign (Last-Gen)" name="Defaultman" rows="1" columns="1" source="MUA1" >
+	<pack subFolder="3M1-2b. MUA1 Redesign (Last-Gen)" name="Defaultman" rows="1" columns="1" source="MUA1" >
 		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - MUA1, MUA2\Defaultman\1. Classic\00XX (Skin).png" row="1" column="1" desc="Skin: 0002" />
 		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Default Portraits - MUA1, MUA2\Defaultman\3. MUA1 Default HUD\hud_head_00XX.png" row="1" column="1" pos="1" />
 	</pack>
-	<pack subFolder="MUA1 Custom (Last-Gen)" name="Defaultman" rows="1" columns="1" source="MUA1" >
+	<pack subFolder="3M1-3b. MUA1 Custom (Last-Gen)" name="Defaultman" rows="1" columns="1" source="MUA1" >
 		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - MUA1, MUA2\Defaultman\1. Classic\00XX (Skin).png" row="1" column="1" desc="Skin: 0002" />
 		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Default Portraits - MUA1, MUA2\Defaultman\3. MUA1 Default HUD\hud_head_00XX.png" row="1" column="1" pos="1" />
 	</pack>
 	<!-- MUA1 (Next-Gen) -->
-	<pack subFolder="MUA1 Default (Next-Gen)" name="Defaultman" rows="1" columns="1" source="MUA1" >
+	<pack subFolder="3M1-1a. MUA1 Default (PC)" name="Defaultman" rows="1" columns="1" source="MUA1" >
 		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - MUA1, MUA2\Defaultman\1. Classic\00XX (Skin).png" row="1" column="1" desc="Skin: 0002" />
 		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Default Portraits - MUA1, MUA2\Defaultman\3. MUA1 Default HUD\hud_head_00XX.png" row="1" column="1" pos="1" />
 	</pack>
-	<pack subFolder="MUA1 Redesign (Next-Gen)" name="Defaultman" rows="1" columns="1" source="MUA1" >
+	<pack subFolder="3M1-1b. MUA1 Default (Next-Gen)" name="Defaultman" rows="1" columns="1" source="MUA1" >
 		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - MUA1, MUA2\Defaultman\1. Classic\00XX (Skin).png" row="1" column="1" desc="Skin: 0002" />
 		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Default Portraits - MUA1, MUA2\Defaultman\3. MUA1 Default HUD\hud_head_00XX.png" row="1" column="1" pos="1" />
 	</pack>
-	<pack subFolder="MUA1 Custom (Next-Gen)" name="Defaultman" rows="1" columns="1" source="MUA1" >
+	<pack subFolder="3M1-2a. MUA1 Redesign (Next-Gen)" name="Defaultman" rows="1" columns="1" source="MUA1" >
+		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - MUA1, MUA2\Defaultman\1. Classic\00XX (Skin).png" row="1" column="1" desc="Skin: 0002" />
+		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Default Portraits - MUA1, MUA2\Defaultman\3. MUA1 Default HUD\hud_head_00XX.png" row="1" column="1" pos="1" />
+	</pack>
+	<pack subFolder="3M1-3a. MUA1 Custom (Next-Gen)" name="Defaultman" rows="1" columns="1" source="MUA1" >
 		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - MUA1, MUA2\Defaultman\1. Classic\00XX (Skin).png" row="1" column="1" desc="Skin: 0002" />
 		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Default Portraits - MUA1, MUA2\Defaultman\3. MUA1 Default HUD\hud_head_00XX.png" row="1" column="1" pos="1" />
 	</pack>
 	<!-- MUA1 (Ceamonks890 Mod) -->
-	<pack subFolder="MUA1 Default (Next-Gen)" name="Defaultman (Ceamonks890 Mod)" rows="2" columns="4" source="MUA1" >
+	<pack subFolder="3M1-1a. MUA1 Default (PC)" name="Defaultman (Ceamonks890 Mod)" rows="2" columns="4" source="MUA1" >
 		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - MUA1, MUA2\Defaultman\1. Classic\Full_2HalfLarge.png" row="1" column="1" desc="Skin: 0002" />
 		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - MUA1, MUA2\Defaultman\5. Ice Form\Full_2HalfLarge.png" row="1" column="2" desc="Skin: 0001" />
 		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - MUA1, MUA2\Defaultman\6. Metal Form\Full_2HalfLarge.png" row="1" column="3" desc="Skin: 0003" />
@@ -67,33 +71,53 @@
 		<screenshot row="2" column="2" desc="Skin: 0006" />
 		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - MUA1, MUA2\Defaultman\1. Classic\00XX (Mannequin).png" row="2" column="4" />
 	</pack>
-	<pack subFolder="MUA1 Redesign (Next-Gen)" name="Defaultman (Ceamonks890 Mod)" rows="2" columns="4" source="MUA1" >
-		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - MUA1, MUA2\Defaultman\1. Classic\Full_2HalfLarge.png" row="1" column="1" desc="Skin: 0012" />
-		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - MUA1, MUA2\Defaultman\5. Ice Form\Full_2HalfLarge.png" row="1" column="2" desc="Skin: 0013" />
-		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - MUA1, MUA2\Defaultman\6. Metal Form\Full_2HalfLarge.png" row="1" column="3" desc="Skin: 0014" />
-		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - MUA1, MUA2\Defaultman\7. Rock Form\Full_2HalfLarge.png" row="1" column="4" desc="Skin: 0015" />
+	<pack subFolder="3M1-1b. MUA1 Default (Next-Gen)" name="Defaultman (Ceamonks890 Mod)" rows="2" columns="4" source="MUA1" >
+		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - MUA1, MUA2\Defaultman\1. Classic\00XX (Skin).png" row="1" column="1" desc="Skin: 0002" />
+		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - MUA1, MUA2\Defaultman\1. Classic\hud_head_00XX (Next-Gen Style).png" row="1" column="1" pos="1" />
+		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - MUA1, MUA2\Defaultman\5. Ice Form\00XX (Skin).png" row="1" column="2" desc="Skin: 0001" />
+		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - MUA1, MUA2\Defaultman\5. Ice Form\hud_head_00XX (Next-Gen Style).png" row="1" column="2" pos="1" />
+		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - MUA1, MUA2\Defaultman\6. Metal Form\00XX (Skin).png" row="1" column="3" desc="Skin: 0003" />
+		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - MUA1, MUA2\Defaultman\6. Metal Form\hud_head_00XX (Next-Gen Style).png" row="1" column="3" pos="1" />
+		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - MUA1, MUA2\Defaultman\7. Rock Form\00XX (Skin).png" row="1" column="4" desc="Skin: 0004" />
+		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - MUA1, MUA2\Defaultman\7. Rock Form\hud_head_00XX (Next-Gen Style).png" row="1" column="4" pos="1" />
+		<screenshot row="2" column="1" desc="Skin: 0005" />
+		<screenshot row="2" column="2" desc="Skin: 0006" />
+		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - MUA1, MUA2\Defaultman\1. Classic\00XX (Mannequin).png" row="2" column="4" />
+	</pack>
+	<pack subFolder="3M1-2a. MUA1 Redesign (Next-Gen)" name="Defaultman (Ceamonks890 Mod)" rows="2" columns="4" source="MUA1" >
+		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - MUA1, MUA2\Defaultman\1. Classic\00XX (Skin).png" row="1" column="1" desc="Skin: 0012" />
+		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - MUA1, MUA2\Defaultman\1. Classic\hud_head_00XX (Next-Gen Style).png" row="1" column="1" pos="1" />
+		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - MUA1, MUA2\Defaultman\5. Ice Form\00XX (Skin).png" row="1" column="2" desc="Skin: 0013" />
+		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - MUA1, MUA2\Defaultman\5. Ice Form\hud_head_00XX (Next-Gen Style).png" row="1" column="2" pos="1" />
+		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - MUA1, MUA2\Defaultman\6. Metal Form\00XX (Skin).png" row="1" column="3" desc="Skin: 0014" />
+		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - MUA1, MUA2\Defaultman\6. Metal Form\hud_head_00XX (Next-Gen Style).png" row="1" column="3" pos="1" />
+		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - MUA1, MUA2\Defaultman\7. Rock Form\00XX (Skin).png" row="1" column="4" desc="Skin: 0015" />
+		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - MUA1, MUA2\Defaultman\7. Rock Form\hud_head_00XX (Next-Gen Style).png" row="1" column="4" pos="1" />
 		<screenshot row="2" column="1" desc="Skin: 0016" />
 		<screenshot row="2" column="2" desc="Skin: 0017" />
 		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - MUA1, MUA2\Defaultman\1. Classic\00XX (Mannequin).png" row="2" column="4" />
 	</pack>
-	<pack subFolder="MUA1 Custom (Next-Gen)" name="Defaultman (Ceamonks890 Mod)" rows="2" columns="4" source="MUA1" >
-		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - MUA1, MUA2\Defaultman\1. Classic\Full_2HalfLarge.png" row="1" column="1" desc="Skin: 0012" />
-		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - MUA1, MUA2\Defaultman\2. Locked\Full_2HalfLarge.png" row="1" column="2" desc="Skin: 0013" />
-		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - MUA1, MUA2\Defaultman\3. Locked (Heroes Pack)\Full_2HalfLarge.png" row="1" column="3" desc="Skin: 0014" />
-		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - MUA1, MUA2\Defaultman\4. Locked (Villains Pack)\Full_2HalfLarge.png" row="1" column="4" desc="Skin: 0015" />
-		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - MUA1, MUA2\Defaultman\4. Locked (Villains Pack)\hud_head_00XX (Hero).png" row="1" column="4" pos="1" />
+	<pack subFolder="3M1-3a. MUA1 Custom (Next-Gen)" name="Defaultman (Ceamonks890 Mod)" rows="2" columns="4" source="MUA1" >
+		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - MUA1, MUA2\Defaultman\1. Classic\00XX (Skin).png" row="1" column="1" desc="Skin: 0012" />
+		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - MUA1, MUA2\Defaultman\1. Classic\hud_head_00XX (Next-Gen Style).png" row="1" column="1" pos="1" />
+		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - MUA1, MUA2\Defaultman\2. Locked\00XX (Skin).png" row="1" column="2" desc="Skin: 0013" />
+		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - MUA1, MUA2\Defaultman\2. Locked\hud_head_00XX (Next-Gen Style).png" row="1" column="2" pos="1" />
+		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - MUA1, MUA2\Defaultman\3. Locked (Heroes Pack)\00XX (Skin).png" row="1" column="3" desc="Skin: 0014" />
+		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - MUA1, MUA2\Defaultman\3. Locked (Heroes Pack)\hud_head_00XX (Next-Gen Style).png" row="1" column="4" pos="1" />
+		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - MUA1, MUA2\Defaultman\4. Locked (Villains Pack)\00XX (Skin).png" row="1" column="4" desc="Skin: 0015" />
+		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - MUA1, MUA2\Defaultman\4. Locked (Villains Pack)\hud_head_00XX (Next-Gen Style).png" row="1" column="4" pos="1" />
 		<screenshot row="2" column="1" desc="Skin: 0016" />
 		<screenshot row="2" column="2" desc="Skin: 0017" />
 		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - MUA1, MUA2\Defaultman\1. Classic\00XX (Mannequin).png" row="2" column="4" />
 	</pack>
 	<!-- MUA2 -->
-	<pack subFolder="MUA2 Default" name="Defaultman" rows="1" columns="1" source="MUA1" >
+	<pack subFolder="4M2-1. MUA2 Default" name="Defaultman" rows="1" columns="1" source="MUA1" >
 		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - MUA1, MUA2\Defaultman\1. Classic\00XX (Skin).png" row="1" column="1" desc="Skin: 0002" />
 	</pack>
-	<pack subFolder="MUA2 Redesign" name="Defaultman" rows="1" columns="1" source="MUA1" >
+	<pack subFolder="4M2-2. MUA2 Redesign" name="Defaultman" rows="1" columns="1" source="MUA1" >
 		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - MUA1, MUA2\Defaultman\1. Classic\00XX (Skin).png" row="1" column="1" desc="Skin: 0002" />
 	</pack>
-	<pack subFolder="MUA2 Custom" name="Defaultman" rows="1" columns="1" source="MUA1" >
+	<pack subFolder="4M2-3. MUA2 Custom" name="Defaultman" rows="1" columns="1" source="MUA1" >
 		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - MUA1, MUA2\Defaultman\1. Classic\00XX (Skin).png" row="1" column="1" desc="Skin: 0002" />
 	</pack>
 </packs>
