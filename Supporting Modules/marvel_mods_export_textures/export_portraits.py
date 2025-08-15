@@ -125,11 +125,11 @@ def ExportNGPortrait(xcf_path, image, layer, template, alchemy_version):
     if template == 'Combo':
         # This uses the combo HUD and CSP template.
         # Set up the CSP layers to be removed.
-        layers_for_removal = ['XML1 CSP Frame', 'XML1 CSP Background', 'XML2 CSP Background']
+        layers_for_removal = ['XML1 CSP Frame', 'HUD Frame', 'HUD Background', 'XML1 CSP Background', 'XML2 CSP Background']
     else:
         # This uses the HUD template only.
         # Nothing needs to be removed.
-        layers_for_removal = []
+        layers_for_removal = ['Frame', 'Background']
     # Determine the Alchemy version.
     if alchemy_version == 2:
         # This is Alchemy 5 (texture replacement method).
@@ -197,16 +197,16 @@ def ExportPortraits(image, layer, alchemy_version, plain_choice, next_gen_choice
         if plain_choice == 1:
             ExportStandardPortrait(xcf_path, image, layer, template, alchemy_version, '')
         if hero_outline_choice == 1:
-            ExportStandardPortrait(xcf_path, image, layer, template, alchemy_version, 'b_', outlineChoice='HUDBlue')
+            ExportStandardPortrait(xcf_path, image, layer, template, alchemy_version, 'b_', outline_choice = 'HUDBlue')
         if red_villain_outline_choice == 1:
-            ExportStandardPortrait(xcf_path, image, layer, template, alchemy_version, 'r_', outlineChoice='HUDRed')
+            ExportStandardPortrait(xcf_path, image, layer, template, alchemy_version, 'r_', outline_choice = 'HUDRed')
         if green_villain_outline_choice == 1:
-            ExportStandardPortrait(xcf_path, image, layer, template, alchemy_version, 'g_', outlineChoice='HUDGreen')
+            ExportStandardPortrait(xcf_path, image, layer, template, alchemy_version, 'g_', outline_choice = 'HUDGreen')
         if next_gen_choice == 1:
-            ExportNGPortrait(xcf_path, image, layer, alchemy_version, template)
+            ExportNGPortrait(xcf_path, image, layer, template, alchemy_version)
         if xml1_choice == 1:
-            ExportXML1CSP(xcf_path, image, layer, alchemy_version, template)
+            ExportXML1CSP(xcf_path, image, layer, template, alchemy_version)
         if xml2_choice == 1:
-            ExportXML2CSP(xcf_path, image, layer, alchemy_version, template)
+            ExportXML2CSP(xcf_path, image, layer, template, alchemy_version)
         # Print the success message.
         pdb.gimp_message('SUCCESS: exported ' + xcf_path + ' at ' + str(datetime.now().strftime('%H:%M:%S')))
