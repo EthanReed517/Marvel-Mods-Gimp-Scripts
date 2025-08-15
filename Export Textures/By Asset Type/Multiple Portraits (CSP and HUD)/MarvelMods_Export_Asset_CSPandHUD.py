@@ -7,11 +7,12 @@
 # GIMP plugin to export a character select portrait (CSP) and conversation portrait (HUD)
 # This was designed with the intention to use it with modding processes for MarvelMods.com, though it can have other uses. 
 # For detailed instructions, please reference the README.md file included with this download.
-# (c) BaconWizard17 2023
+# (c) BaconWizard17 2025
 #
 #   History:
 #   v1.0: 21Jan2024: First published version.   
 #   v2.0: 16Dec2024: Full redesign for improved performance using an external module for common operations.
+#   v3.0: 15Aug2025: Reduced options, as all texture format conversion and resizing can now be done through ALchemy.
 
 #   This program is free software; you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License as published by
@@ -33,16 +34,16 @@
 # ####### #
 # GIMP module
 from gimpfu import *
-# Marvel Mods Operations
-import Marvel_Mods_Export_Textures as MMET
+# Internal modules
+import marvel_mods_export_textures as mmet
 
 
 # ######### #
 # FUNCTIONS #
 # ######### #    
-# Define the main operation
-def exportCSPandHUD(image, layer, console, alchemyVersion, plainChoice, nextGenChoice, heroOutlineChoice, redVillainOutlineChoice, greenVillainOutlineChoice, xml1Choice, xml2Choice):
-    MMET.exportPortraits(image, layer, console, alchemyVersion, plainChoice, nextGenChoice, heroOutlineChoice, redVillainOutlineChoice, greenVillainOutlineChoice, xml1Choice, xml2Choice, "Combo")
+# This is the main operation.
+def ExportCSPandHUD(image, layer, alchemy_version, plain_choice, next_gen_choice, hero_outline_choice, red_villain_outline_choice, green_villain_outline_choice, xml1_choice, xml2_choice):
+    mmet.ExportPortraits(image, layer, alchemy_version, plain_choice, next_gen_choice, hero_outline_choice, red_villain_outline_choice, green_villain_outline_choice, xml1_choice, xml2_choice, "Combo")
 
 
 # ######## #
@@ -50,30 +51,29 @@ def exportCSPandHUD(image, layer, console, alchemyVersion, plainChoice, nextGenC
 # ######## #
 # Register the script in GIMP
 register(
-    "python_fu_marvelmods_export_asset_cspandhud",
-    "Exports a character select portrait (CSP) texture\nand a conversation portrait (HUD) texture\nin multiple formats.\n\nCheck the README.md file included with the\ndownload for more clarity on the options.",
-    "Exports a character select portrait (CSP) texture\nand a conversation portrait (HUD) texture\nin multiple formats.",
-    "BaconWizard17",
-    "BaconWizard17",
-    "December 2024",
-    "Export Multiple Portraits (CSP and HUD)",
-    "*",
+    'python_fu_marvelmods_export_asset_cspandhud',
+    'Exports a character select portrait (CSP) texture\nand a conversation portrait (HUD) texture\nin multiple formats.\n\nCheck the README.md file included with the\ndownload for more clarity on the options.',
+    'Exports a character select portrait (CSP) texture\nand a conversation portrait (HUD) texture\nin multiple formats.',
+    'BaconWizard17',
+    'BaconWizard17',
+    'December 2024',
+    'Export Multiple Portraits (CSP and HUD)',
+    '*',
     [
-        (PF_IMAGE, "image", "Input image", None),
-        (PF_DRAWABLE, "layer", "Layer, mask or channel", None),
-        (PF_OPTION, "console", "Console:", 0, ["All","PC Only"]),
-        (PF_OPTION, "alchemyVersion", "Alchemy Version:", 0, ["Alchemy 2.5","Alchemy 5"]),
-        (PF_TOGGLE, "plainChoice", "Export a plain HUD?", 0),
-        (PF_TOGGLE, "nextGenChoice", "Export an MUA1 next-gen\nstyle HUD?", 1),
-        (PF_TOGGLE, "heroOutlineChoice", "Export a HUD with a\nhero outline?", 1),
-        (PF_TOGGLE, "redVillainOutlineChoice", "Export a HUD with a\nred villain outline?", 0),
-        (PF_TOGGLE, "greenVillainOutlineChoice", "Export a HUD with a\ngreen villain outline?", 0),
-        (PF_TOGGLE, "xml1Choice", "Export a CSP for XML1?", 0),
-        (PF_TOGGLE, "xml2Choice", "Export a CSP for XML2?", 1)
+        (PF_IMAGE, 'image', 'Input image', None),
+        (PF_DRAWABLE, 'layer', 'Layer, mask or channel', None),
+        (PF_OPTION, 'alchemy_version', 'Alchemy Version:', 0, ['Alchemy 2.5', 'Alchemy 5', 'Alchemy 5 (Texture Replacement)']),
+        (PF_TOGGLE, 'plain_choice', 'Export a plain HUD?', 0),
+        (PF_TOGGLE, 'next_gen_choice', 'Export an MUA1 next-gen\nstyle HUD?', 1),
+        (PF_TOGGLE, 'hero_outline_choice', 'Export a HUD with a\nhero outline?', 1),
+        (PF_TOGGLE, 'red_villain_outline_choice', 'Export a HUD with a\nred villain outline?', 0),
+        (PF_TOGGLE, 'green_villain_outline_choice', 'Export a HUD with a\ngreen villain outline?', 0),
+        (PF_TOGGLE, 'xml1_choice', 'Export a CSP for XML1?', 0),
+        (PF_TOGGLE, 'xml2_choice', 'Export a CSP for XML2?', 1)
     ],
     [],
-    exportCSPandHUD,
-    menu="<Image>/Marvel Mods/Export Textures/By Asset Type"
+    ExportCSPandHUD,
+    menu='<Image>/Marvel Mods/Export Textures/By Asset Type'
 )
 
 

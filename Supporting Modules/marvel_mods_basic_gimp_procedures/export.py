@@ -76,6 +76,7 @@ def ExportTextureMM(image, layer, xcf_path, extension, **kwargs):
     # Loop through the layers that need to be removed (by default, none need to be).
     for layer in kwargs.get('layers_to_remove', []):
         # Get the layer by the name and remove it.
+        pdb.gimp_message(layer)
         layer_to_remove = pdb.gimp_image_get_layer_by_name(export_image, layer)
         pdb.gimp_image_remove_layer(export_image, layer_to_remove)
     # Determine if an outline is needed.

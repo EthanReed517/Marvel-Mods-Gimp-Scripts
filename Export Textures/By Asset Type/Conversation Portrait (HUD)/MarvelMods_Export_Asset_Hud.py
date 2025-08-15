@@ -7,7 +7,7 @@
 # GIMP plugin to export a conversation portrait (HUD)
 # This was designed with the intention to use it with modding processes for MarvelMods.com, though it can have other uses. 
 # For detailed instructions, please reference the README.md file included with this download.
-# (c) BaconWizard17 2023
+# (c) BaconWizard17 2025
 #
 #   History:
 #   v1.0: 01Feb2023: First published version.
@@ -15,6 +15,7 @@
 #   v2.0: 15Jan2024: Full rewrite. Added more portrait types, changed basic operations to common procedures.
 #   v2.1: 21Jan2024: Add support for Alchemy 5
 #   v3.0: 16Dec2024: Full redesign for improved performance using an external module for common operations.
+#   v4.0: 15Aug2025: Reduced options, as all texture format conversion and resizing can now be done through ALchemy.
 
 #   This program is free software; you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License as published by
@@ -36,16 +37,16 @@
 # ####### #
 # GIMP module
 from gimpfu import *
-# Marvel Mods Operations
-import Marvel_Mods_Export_Textures as MMET
+# Internal modules
+import marvel_mods_export_textures as mmet
 
 
 # ######### #
 # FUNCTIONS #
 # ######### #
-# Define the main operation
-def exportHUD(image, layer, console, alchemyVersion, plainChoice, nextGenChoice, heroOutlineChoice, redVillainOutlineChoice, greenVillainOutlineChoice):
-    MMET.exportPortraits(image, layer, console, alchemyVersion, plainChoice, nextGenChoice, heroOutlineChoice, redVillainOutlineChoice, greenVillainOutlineChoice, 0, 0, "HUD")
+# This is the main operation.
+def ExportHUD(image, layer, alchemy_version, plain_choice, next_gen_choice, hero_outline_choice, red_villain_outline_choice, green_villain_outline_choice):
+    mmet.ExportPortraits(image, layer, alchemy_version, plain_choice, next_gen_choice, hero_outline_choice, red_villain_outline_choice, green_villain_outline_choice, 0, 0, 'HUD')
 
 
 # ######## #
@@ -53,28 +54,27 @@ def exportHUD(image, layer, console, alchemyVersion, plainChoice, nextGenChoice,
 # ######## #
 # Register the script in GIMP
 register(
-    "python_fu_marvelmods_export_asset_hud",
-    "Exports a conversation portrait (HUD) texture in\nmultiple formats.\n\nCheck the README.md file included with the\ndownload for more clarity on the options.",
-    "Exports a conversation portrait (HUD) texture in multiple formats.",
-    "BaconWizard17",
-    "BaconWizard17",
-    "January 2024",
-    "Export Conversation Portrait (HUD)",
-    "*",
+    'python_fu_marvelmods_export_asset_hud',
+    'Exports a conversation portrait (HUD) texture.\n\nCheck the README.md file included with the\ndownload for more clarity on the options.',
+    'Exports a conversation portrait (HUD) texture.',
+    'BaconWizard17',
+    'BaconWizard17',
+    'August 2025',
+    'Export Conversation Portrait (HUD)',
+    '*',
     [
-        (PF_IMAGE, "image", "Input image", None),
-        (PF_DRAWABLE, "layer", "Layer, mask or channel", None),
-        (PF_OPTION, "console", "Console:", 0, ["All","PC Only"]),
-        (PF_OPTION, "alchemyVersion", "Alchemy Version:", 0, ["Alchemy 2.5","Alchemy 5"]),
-        (PF_TOGGLE, "plainChoice", "Export a plain portrait?", 0),
-        (PF_TOGGLE, "nextGenChoice", "Export an MUA1 next-gen\nstyle portrait?", 1),
-        (PF_TOGGLE, "heroOutlineChoice", "Export a portrait with a\nhero outline?", 1),
-        (PF_TOGGLE, "redVillainOutlineChoice", "Export a portrait with a\nred villain outline?", 0),
-        (PF_TOGGLE, "greenVillainOutlineChoice", "Export a portrait with a\ngreen villain outline?", 0)
+        (PF_IMAGE, 'image', 'Input image', None),
+        (PF_DRAWABLE, 'layer', 'Layer, mask or channel', None),
+        (PF_OPTION, 'alchemy_version', 'Alchemy Version:', 0, ['Alchemy 2.5', 'Alchemy 5', 'Alchemy 5 (Texture Replacement)']),
+        (PF_TOGGLE, 'plain_choice', 'Export a plain portrait?', 0),
+        (PF_TOGGLE, 'next_gen_choice', 'Export an MUA1 next-gen\nstyle portrait?', 1),
+        (PF_TOGGLE, 'hero_outline_choice', 'Export a portrait with a\nhero outline?', 1),
+        (PF_TOGGLE, 'red_villain_outline_choice', 'Export a portrait with a\nred villain outline?', 0),
+        (PF_TOGGLE, 'green_villain_outline_choice', 'Export a portrait with a\ngreen villain outline?', 0)
     ],
     [],
-    exportHUD,
-    menu="<Image>/Marvel Mods/Export Textures/By Asset Type"
+    ExportHUD,
+    menu='<Image>/Marvel Mods/Export Textures/By Asset Type'
 )
 
 

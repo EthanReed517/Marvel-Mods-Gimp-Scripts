@@ -7,13 +7,14 @@
 # GIMP plugin to export a character select portrait (CSP)
 # This was designed with the intention to use it with modding processes for MarvelMods.com, though it can have other uses. 
 # For detailed instructions, please reference the README.md file included with this download.
-# (c) BaconWizard17 2023
+# (c) BaconWizard17 2025
 #
 #   History:
 #   v1.0: 01Feb2023: First published version.
 #   v1.1: 21Apr2023: Updated folder names
 #   v2.0: 19Jan2024: Full rewrite. Now uses common procedures, generates the CSP outline in process, and can do both portraits at the same time.    
 #   v3.0: 16Dec2024: Full redesign for improved performance using an external module for common operations.
+#   v4.0: 15Aug2025: Reduced options, as all texture format conversion and resizing can now be done through ALchemy.
 
 #   This program is free software; you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License as published by
@@ -35,42 +36,41 @@
 # ####### #
 # GIMP module
 from gimpfu import *
-# Marvel Mods Operations
-import Marvel_Mods_Export_Textures as MMET
+# Internal modules
+import marvel_mods_export_textures as mmet
 
 
 # ######### #
 # FUNCTIONS #
-# ######### #    
-# Define the main operation
-def exportCSP(image, layer, console, alchemyVersion, xml1Choice, xml2Choice):
-    MMET.exportPortraits(image, layer, console, alchemyVersion, 0, 0, 0, 0, 0, xml1Choice, xml2Choice, "CSP")
+# ######### #
+# This is the main operation.
+def ExportCSP(image, layer, alchemy_version, xml1_choice, xml2_choice):
+    mmet.ExportPortraits(image, layer, alchemy_version, 0, 0, 0, 0, 0, xml1_choice, xml2_choice, 'CSP')
 
 
 # ######## #
 # REGISTER #
 # ######## #
-# Register the script in GIMP
+# Register the script in GIMP.
 register(
-    "python_fu_marvelmods_export_asset_csp",
-    "Exports a character select portrait (CSP) texture\nin multiple formats.\n\nCheck the README.md file included with the\ndownload for more clarity on the options.",
-    "Exports a character select portrait (CSP) texture in multiple formats.",
-    "BaconWizard17",
-    "BaconWizard17",
-    "January 2024",
-    "Export Character Select Portrait (CSP)",
-    "*",
+    'python_fu_marvelmods_export_asset_csp',
+    'Exports a character select portrait (CSP) texture.\n\nCheck the README.md file included with the\ndownload for more clarity on the options.',
+    'Exports a character select portrait (CSP) texture.',
+    'BaconWizard17',
+    'BaconWizard17',
+    'August 2025',
+    'Export Character Select Portrait (CSP)',
+    '*',
     [
-        (PF_IMAGE, "image", "Input image", None),
-        (PF_DRAWABLE, "layer", "Layer, mask or channel", None),
-        (PF_OPTION, "console", "Console:", 0, ["All","PC Only"]),
-        (PF_OPTION, "alchemyVersion", "Alchemy Version:", 0, ["Alchemy 2.5","Alchemy 5"]),
-        (PF_TOGGLE, "xml1Choice", "Export a CSP for XML1?", 0),
-        (PF_TOGGLE, "xml2Choice", "Export a CSP for XML2?", 1)
+        (PF_IMAGE, 'image', 'Input image', None),
+        (PF_DRAWABLE, 'layer', 'Layer, mask or channel', None),
+        (PF_OPTION, 'alchemy_version', 'Alchemy Version:', 0, ['Alchemy 2.5', 'Alchemy 5', 'Alchemy 5 (Texture Replacement)']),
+        (PF_TOGGLE, 'xml1_choice', 'Export a CSP for XML1?', 0),
+        (PF_TOGGLE, 'xml2_choice', 'Export a CSP for XML2?', 1)
     ],
     [],
-    exportCSP,
-    menu="<Image>/Marvel Mods/Export Textures/By Asset Type"
+    ExportCSP,
+    menu='<Image>/Marvel Mods/Export Textures/By Asset Type'
 )
 
 
