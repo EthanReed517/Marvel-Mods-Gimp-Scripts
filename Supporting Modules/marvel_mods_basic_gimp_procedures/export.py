@@ -7,10 +7,11 @@
 # GIMP plugin to export different texture types
 # This was designed with the intention to use it with modding processes for MarvelMods.com, though it can have other uses. 
 # For detailed instructions, please reference the README.md file included with this download.
-# (c) BaconWizard17 2023
+# (c) BaconWizard17 2025
 #
 #   History:
 #   v1.0: 12Dec2024: First published version.
+#   v2.0: 15Aug2025: Rewrite to fit my current code formatting.
 
 #   This program is free software; you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License as published by
@@ -32,8 +33,8 @@
 # ####### #
 # GIMP module
 from gimpfu import *
-# Marvel Mods Operations
-import Marvel_Mods_Basic_Gimp_Procedures as MMBGP
+# Internal modules
+import marvel_mods_basic_gimp_procedures as mmbgp
 # External modules
 from os import remove, rename
 import os.path
@@ -43,89 +44,100 @@ import subprocess
 # ######### #
 # FUNCTIONS #
 # ######### #
-# Define the function for resizing an image
-def resizeImage(image, layer, scaleFactor):
+# This function is used to resize an image.
+def ResizeImage(image, layer, scale_factor):
     # Get the current image dimensions
-    currentWidth = float(image.width)
-    currentHeight = float(image.height)
+    current_width = float(image.width)
+    current_height = float(image.height)
     # Get the new sizes
-    newWidth = scaleFactor * currentWidth
-    newHeight = scaleFactor * currentHeight
+    new_width = scale_factor * current_width
+    new_height = scale_factor * current_height
     # scale the image accordingly
-    pdb.gimp_image_scale(image, newWidth, newHeight)
+    pdb.gimp_image_scale(image, new_width, new_height)
     # Resize the layer to the image size
     pdb.gimp_layer_resize_to_image_size(layer)
 
-# Define the function for converting to PNG8 after export (for png8 alpha)
-def png8Alpha(outFilePath, colors):
+# This function converts to PNG8 Alpha after the image is exported.
+def PNG8Alpha(out_file_path, colors):
     # Index the result file
-    subprocess.call("pngquant --force --verbose " + str(colors) + " \"" + outFilePath + "\"")
-    # Delete the original file
-    remove(outFilePath)
-    # Rename the new file to the old file's name
-    newPath = os.path.splitext(outFilePath)[0] + "-fs8.png"
-    rename(newPath, outFilePath)
+    subprocess.call('pngquant --force --verbose ' + str(colors) + ' "' + out_file_path + '"')
+    # Delete the original file.
+    remove(out_file_path)
+    # Set up the path to the new file that pngquant created.
+    new_path = os.path.splitext(out_file_path)[0] + '-fs8.png'
+    # Rename the new file to the old file's name.
+    rename(new_path, out_file_path)
 
-# Define the function for exporting any image
-def exportTextureMM(image, layer, xcfPath, extension, **kwargs):
-    # Create a duplicate image for export and get its active layer
-    exportImage = pdb.gimp_image_duplicate(image)
-    exportLayer = pdb.gimp_image_get_active_layer(exportImage)
-    # Loop through the layers to remove (default is none)
-    for layer in kwargs.get("layersToRemove", []):
-        # Get the layer by the name and remove it
-        layerToRemove = pdb.gimp_image_get_layer_by_name(exportImage, layer)
-        pdb.gimp_image_remove_layer(exportImage, layerToRemove)
-    # Determine if an outline is needed
-    if kwargs.get("portraitOutline", None) is not None:
-        # An outline is needed
-        # Generate an outline
-        MMBGP.generatePortraitOutline(exportImage, kwargs["portraitOutline"])
-    # Determine if the image uses transparency
-    if kwargs.get("transparent", False) == True:
-        # Transparency is needed
-        # Merge the layers
-        exportLayer = pdb.gimp_image_merge_visible_layers(exportImage, 1)
+# This function exports any image.
+def ExportTextureMM(image, layer, xcf_path, extension, **kwargs):
+    # Create a duplicate image for export and get its active layer.
+    export_image = pdb.gimp_image_duplicate(image)
+    export_layer = pdb.gimp_image_get_active_layer(export_image)
+    # Loop through the layers that need to be removed (by default, none need to be).
+    for layer in kwargs.get('layers_to_remove', []):
+        # Get the layer by the name and remove it.
+        layer_to_remove = pdb.gimp_image_get_layer_by_name(export_image, layer)
+        pdb.gimp_image_remove_layer(export_image, layer_to_remove)
+    # Determine if an outline is needed.
+    if kwargs.get('portraitOutline', None) is not None:
+        # An outline is needed.
+        # Generate an outline.
+        mmbgp.GeneratePortraitOutline(export_image, kwargs['portrait_outline'])
+    # Determine if the image uses transparency.
+    if kwargs.get('transparent', False) == True:
+        # Transparency is needed.
+        # Merge the layers.
+        export_layer = pdb.gimp_image_merge_visible_layers(export_image, 1)
     else:
-        # Transparency is not needed
-        # Flatten the image
-        exportLayer = pdb.gimp_image_flatten(exportImage)
+        # Transparency is not needed.
+        # Flatten the image.
+        export_layer = pdb.gimp_image_flatten(export_image)
     # Determine if the image needs to be scaled
-    if not(kwargs.get("scale_factor", 1) == 1):
-        # Scaling is needed
-        resizeImage(exportImage, exportLayer, kwargs["scale_factor"])
-    # Determine if RGB-BGR swapping is needed
-    if kwargs.get("RGB_BGR", False) == True:
-        # RGB-BGR swapping is needed
-        MMBGP.RGB_BGR(exportImage, exportLayer)
-    # Determine if indexing is needed
-    if kwargs.get("indexColors", 0) > 0:
-        # The image needs to be indexed
-        # Index the colors
-        exportLayer = MMBGP.indexColors(exportImage, kwargs["indexColors"])
-    # Determine if a sub-folder is needed for the export
-    if not(kwargs.get("subFolder") == ""):
-        # Check for the subfolder and create it if needed
-        MMBGP.folderCheck(xcfPath, kwargs["subFolder"])
-    # Get the out file path
-    xcfFolder = os.path.dirname(xcfPath)
-    fileName = os.path.splitext(os.path.basename(xcfPath))[0]
-    outFilePath = os.path.join(xcfFolder, kwargs.get("subFolder", ""), kwargs.get("fileNamePrefix","") + fileName + kwargs.get("fileNameSuffix", "") + extension)
-    # Export based on the file extension
-    if extension == ".png":
-        pdb.file_png_save(exportImage, exportLayer, outFilePath, outFilePath, 0, 9, 0, 0, 0, 0, 0)
+    if not(kwargs.get('scale_factor', 1) == 1):
+        # Scaling is needed.
+        # Scale the image.
+        ResizeImage(export_image, export_layer, kwargs['scale_factor'])
+    # Determine if RGB-BGR swapping is needed.
+    if kwargs.get('rgb_bgr', False) == True:
+        # RGB-BGR swapping is needed.
+        # Perform the swap.
+        mmbgp.RGB_BGR(export_image, export_layer)
+    # Determine if indexing is needed.
+    if kwargs.get('index_colors', 0) > 0:
+        # The image needs to be indexed.
+        # Index the colors.
+        export_layer = mmbgp.IndexColors(export_image, kwargs['index_colors'])
+    # Get the out file path.
+    xcf_folder = os.path.dirname(xcf_path)
+    file_name = os.path.splitext(os.path.basename(xcf_path))[0]
+    # Determine if a sub-folder is needed for the export.
+    if not(kwargs.get('sub_folder', '') == ''):
+        # A sub-folder is needed.
+        # Check for the subfolder and create it if needed.
+        mmbgp.FolderCheck(xcf_path, kwargs['sub_folder'])
+    # Set up the output path.
+    out_file_path = os.path.join(xcf_folder, kwargs.get('sub_folder', ''), kwargs.get('file_name_prefix', '') + file_name + kwargs.get('file_name_suffix', '') + extension)
+    # Export based on the file extension.
+    if extension == '.png':
+        # This needs to be a .png file.
+        # Export as a .png file.
+        pdb.file_png_save(export_image, export_layer, out_file_path, out_file_path, 0, 9, 0, 0, 0, 0, 0)
     elif extension == ".dds":
-        # Set up a dictionary for compression types
-        compressionTypeDict = {
-            "DXT1": 1,
-            "DXT3": 2,
-            "DXT5": 3
+        # This needs to be a .dds file.
+        # Set up a dictionary for compression types.
+        compression_type_dict = {
+            'DXT1': 1,
+            'DXT3': 2,
+            'DXT5': 3
         }
-        # Export the file
-        pdb.file_dds_save(exportImage, exportLayer, outFilePath, outFilePath, compressionTypeDict[kwargs.get("ddsCompression", "DXT1")], 0, 4, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0)
-    elif extension == ".tga":
-        pdb.file_tga_save(exportImage, exportLayer, outFilePath, outFilePath, 1, 0)
-    # Determine if the image needs to be PNG8 alpha
-    if kwargs.get("alphaIndexed", False) == True:
-        # Perform alpha indexing
-        png8Alpha(outFilePath, kwargs.get("alphaIndexColors", 256))
+        # Export the file.
+        pdb.file_dds_save(export_image, export_layer, out_file_path, out_file_path, compressionTypeDict[kwargs.get('dds_compression', 'DXT1')], 0, 4, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0)
+    elif extension == '.tga':
+        # This needs to be a .tga file.
+        # Export the file.
+        pdb.file_tga_save(export_image, export_layer, out_file_path, out_file_path, 1, 0)
+    # Determine if the image needs to be PNG8 alpha.
+    if kwargs.get('alpha_indexed', False) == True:
+        # This needs to be alpha indexed.
+        # Perform alpha indexing.
+        png8Alpha(out_file_path, kwargs.get('alpha_index_colors', 256))

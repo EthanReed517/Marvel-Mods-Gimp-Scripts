@@ -4,13 +4,14 @@
 # ########### #
 # INFORMATION #
 # ########### #
-# GIMP plugin to perform various checks on an image
+# GIMP plugin to perform various checks on an image.
 # This was designed with the intention to use it with modding processes for MarvelMods.com, though it can have other uses. 
 # For detailed instructions, please reference the README.md file included with this download.
-# (c) BaconWizard17 2024
+# (c) BaconWizard17 2025
 #
 #   History:
 #   v1.0: 12Dec2024: First published version.
+#   v2.0: 15Aug2025: Rewrite to fit my current code formatting.
 
 #   This program is free software; you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License as published by
@@ -41,58 +42,58 @@ import os.path
 # ######### #
 # FUNCTIONS #
 # ######### #
-# Define the log base 2 operation
+# This function is used to calculate the log base 2 of a number.
 def Log2(x):
     return (math.log10(x) / math.log10(2))
     
-# Define the function to check if a number is a power of 2
-def isPowerOfTwo(n):
+# This function checks if a number is a power of 2.
+def IsPowerOfTwo(n):
     return (math.ceil(Log2(n)) == math.floor(Log2(n)))
 
-# Define the power of 2 checking operation
-def po2Check(image, layer):
-    # Get the current dimensions of the image
-    currentWidth = image.width
-    currentHeight = image.height
-    # Check if the dimensions are powers of 2
-    if (isPowerOfTwo(currentWidth) and isPowerOfTwo(currentHeight)):
-        # Both dimensions are powers of 2
-        # return true
-        po2Value = True
+# This function checks image dimensions to see if they're powers of 2.
+def Po2Check(image, layer):
+    # Get the current dimensions of the image.
+    current_width = image.width
+    current_height = image.height
+    # Check if the dimensions are powers of 2.
+    if (IsPowerOfTwo(current_width) and IsPowerOfTwo(current_height)):
+        # Both dimensions are powers of 2.
+        # Update the value to indicate that the dimensions are powers of 2.
+        po2_value = True
     else:
-        # One or neither dimension is a power of 2
-        # return false
-        po2Value = False
-        # Print the warning
-        pdb.gimp_message("ERROR: One or both image dimensions are not a power of 2. Alchemy only supports image dimensions that are powers of 2.\n\nPowers of 2: 1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048, 4096, and so on.")
+        # One or neither dimension is a power of 2.
+        # Update the value to indicate that the dimensions are not powers of 2.
+        po2_value = False
+        # Print the error for the user.
+        pdb.gimp_message('ERROR: One or both image dimensions are not a power of 2. Alchemy only supports image dimensions that are powers of 2.\n\nPowers of 2: 1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048, 4096, and so on.')
     # Return the value
-    return po2Value
+    return po2_value
 
-# Define the square checking operation
-def squareCheck(image, layer):
-    # Get the current dimensions of the image
-    currentWidth = image.width
-    currentHeight = image.height
-    # Check if the dimensions are powers of 2
-    if (currentWidth == currentHeight):
-        # The dimensions are equal
-        # return true
-        squareValue = True
+# This function checks if an image is square.
+def SquareCheck(image, layer):
+    # Get the current dimensions of the image.
+    current_width = image.width
+    current_height = image.height
+    # Check if the dimensions are equal.
+    if (current_width == current_height):
+        # The dimensions are equal, so the image is a square.
+        # Update the value to indicate that the image is square.
+        square_value = True
     else:
-        # The dimensions are not square
-        # return false
-        squareValue = False
-        # Print the warning
-        pdb.gimp_message("ERROR: The dimensions of this image are not the same. This type of texture should be square.")
+        # The dimensions are not equal, so the image is not square.
+        # Update the value to indicate that the image is not square.
+        square_value = False
+        # Print the error for the user.
+        pdb.gimp_message('ERROR: The dimensions of this image are not the same. This type of texture should be square.')
     # Return the value
-    return squareValue
+    return square_value
 
-# Define the function for checking if a folder exists and creating it if needed
-def folderCheck(xcfPath, subFolder):
-    # Get the xcf's folder
-    xcfFolderPath = os.path.dirname(xcfPath)
+# This function checks if a folder exists and creates it if needed.
+def FolderCheck(xcf_path, sub_folder):
+    # Get the xcf's folder.
+    xcf_folder_path = os.path.dirname(xcf_path)
     # Get the path to the sub-folder
-    subFolderPath = os.path.join(xcfFolderPath, subFolder)
+    sub_folder_path = os.path.join(xcf_folder_path, sub_folder)
     # If the path doesn't exist, create the new folder
-    if os.path.exists(subFolderPath) == False:
-        makedirs(subFolderPath)
+    if os.path.exists(sub_folder_path) == False:
+        makedirs(sub_folder_path)
