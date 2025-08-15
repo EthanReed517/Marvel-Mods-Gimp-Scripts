@@ -100,7 +100,7 @@ if exist %gimpPythonFolder% (
 	REM Copy the basic procedures module to GIMP's python installation
 	echo Copying supporting Python modules . . .
 	cd %~dp0\Supporting Modules
-	for %%f in (Marvel_Mods_Basic_Gimp_Procedures, Marvel_Mods_Export_Previews, Marvel_Mods_Export_Textures) do (
+	for %%f in (marvel_mods_basic_gimp_procedures, marvel_mods_export_previews, marvel_mods_export_textures) do (
 		xcopy %%f %gimpInstallFolder%"\lib\python2.7\site-packages\%%f" /q /y /i
 	)
 	
