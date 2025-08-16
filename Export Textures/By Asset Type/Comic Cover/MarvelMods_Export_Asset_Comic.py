@@ -7,10 +7,11 @@
 # GIMP plugin to export a comic cover texture.
 # This was designed with the intention to use it with modding processes for MarvelMods.com, though it can have other uses. 
 # For detailed instructions, please reference the README.md file included with this download.
-# (c) BaconWizard17 2023
+# (c) BaconWizard17 2025
 #
 #   History:
 #   v1.0: 17Dec2024: First published version.
+#   v2.0: 16Aug2025: Reduced options, as all texture format conversion and resizing can now be done through ALchemy.
 
 #   This program is free software; you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License as published by
@@ -32,16 +33,16 @@
 # ####### #
 # GIMP module
 from gimpfu import *
-# Marvel Mods Operations
-import Marvel_Mods_Export_Textures as MMET
+# Internal modules
+import marvel_mods_export_textures as mmet
 
 
 # ######### #
 # FUNCTIONS #
 # ######### #
-# Define the main operation
-def exportComic(image, layer, console, alchemyVersion, xml1Choice, xml2Choice, mua1Choice):
-    MMET.exportComic(image, layer, console, alchemyVersion, xml1Choice, xml2Choice, mua1Choice)
+# This is the main operation.
+def ExportComic(image, layer, alchemy_version, xml1_choice, xml2_choice, mua1_choice):
+    mmet.ExportComic(image, layer, alchemy_version, xml1_choice, xml2_choice, mua1_choice)
 
 
 # ######## #
@@ -49,26 +50,25 @@ def exportComic(image, layer, console, alchemyVersion, xml1Choice, xml2Choice, m
 # ######## #
 # Register the script in GIMP
 register(
-    "python_fu_marvelmods_export_asset_comic",
-    "Creates and exports a comic cover texture in multiple formats.\n\nCheck the README.md file included with the\ndownload for more clarity on the options.",
-    "Creates and exports a comic cover texture in multiple formats.",
-    "BaconWizard17",
-    "BaconWizard17",
-    "December 2024",
-    "Export Comic Cover",
-    "*",
+    'python_fu_marvelmods_export_asset_comic',
+    'Creates and exports a comic cover texture.\n\nCheck the README.md file included with the\ndownload for more clarity on the options.',
+    'Creates and exports a comic cover texture.',
+    'BaconWizard17',
+    'BaconWizard17',
+    'August 2025',
+    'Export Comic Cover',
+    '*',
     [
-        (PF_IMAGE, "image", "Input image", None),
-        (PF_DRAWABLE, "layer", "Layer, mask or channel", None),
-        (PF_OPTION, "console", "Console:", 0, ["All","PC Only"]),
-        (PF_OPTION, "alchemyVersion", "Alchemy Version:", 0, ["Alchemy 2.5","Alchemy 5"]),
-        (PF_TOGGLE, "xml1Choice", "Export a Comic Cover for XML1?", 0),
-        (PF_TOGGLE, "xml2Choice", "Export a Comic Cover for XML2?", 1),
-        (PF_TOGGLE, "mua1choice", "Export a Comic Cover for MUA1?", 1)
+        (PF_IMAGE, 'image', 'Input image', None),
+        (PF_DRAWABLE, 'layer', 'Layer, mask or channel', None),
+        (PF_OPTION, 'alchemy_version', 'Alchemy Version:', 0, ['Alchemy 2.5', 'Alchemy 5', 'Alchemy 5 (Texture Replacement)']),
+        (PF_TOGGLE, 'xml1_choice', 'Export a Comic Cover for XML1?', 1),
+        (PF_TOGGLE, 'xml2_choice', 'Export a Comic Cover for XML2?', 1),
+        (PF_TOGGLE, 'mua1_choice', 'Export a Comic Cover for MUA1?', 1)
     ],
     [],
     exportComic,
-    menu="<Image>/Marvel Mods/Export Textures/By Asset Type"
+    menu='<Image>/Marvel Mods/Export Textures/By Asset Type'
 )
 
 
