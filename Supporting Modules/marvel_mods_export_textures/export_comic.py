@@ -90,7 +90,7 @@ def ExportPersonalPreview(image, layer, xcf_path, desc, width, personal_preview)
         # Merge the layer.
         pdb.gimp_floating_sel_anchor(text_layer)
         # Export the preview.
-        mmbgp.ExportTextureMM(new_image, new_layer, xcf_path, '.png', file_name_prefix = '!Personal - ', file_name_suffix=' (' + desc + ')')
+        mmbgp.ExportTextureMM(new_image, new_layer, xcf_path, '.png', transparent = True, file_name_prefix = '!Personal - ', file_name_suffix=' (' + desc + ')')
 
 # This function exports the XML1 texture.
 def ExportXML1Cov(xcf_path, image, alchemy_version, personal_preview):
