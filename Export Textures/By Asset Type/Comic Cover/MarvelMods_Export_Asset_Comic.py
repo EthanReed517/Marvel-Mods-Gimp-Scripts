@@ -67,7 +67,7 @@ register(
         (PF_TOGGLE, 'mua1_choice', 'Export a Comic Cover for MUA1?', 1)
     ],
     [],
-    exportComic,
+    ExportComic,
     menu='<Image>/Marvel Mods/Export Textures/By Asset Type'
 )
 
