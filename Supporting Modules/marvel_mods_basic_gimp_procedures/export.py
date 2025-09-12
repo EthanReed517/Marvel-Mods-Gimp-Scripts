@@ -122,7 +122,7 @@ def ExportTextureMM(image, layer, xcf_path, extension, **kwargs):
         # This needs to be a .png file.
         # Export as a .png file.
         pdb.file_png_save(export_image, export_layer, out_file_path, out_file_path, 0, 9, 0, 0, 0, 0, 0)
-    elif extension == ".dds":
+    elif extension == '.dds':
         # This needs to be a .dds file.
         # Set up a dictionary for compression types.
         compression_type_dict = {
