@@ -7,10 +7,11 @@
 # GIMP plugin to export a loading screen
 # This was designed with the intention to use it with modding processes for MarvelMods.com, though it can have other uses. 
 # For detailed instructions, please reference the README.md file included with this download.
-# (c) BaconWizard17 2023
+# (c) BaconWizard17 2025
 #
 #   History:
 #   v1.0: 17Dec2024: First published version.
+#   v2.0: 11Sep2025: Reduced options, as all texture format conversion and resizing can now be done through ALchemy.
 
 #   This program is free software; you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License as published by
@@ -32,16 +33,16 @@
 # ####### #
 # GIMP module
 from gimpfu import *
-# Marvel Mods Operations
-import Marvel_Mods_Export_Textures as MMET
+# Internal modules
+import marvel_mods_export_textures as mmet
 
 
 # ######### #
 # FUNCTIONS #
 # ######### #
-# Define the main operation
-def exportLoading(image, layer, console, alchemyVersion):
-    MMET.exportConceptLoading(image, layer, console, alchemyVersion, "loading")
+# This is the main operation.
+def ExportLoading(image, layer, alchemy_version):
+    mmet.ExportConceptLoading(image, layer, alchemy_version, 'loading')
 
 
 # ######## #
@@ -49,23 +50,22 @@ def exportLoading(image, layer, console, alchemyVersion):
 # ######## #
 # Register the script in GIMP
 register(
-    "python_fu_marvelmods_export_asset_loading",
-    "Creates and exports a loading screen texture in multiple formats.\n\nCheck the README.md file included with the\ndownload for more clarity on the options.",
-    "Creates and exports a loading screen texture in multiple formats.",
-    "BaconWizard17",
-    "BaconWizard17",
-    "December 2024",
-    "Export Loading Screen",
-    "*",
+    'python_fu_marvelmods_export_asset_loading',
+    'Creates and exports a loading screen texture.\n\nCheck the README.md file included with the\ndownload for more clarity on the options.',
+    'Creates and exports a loading screen texture.',
+    'BaconWizard17',
+    'BaconWizard17',
+    'September 2025',
+    'Export Loading Screen',
+    '*',
     [
-        (PF_IMAGE, "image", "Input image", None),
-        (PF_DRAWABLE, "layer", "Layer, mask or channel", None),
-        (PF_OPTION, "console", "Console:", 0, ["All","PC Only"]),
-        (PF_OPTION, "alchemyVersion", "Alchemy Version:", 0, ["Alchemy 2.5","Alchemy 5"])
+        (PF_IMAGE, 'image', 'Input image', None),
+        (PF_DRAWABLE, 'layer', 'Layer, mask or channel', None),
+        (PF_OPTION, 'alchemy_version', 'Alchemy Version:', 0, ['Alchemy 2.5', 'Alchemy 5', 'Alchemy 5 (Texture Replacement)'])
     ],
     [],
-    exportLoading,
-    menu="<Image>/Marvel Mods/Export Textures/By Asset Type"
+    ExportLoading,
+    menu='<Image>/Marvel Mods/Export Textures/By Asset Type'
 )
 
 
