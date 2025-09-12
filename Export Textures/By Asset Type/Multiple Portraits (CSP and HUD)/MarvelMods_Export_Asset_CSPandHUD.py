@@ -56,7 +56,7 @@ register(
     'Exports a character select portrait (CSP) texture\nand a conversation portrait (HUD) texture\nin multiple formats.',
     'BaconWizard17',
     'BaconWizard17',
-    'December 2024',
+    'August 2025',
     'Export Multiple Portraits (CSP and HUD)',
     '*',
     [
