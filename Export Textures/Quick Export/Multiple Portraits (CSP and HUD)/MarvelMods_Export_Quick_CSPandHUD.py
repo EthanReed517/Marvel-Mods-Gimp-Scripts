@@ -7,11 +7,12 @@
 # GIMP plugin to give default values to the script that exports textures for a character select portrait (CSP) and conversation portrait (HUD)
 # This was designed with the intention to use it with modding processes for MarvelMods.com, though it can have other uses. 
 # For detailed instructions, please reference the README.md file included with this download.
-# (c) BaconWizard17 2023
+# (c) BaconWizard17 2025
 #
 #   History:
 #   v1.0: 21Jan2024: First published version.
 #   v2.0: 20Dec2024: Updated to use an external module to increase speed
+#   v3.0: 15Aug2025: Reduced options, as all texture format conversion and resizing can now be done through ALchemy.
 
 #   This program is free software; you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License as published by
@@ -33,27 +34,16 @@
 # ####### #
 # GIMP module
 from gimpfu import *
-# Marvel Mods Operations
-import Marvel_Mods_Export_Textures as MMET
+# Internal modules
+import marvel_mods_export_textures as mmet
 
 
 # ######### #
 # FUNCTIONS #
 # ######### #
-# Define the main operation
-def exportCSPandHUD(image, layer):
-    # Define the remaining properties
-    console = 0
-    alchemyVersion = 0
-    plainChoice = 0
-    nextGenChoice = 1
-    heroOutlineChoice = 1
-    redVillainOutlineChoice = 0
-    greenVillainOutlineChoice = 0
-    xml1Choice = 0
-    xml2Choice = 1
-    # Call the main script
-    MMET.exportPortraits(image, layer, console, alchemyVersion, plainChoice, nextGenChoice, heroOutlineChoice, redVillainOutlineChoice, greenVillainOutlineChoice, xml1Choice, xml2Choice, "Combo")
+# This is the main operation.
+def ExportCSPandHUD(image, layer):
+    mmet.ExportPortraits(image, layer, 0, 0, 1, 1, 0, 0, 1, 1, 'Combo')
 
 
 # ######## #
@@ -61,21 +51,21 @@ def exportCSPandHUD(image, layer):
 # ######## #
 # Register the script in GIMP
 register(
-    "python_fu_marvelmods_export_quick_cspandhud",
-    "Exports a character select portrait (CSP) texture\nand a conversation portrait (HUD) texture\nin multiple formats.\nThis is an optimized version that runs without\noptions and with my preferred settings.\n\nCheck the README.md file included with the\ndownload for more clarity on the options.",
-    "Exports a character select portrait (CSP) texture\nand a conversation portrait (HUD) texture\nin multiple formats.",
-    "BaconWizard17",
-    "BaconWizard17",
-    "December 2024",
-    "Export Multiple Portraits (CSP and HUD)",
-    "*",
+    'python_fu_marvelmods_export_quick_cspandhud',
+    'Exports a character select portrait (CSP) texture\nand a conversation portrait (HUD) texture\nin multiple formats.\nThis is an optimized version that runs without\noptions and with my preferred settings.\n\nCheck the README.md file included with the\ndownload for more clarity on the options.',
+    'Exports a character select portrait (CSP) texture\nand a conversation portrait (HUD) texture\nin multiple formats.',
+    'BaconWizard17',
+    'BaconWizard17',
+    'August 2025',
+    'Export Multiple Portraits (CSP and HUD)',
+    '*',
     [
-        (PF_IMAGE, "image", "Input image", None),
-        (PF_DRAWABLE, "layer", "Layer, mask, or channel", None)
+        (PF_IMAGE, 'image', 'Input image', None),
+        (PF_DRAWABLE, 'layer', 'Layer, mask or channel', None)
     ],
     [],
-    exportCSPandHUD,
-    menu="<Image>/Marvel Mods/Export Textures/Quick Exporters"
+    ExportCSPandHUD,
+    menu='<Image>/Marvel Mods/Export Textures/Quick Exporters'
 )
 
 

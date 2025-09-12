@@ -7,7 +7,7 @@
 # GIMP plugin to export a skin, 3D head, or mannequin texture.
 # This was designed with the intention to use it with modding processes for MarvelMods.com, though it can have other uses. 
 # For detailed instructions, please reference the README.md file included with this download.
-# (c) BaconWizard17 2023
+# (c) BaconWizard17 2025
 #
 #   History:
 #   v1.0: 30Jan2023: First published version.
@@ -16,6 +16,7 @@
 #   v2.0: 10Jan2024: Simplified to call the main script but with pre-selected parameters
 #   v2.1: 01Mar2024: Focused purely on primary textures to simplify the code
 #   v3.0: 20Dec2024: Updated to use an external module to increase speed
+#   v4.0: 15Aug2025: Reduced options, as all texture format conversion and resizing can now be done through ALchemy.
 
 #   This program is free software; you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License as published by
@@ -37,24 +38,16 @@
 # ####### #
 # GIMP module
 from gimpfu import *
-# Marvel Mods Operations
-import Marvel_Mods_Export_Textures as MMET
+# Internal modules
+import marvel_mods_export_textures as mmet
 
 
 # ######### #
 # FUNCTIONS #
 # ######### #
-# Define the main operation
-def exportSkin(image, layer):
-    # Define the remaining properties
-    console = 0
-    skinType = 0
-    charSize = 0
-    alchemyVersion = 0
-    transparency = 1
-    pspFormat = 1
-    # Call the main script
-    MMET.exportSkin(image, layer, console, skinType, charSize, alchemyVersion, transparency, pspFormat, True)
+# This is the main operation.
+def Export3DDiffuse(image, layer):
+    mmet.Export3DDiffuse(image, layer, 0)
 
 
 # ######## #
@@ -62,21 +55,21 @@ def exportSkin(image, layer):
 # ######## #
 # Register the script in GIMP
 register(
-    "python_fu_marvelmods_export_quick_skin",
-    "Exports a skin texture in multiple formats. Also\nworks on 3D head textures and mannequin textures.\nThis is an optimized version that runs without\noptions and with my preferred settings.\n\nCheck the README.md file included with the\ndownload for more clarity on the options.",
-    "Exports a skin texture in multiple formats. Also works on 3D head textures and mannequin textures.",
-    "BaconWizard17",
-    "BaconWizard17",
-    "December 2024",
-    "Export Skin, Mannequin, or 3D Head (Primary Texture)",
-    "*",
+    'python_fu_marvelmods_export_quick_skin',
+    'Exports a 3D asset\'s diffuse texture. Works with skins, 3D heads, mannequins, boltons, and other models.\nThis is an optimized version that runs without\noptions and with my preferred settings.\n\nCheck the README.md file included with the\ndownload for more clarity on the options.',
+    'Exports a 3D asset\'s diffuse texture. Works with skins, 3D heads, mannequins, boltons, and other models.',
+    'BaconWizard17',
+    'BaconWizard17',
+    'August 2025',
+    'Export 3D Asset - Diffuse Texture',
+    '*',
     [
-        (PF_IMAGE, "image", "Input image", None),
-        (PF_DRAWABLE, "layer", "Layer, mask, or channel", None)
+        (PF_IMAGE, 'image', 'Input image', None),
+        (PF_DRAWABLE, 'layer', 'Layer, mask or channel', None)
     ],
     [],
-    exportSkin,
-    menu="<Image>/Marvel Mods/Export Textures/Quick Exporters"
+    Export3DDiffuse,
+    menu='<Image>/Marvel Mods/Export Textures/Quick Exporters'
 )
 
 
