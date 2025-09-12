@@ -7,10 +7,11 @@
 # GIMP to plugin crop a skin preview for the PC version of X-Men Legends II: Rise of Apocalypse.
 # This was designed with the intention to use it with modding processes for MarvelMods.com, though it can have other uses. 
 # For detailed instructions, please reference the README.md file included with this download.
-# (c) BaconWizard17 2023
+# (c) BaconWizard17 2025
 #
 #   History:
 #   v1.0: 14Dec2024: First published version.
+#   v2.0: 15Aug2025: Rewrite to fit my current code formatting.
 
 #   This program is free software; you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License as published by
@@ -32,18 +33,16 @@
 # ####### #
 # GIMP module
 from gimpfu import *
-# Marvel Mods Operations
-import Marvel_Mods_Export_Previews as MMEP
-# External modules
-import os.path
+# Internal modules
+import marvel_mods_export_previews as mmep
 
 
 # ######## #
 # FUNCTION #
 # ######## #
 # Define the main operation
-def fullPreview(image, layer):
-    MMEP.fullPreview(image, layer, "MUA")
+def FullPreview(image, layer):
+    mmep.FullPreview(image, layer, 'MUA')
 
 
 # ######## #
@@ -51,21 +50,21 @@ def fullPreview(image, layer):
 # ######## #
 # Register the script in GIMP
 register(
-    "python_fu_marvelmods_preview_mua1_all",
-    "Exports layers to create a skin preview.\n\nCheck the README.md file included with the\ndownload for more clarity on the options.",
-    "Exports layers to create a skin preview.",
-    "BaconWizard17",
-    "BaconWizard17",
-    "December 2024",
-    "Create All Previews",
-    "*",
+    'python_fu_marvelmods_preview_mua1_all',
+    'Exports layers to create a skin preview.\n\nCheck the README.md file included with the\ndownload for more clarity on the options.',
+    'Exports layers to create a skin preview.',
+    'BaconWizard17',
+    'BaconWizard17',
+    'September 2025',
+    'Create All Previews',
+    '*',
     [
-        (PF_IMAGE, "image", "Input image", None),
-        (PF_DRAWABLE, "layer", "Layer, mask or channel", None)
+        (PF_IMAGE, 'image', 'Input image', None),
+        (PF_DRAWABLE, 'layer', 'Layer, mask or channel', None)
     ],
     [],
-    fullPreview,
-    menu="<Image>/Marvel Mods/Skin Previews/Crop Screenshots - MUA1"
+    FullPreview,
+    menu='<Image>/Marvel Mods/Skin Previews/Crop Screenshots - MUA1'
 )
 
 
