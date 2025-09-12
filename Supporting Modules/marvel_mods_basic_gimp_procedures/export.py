@@ -137,7 +137,7 @@ def ExportTextureMM(image, layer, xcf_path, extension, **kwargs):
         # Export the file.
         pdb.file_tga_save(export_image, export_layer, out_file_path, out_file_path, 1, 0)
     # Determine if the image needs to be PNG8 alpha.
-    if kwargs.get('alpha_indexed', False) == True:
+    if kwargs.get('alpha_index_colors', 0) > 0:
         # This needs to be alpha indexed.
         # Perform alpha indexing.
         png8Alpha(out_file_path, kwargs.get('alpha_index_colors', 256))
