@@ -7,12 +7,13 @@
 # GIMP plugin to export an image in PNG4 format.
 # This was designed with the intention to use it with modding processes for MarvelMods.com, though it can have other uses. 
 # For detailed instructions, please reference the README.md file included with this download.
-# (c) BaconWizard17 2023
+# (c) BaconWizard17 2025
 #
 #   History:
 #   v1.0: 30Jan2023: First published version.
 #   v2.0: 22Jan2024: Full rewrite to include error checking and basic procedures.
 #   v3.0: 12Dec2024: Full redesign for improved performance using an external module for common operations.
+#   v4.0: 11Sep2025: Rewrite to fit my current code formatting.
 
 #   This program is free software; you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License as published by
@@ -34,31 +35,33 @@
 # ####### #
 # GIMP module
 from gimpfu import *
-# Marvel Mods Operations
-import Marvel_Mods_Basic_Gimp_Procedures as MMBGP
+# Internal modules
+import marvel_mods_basic_gimp_procedures as mmbgp
+# External modules
+from datetime import datetime
 
 
 # ######### #
 # FUNCTIONS #
 # ######### #
-# Define the main operation
-def exportPNG4(image, layer, transparent):
-    # Perform the initial operations
-    (okayToExport, xcfPath) = MMBGP.initialOps(image, layer)
-    # Determine if it's okay to proceed
-    if okayToExport == True:
-        # No errors, can proceed
-        # Determine if the image is transparent
-        if transparent == 0:
-            # Not transparent
-            # Export the image
-            MMBGP.exportTextureMM(image, layer, xcfPath, ".png", indexColors=16, subFolder="PNG4")
+# This is the main operation.
+def ExportPNG4(image, layer, transparency):
+    # Perform the initial operations.
+    (okay_to_export, xcf_path) = mmbgp.InitialOps(image, layer)
+    # Determine if it's okay to proceed.
+    if okay_to_export == True:
+        # No errors, can proceed.
+        # Determine if transparency is required.
+        if transparency == 0:
+            # Transparency is not needed.
+            # Export the texture.
+            mmbgp.ExportTextureMM(image, layer, xcf_path, '.png', index_colors = 16)
         else:
-            # Transparent
-            # Export the image
-            MMBGP.exportTextureMM(image, layer, xcfPath, ".png", transparent=True, subFolder="PNG4", alphaIndexed=True, alphaIndexColors=16)
-        # Print the success message
-        pdb.gimp_message("SUCCESS: exported " + xcfPath)
+            # Transparency is needed.
+            # Export the texture.
+            mmbgp.ExportTextureMM(image, layer, xcf_path, '.png', transparent = 1, alpha_index_colors = 16)
+        # Print the success message.
+        pdb.gimp_message('SUCCESS: exported ' + xcf_path + ' at ' + str(datetime.now().strftime('%H:%M:%S')))
 
 
 # ######## #
@@ -66,22 +69,22 @@ def exportPNG4(image, layer, transparent):
 # ######## #
 # Register the script in GIMP
 register(
-    "python_fu_marvelmods_export_format_png4",
-    "Exports a texture to PNG4 format.",
-    "Exports a texture to PNG4 format.",
-    "BaconWizard17",
-    "BaconWizard17",
-    "December 2024",
-    "Export as PNG4 .png",
-    "*",
+    'python_fu_marvelmods_export_format_png4',
+    'Exports a texture in PNG4 format.',
+    'Exports a texture in PNG4 format.',
+    'BaconWizard17',
+    'BaconWizard17',
+    'September 2025',
+    'Export as PNG4 .png',
+    '*',
     [
-        (PF_IMAGE, "image", "Input image", None),
-        (PF_DRAWABLE, "drawable", "Layer, mask or channel", None),
-        (PF_TOGGLE, "transparent", "Export with transparency?", 0)
+        (PF_IMAGE, 'image', 'Input image', None),
+        (PF_DRAWABLE, 'drawable', 'Layer, mask or channel', None),
+        (PF_OPTION, 'transparency', 'Preserve Transparency:', 0, ['No', 'Yes'])
     ],
     [],
-    exportPNG4,
-    menu="<Image>/Marvel Mods/Export Textures/By Texture Format"
+    ExportPNG4,
+    menu='<Image>/Marvel Mods/Export Textures/By Texture Format'
 )
 
 

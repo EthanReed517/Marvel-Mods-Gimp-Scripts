@@ -7,11 +7,12 @@
 # GIMP plugin to export an image in DXT5 format.
 # This was designed with the intention to use it with modding processes for MarvelMods.com, though it can have other uses. 
 # For detailed instructions, please reference the README.md file included with this download.
-# (c) BaconWizard17 2023
+# (c) BaconWizard17 2025
 #
 #   History:
 #   v1.0: 30Jan2023: First published version.
 #   v2.0: 12Dec2024: Full redesign for improved performance using an external module for common operations.
+#   v3.0: 11Sep2025: Rewrite to fit my current code formatting.
 
 #   This program is free software; you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License as published by
@@ -33,60 +34,46 @@
 # ####### #
 # GIMP module
 from gimpfu import *
-# Marvel Mods Operations
-import Marvel_Mods_Basic_Gimp_Procedures as MMBGP
+# Internal modules
+import marvel_mods_basic_gimp_procedures as mmbgp
+# External modules
+from datetime import datetime
 
 
 # ######### #
 # FUNCTIONS #
 # ######### #
-# Define the main operation
-def exportDXT5(image, layer, alchemyVersion, exportRGB, exportBGR, flattenChoice):
-    # Perform the initial operations
-    (okayToExport, xcfPath) = MMBGP.initialOps(image, layer)
-    # Determine if it's okay to proceed
-    if okayToExport == True:
-        # No errors, can proceed
-        # Determine if an RGB version needs to be exported
-        if exportRGB == 1:
-            # RGB version needs to be exported
-            # Determine if the image needs to be flattened
-            if flattenChoice == 1:
-                # The image needs to be flattened
-                # Export the RGB version
-                MMBGP.exportTextureMM(image, layer, xcfPath, ".dds", ddsCompression="DXT5", subFolder="DXT5 RGB")
+# This is the main operation.
+def ExportDXT5(image, layer, alchemy_version, export_rgb, export_bgr, transparency):
+    # Perform the initial operations.
+    (okay_to_export, xcf_path) = mmbgp.InitialOps(image, layer)
+    # Determine if it's okay to proceed.
+    if okay_to_export == True:
+        # No errors, can proceed.
+        # Determine if this is using transparency with Alchemy 2.5.
+        if ((transparency == 1) and (alchemy_version == 0)):
+            # This is using transparency with Alchemy 2.5.
+            # Give a warning.
+            pdb.gimp_message('WARNING: The Alchemy 2.5 exporter does not support DXT5 textures with partial transparency very well. Only preserve transparency if the texture has sections that are fully transparent.')
+        # Determine if an RGB version needs to be exported.
+        if export_rgb == 1:
+            # RGB version needs to be exported.
+            # Export the RGB version.
+            mmbgp.ExportTextureMM(image, layer, xcf_path, '.dds', dds_compression = 'DXT5', transparent = transparency)
+        # Determine if a BGR version needs to be exported.
+        if export_bgr == 1:
+            # BGR version needs to be exported.
+            # Check the Alchemy version.
+            if alchemy_version == 0:
+                # Alchemy 2.5.
+                # Export the BGR version.
+                mmbgp.ExportTextureMM(image, layer, xcf_path, '.dds', dds_compression = 'DXT5', rgb_bgr = True, transparent = transparency)
             else:
-                # The image does not need to be flattened (transparent)
-                # Determine the alchemy version
-                if alchemyVersion == 0:
-                    # Alchemy 2.5
-                    # Warn the user
-                    pdb.gimp_message("WARNING: The Alchemy 2.5 exporter does not support DXT5 textures with partial transparency very well. Only turn off image flattening if the texture has sections that are fully transparent, or if the texture is a normal map that will be applied after export.")
-                # Export the RGB version with transparency
-                MMBGP.exportTextureMM(image, layer, xcfPath, ".dds", transparent=True, ddsCompression="DXT5", subFolder="DXT5 RGB")
-        # Determine if a BGR version needs to be exported
-        if exportBGR == 1:
-            # BGR version needs to be exported
-            # Check the Alchemy version
-            if alchemyVersion == 0:
-                # Alchemy 2.5
-                # Determine if the image needs to be flattened
-                if flattenChoice == 1:
-                    # The image needs to be flattened
-                    # Export the BGR version
-                    MMBGP.exportTextureMM(image, layer, xcfPath, ".dds", ddsCompression="DXT5", RGB_BGR=True, subFolder="DXT5 BGR")
-                else:
-                    # The image does not need to be flattened
-                    # Warn the user
-                    pdb.gimp_message("WARNING: The Alchemy 2.5 exporter does not support DXT5 textures with partial transparency very well. Only turn off image flattening if the texture has sections that are fully transparent, or if the texture is a normal map that will be applied after export.")
-                    # Export the RGB version with transparency
-                    MMBGP.exportTextureMM(image, layer, xcfPath, ".dds", transparent=True, RGB_BGR=True, ddsCompression="DXT5", subFolder="DXT5 RGB")
-            else:
-                # Alchemy 5
+                # Alchemy 5.
                 # Display the warning.
-                pdb.gimp_message("WARNING: It is not necessary to RGB-BGR swap colors with Alchemy 5. No RGB-BGR-swapped texture was exported.")
-        # Print the success message
-        pdb.gimp_message("SUCCESS: exported " + xcfPath)
+                pdb.gimp_message('WARNING: It is not necessary to RGB-BGR swap colors with Alchemy 5. No RGB-BGR-swapped texture was exported.')
+        # Print the success message.
+        pdb.gimp_message('SUCCESS: exported ' + xcf_path + ' at ' + str(datetime.now().strftime('%H:%M:%S')))
 
 
 # ######## #
@@ -94,25 +81,25 @@ def exportDXT5(image, layer, alchemyVersion, exportRGB, exportBGR, flattenChoice
 # ######## #
 # Register the script in GIMP
 register(
-    "python_fu_marvelmods_export_dxt5",
-    "Exports a texture to DXT5 format as a .dds.",
-    "Exports a texture to DXT5 format as a .dds.",
-    "BaconWizard17",
-    "BaconWizard17",
-    "December 2024",
-    "Export as DXT5 .dds",
-    "*",
+    'python_fu_marvelmods_export_dxt5',
+    'Exports a texture in DXT5 format as a .dds.',
+    'Exports a texture in DXT5 format as a .dds.',
+    'BaconWizard17',
+    'BaconWizard17',
+    'September 2025',
+    'Export as DXT5 .dds',
+    '*',
     [
-        (PF_IMAGE, "image", "Input image", None),
-        (PF_DRAWABLE, "drawable", "Layer, mask or channel", None),
-        (PF_OPTION, "alchemyVersion", "Alchemy Version:", 0, ["Alchemy 2.5","Alchemy 5"]),
-        (PF_TOGGLE, "exportRGB", "Export in RGB?", 1),
-        (PF_TOGGLE, "exportBGR", "Export RGB-BGR Swapped?", 1),
-        (PF_TOGGLE, "flattenChoice", "Flatten Image?", 1)
+        (PF_IMAGE, 'image', 'Input image', None),
+        (PF_DRAWABLE, 'layer', 'Layer, mask or channel', None),
+        (PF_OPTION, 'alchemy_version', 'Alchemy Version:', 0, ['Alchemy 2.5', 'Alchemy 5']),
+        (PF_TOGGLE, 'export_rgb', 'Export in RGB?', 1),
+        (PF_TOGGLE, 'export_bgr', 'Export RGB-BGR Swapped?', 1),
+        (PF_OPTION, 'transparency', 'Preserve Transparency:', 0, ['No', 'Yes'])
     ],
     [],
-    exportDXT5,
-    menu="<Image>/Marvel Mods/Export Textures/By Texture Format"
+    ExportDXT5,
+    menu='<Image>/Marvel Mods/Export Textures/By Texture Format'
 )
 
 

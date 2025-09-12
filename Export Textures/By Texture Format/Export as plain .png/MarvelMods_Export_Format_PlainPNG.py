@@ -7,11 +7,12 @@
 # GIMP plugin to export an image in plain png format.
 # This was designed with the intention to use it with modding processes for MarvelMods.com, though it can have other uses. 
 # For detailed instructions, please reference the README.md file included with this download.
-# (c) BaconWizard17 2023
+# (c) BaconWizard17 2025
 #
 #   History:
 #   v1.0: 22Jan2024: First published version.
 #   v2.0: 12Dec2024: Full redesign for improved performance using an external module for common operations.
+#   v3.0: 11Sep2025: Rewrite to fit my current code formatting.
 
 #   This program is free software; you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License as published by
@@ -33,24 +34,26 @@
 # ####### #
 # GIMP module
 from gimpfu import *
-# Marvel Mods Operations
-import Marvel_Mods_Basic_Gimp_Procedures as MMBGP
+# Internal modules
+import marvel_mods_basic_gimp_procedures as mmbgp
+# External modules
+from datetime import datetime
 
 
 # ######### #
 # FUNCTIONS #
 # ######### #
-# Define the main operation
-def exportPlainPNG(image, layer):
-    # Perform the initial operations
-    (okayToExport, xcfPath) = MMBGP.initialOps(image, layer)
-    # Determine if it's okay to proceed
-    if okayToExport == True:
-        # No errors, can proceed
-        # Export the image
-        MMBGP.exportTextureMM(image, layer, xcfPath, ".png", transparent=True, subFolder="Plain PNG")
-        # Print the success message
-        pdb.gimp_message("SUCCESS: exported " + xcfPath)
+# This is the main operation.
+def ExportPlainPNG(image, layer, transparency):
+    # Perform the initial operations.
+    (okay_to_export, xcf_path) = mmbgp.InitialOps(image, layer)
+    # Determine if it's okay to proceed.
+    if okay_to_export == True:
+        # No errors, can proceed.
+        # Export the texture.
+        mmbgp.ExportTextureMM(image, layer, xcf_path, '.png', transparent = transparency)
+        # Print the success message.
+        pdb.gimp_message('SUCCESS: exported ' + xcf_path + ' at ' + str(datetime.now().strftime('%H:%M:%S')))
 
 
 # ######## #
@@ -58,21 +61,22 @@ def exportPlainPNG(image, layer):
 # ######## #
 # Register the script in GIMP
 register(
-    "python_fu_marvelmods_export_format_plainpng",
-    "Exports a texture to plain png format.",
-    "Exports a texture to plain png format.",
-    "BaconWizard17",
-    "BaconWizard17",
-    "December 2024",
-    "Export as plain .png",
-    "*",
+    'python_fu_marvelmods_export_format_plainpng',
+    'Exports a texture in plain png format.',
+    'Exports a texture in plain png format.',
+    'BaconWizard17',
+    'BaconWizard17',
+    'September 2025',
+    'Export as plain .png',
+    '*',
     [
-        (PF_IMAGE, "image", "Input image", None),
-        (PF_DRAWABLE, "drawable", "Layer, mask or channel", None)
+        (PF_IMAGE, 'image', 'Input image', None),
+        (PF_DRAWABLE, 'layer', 'Layer, mask or channel', None),
+        (PF_OPTION, 'transparency', 'Preserve Transparency:', 0, ['No', 'Yes'])
     ],
     [],
-    exportPlainPNG,
-    menu="<Image>/Marvel Mods/Export Textures/By Texture Format"
+    ExportPlainPNG,
+    menu='<Image>/Marvel Mods/Export Textures/By Texture Format'
 )
 
 
