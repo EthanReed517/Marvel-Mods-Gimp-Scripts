@@ -43,7 +43,7 @@ import marvel_mods_export_textures as mmet
 # ######### #
 # This is the main operation.
 def ExportCSPandHUD(image, layer, alchemy_version, plain_choice, next_gen_choice, hero_outline_choice, red_villain_outline_choice, green_villain_outline_choice, xml1_choice, xml2_choice):
-    mmet.ExportPortraits(image, layer, alchemy_version, plain_choice, next_gen_choice, hero_outline_choice, red_villain_outline_choice, green_villain_outline_choice, xml1_choice, xml2_choice, "Combo")
+    mmet.ExportPortraits(image, layer, alchemy_version, plain_choice, next_gen_choice, hero_outline_choice, red_villain_outline_choice, green_villain_outline_choice, xml1_choice, xml2_choice, 'Combo')
 
 
 # ######## #
