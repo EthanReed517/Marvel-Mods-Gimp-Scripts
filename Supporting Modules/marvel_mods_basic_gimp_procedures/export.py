@@ -131,7 +131,7 @@ def ExportTextureMM(image, layer, xcf_path, extension, **kwargs):
             'DXT5': 3
         }
         # Export the file.
-        pdb.file_dds_save(export_image, export_layer, out_file_path, out_file_path, compressionTypeDict[kwargs.get('dds_compression', 'DXT1')], 0, 4, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0)
+        pdb.file_dds_save(export_image, export_layer, out_file_path, out_file_path, compression_type_dict[kwargs.get('dds_compression', 'DXT1')], 0, 4, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0)
     elif extension == '.tga':
         # This needs to be a .tga file.
         # Export the file.
