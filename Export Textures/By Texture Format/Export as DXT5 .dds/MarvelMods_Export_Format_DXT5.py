@@ -66,8 +66,13 @@ def ExportDXT5(image, layer, alchemy_version, export_rgb, export_bgr, transparen
             # Check the Alchemy version.
             if alchemy_version == 0:
                 # Alchemy 2.5.
+                # Set a prefix if RGB is also exporting.
+                if export_rgb == 1:
+                    prefix = 'bgr'
+                else:
+                    prefix = ''
                 # Export the BGR version.
-                mmbgp.ExportTextureMM(image, layer, xcf_path, '.dds', dds_compression = 'DXT5', rgb_bgr = True, transparent = transparency)
+                mmbgp.ExportTextureMM(image, layer, xcf_path, '.dds', file_name_prefix = prefix, dds_compression = 'DXT5', rgb_bgr = True, transparent = transparency)
             else:
                 # Alchemy 5.
                 # Display the warning.
