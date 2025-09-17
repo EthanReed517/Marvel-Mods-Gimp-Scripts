@@ -1,32 +1,27 @@
 # Marvel Mods GIMP Plugins
 by BaconWizard17
-## Export to DXT5 .dds
+
+## Export as DXT5 .dds
 This plugin exports a texture as a .dds file with DXT5 compression.
 
 ### Compatibility
 This script will only work correctly if the image has been saved as a .xcf file. The dimensions of the image must be powers of 2.
 
 ### Installation
- 1. This script can be installed using `update.bat` from the main folder of this release, or it can be placed individually in your GIMP plugins directory. The standard location for this is `C:\Users\(your user)\AppData\Roaming\GIMP\2.10\plug-ins`. Check the main `README.md` file in this project for more details on proper installation.
+1. This script can be installed using `update.bat` from the main folder of this release. Check the main `README.md` file in this project for more details on proper installation.
 
 ### Usage
 1. Start with an image open in GIMP that you would like to export. See the "Compatibility" section above for details on the image type.
 2. In the toolbar, go to `Marvel Mods/Export Textures/By Texture Format` and choose the `Export as DXT5 .dds` plugin.
 3. A dialog will appear with options. You can toggle the following options:
-	- **Alchemy Version**: Select the version of Alchemy being used. Select `Alchemy 2.5` if you're creating models in 3ds Max 5 with the Alchemy 2.5 export plugin. Select `Alchemy 5` if you're creating models in 3ds Max 10 or 12 with the Alchemy 5 export plugin. 
 	- **Export in RGB?**: Select if you want the texture to be exported with its original RGB colors.
 	- **Export RGB-BGR Swapped?**: Select if you want the texture to be exported the colors RGB-BGR-swapped. This is only necessary if you're using Alchemy 2.5 and creating the asset for next-gen MUA1 (PC, Steam, PS3, or Xbox 360).
-	- **Flatten Image?**: Select if you want the image to be flattened. Flattening the image collapses the layers and removes transparency. Select `No` if the texture needs transparency (such as a normal map or anything that needs a transparent area). Select `Yes` for all other textures. Transparent DXT5 textures only work in Alchemy 2.5 for full transparency. Partial transparency will not look right.
+    - **Preserve Transparency**:
+	  - `Yes`: Choose if your texture needs to maintain transparency. This will keep the alpha channel on export.
+	  - `No`: Choose if your texture should not have any transparency. This will flatten the image, removing the alpha channel.
 4. If the file is not set up properly, you will receive an error with explanations. Otherwise, it will move on.
-5. The .xcf will be saved and several additional operations will be run while the texture is being exported. If `Yes` was selected for **Export in RGB?**, the texture will be exported to a folder called `DXT5 RGB`. If `Yes` was selected for **Export RGB-BGR Swapped?** and `Alchemy 2.5` was selected for **Alchemy Version**, the texture will be exported to a folder called `DXT5 BGR`. See the section below called "Export Compatibility" for information on what consoles will support which format.
-6. This script creates duplicate images to export, so you will not see any changes on your texture. Wait for the status bar to finish before proceeding with any further operations to your texture. Once it's done running, a message will announce that the export is complete.
-
-### Export Compatibility
- - Alchemy 2.5:
-	- RGB version: Xbox, XML2 PC
-	- BGR version: Next-Gen MUA1 (PC, Steam, PS3, Xbox 360)
- - Alchemy 5:
-    - RGB version: Next-Gen MUA1 (PC, Steam, PS3, Xbox 360)
+5. The .xcf will be saved and several additional operations will be run while the texture is being exported. The necessary .dds textures with DXT5 compression will be exported. 
+6. This script runs all processes in the background, so you will not see any changes on your texture. Wait for the status bar to finish before proceeding with any further operations to your texture. Once it's done running, a message will announce that the export is complete.
 
 ## Credits
 - BaconWizard17: Script creation
