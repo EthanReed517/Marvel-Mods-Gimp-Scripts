@@ -14,7 +14,7 @@ This script will only work correctly if the image has been saved as a .xcf file.
 1. Start with an image open in GIMP that you would like to export. See the "Compatibility" section above for details on the image type.
 2. In the toolbar, go to `Marvel Mods/Export Textures/By Asset Type` and choose the `Export Character Select Portrait (CSP)` plugin.
 3. You will be presented with the following options:
-	- **Alchemy Version**: Select the version of Alchemy being used. Select `Alchemy 2.5` if you're exporting portraits in 3ds Max 5 with the Alchemy 2.5 export plugin. Select `Alchemy 5` if you're creating CSPs with the [Alchemy 5 Texture Replacement Method](https://marvelmods.com/forum/index.php/topic,11009.0.html) (XML2 PSP only).
+	- **Alchemy Version**: Select which version of Alchemy you're using. `Alchemy 2.5` will export the textures to be set up in 3ds Max 5 with the Alchemy 2.5 plugin. `Alchemy 5` will export the textures to be set up in 3ds Max 10-12 with the Alchemy 5 plugin. `Alchemy 5 (Texture Replacement)` will export the textures in .tga format to use with the Alchemy 5 texture creation tools. Alchemy 5 assets will only work with XML2 PSP.
 	- **Export a CSP for XML1?**: Select if you want to export a CSP for XML1.
 	- **Export a CSP for XML2?**: Select if you want to export a CSP for XML2.
 4. If the file is not set up properly, you will receive an error with explanations. Otherwise, it will move on.
