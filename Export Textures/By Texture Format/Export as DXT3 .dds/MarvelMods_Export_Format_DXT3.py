@@ -64,7 +64,7 @@ def ExportDXT3(image, layer, alchemy_version, export_rgb, export_bgr):
                 # Alchemy 2.5.
                 # Set a prefix if RGB is also exporting.
                 if export_rgb == 1:
-                    prefix = 'bgr'
+                    prefix = 'bgr_'
                 else:
                     prefix = ''
                 # Export the BGR version.
