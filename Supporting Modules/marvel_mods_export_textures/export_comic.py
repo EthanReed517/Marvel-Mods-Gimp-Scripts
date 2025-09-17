@@ -144,11 +144,11 @@ def ExportXML2PSPCov(xcf_path, image, alchemy_version, personal_preview):
     if alchemyVersion == 2:
         # Alchemy 5 texture replacement.
         # Export for PSP.
-        mmbgp.ExportTextureMM(image, layer, xcf_path, '.tga', file_name_prefix = 'XML2_PSP_')
+        mmbgp.ExportTextureMM(image, layer, xcf_path, '.tga', file_name_prefix = 'XML2-PSP_')
     else:
         # 3ds Max.
         # Export for PSP.
-        mmbgp.ExportTextureMM(image, layer, xcf_path, '.png', file_name_prefix = 'XML2_PSP_')
+        mmbgp.ExportTextureMM(image, layer, xcf_path, '.png', file_name_prefix = 'XML2-PSP_')
 
 # This function exports the MUA1 next-gen texture.
 def ExportMUA1NGCov(xcf_path, image, alchemy_version, personal_preview):
@@ -164,11 +164,11 @@ def ExportMUA1NGCov(xcf_path, image, alchemy_version, personal_preview):
     if alchemyVersion == 2:
         # Alchemy 5 texture replacement.
         # Export the texture.
-        mmbgp.ExportTextureMM(image, layer, xcf_path, '.tga', file_name_prefix = 'MUA1_NG_')
+        mmbgp.ExportTextureMM(image, layer, xcf_path, '.tga', file_name_prefix = 'MUA1-NG_')
     else:
         # 3ds Max.
         # Export the texture.
-        mmbgp.ExportTextureMM(image, layer, xcf_path, '.png', file_name_prefix = 'MUA1_NG_')
+        mmbgp.ExportTextureMM(image, layer, xcf_path, '.png', file_name_prefix = 'MUA1-NG_')
 
 # This function exports the last-gen MUA1 texture.
 def ExportMUA1LGCov(xcf_path, image, alchemy_version, personal_preview):
@@ -180,11 +180,11 @@ def ExportMUA1LGCov(xcf_path, image, alchemy_version, personal_preview):
     if alchemyVersion == 2:
         # Alchemy 5 texture replacement.
         # Export the texture.
-        mmbgp.ExportTextureMM(image, layer, xcf_path, '.tga', file_name_prefix = 'MUA1_LG_')
+        mmbgp.ExportTextureMM(image, layer, xcf_path, '.tga', file_name_prefix = 'MUA1-LG_')
     else:
         # 3ds Max.
         # Export the texture.
-        mmbgp.ExportTextureMM(image, layer, xcf_path, '.png', file_name_prefix = 'MUA1_LG_')
+        mmbgp.ExportTextureMM(image, layer, xcf_path, '.png', file_name_prefix = 'MUA1-LG_')
 
 # Define the main operation
 def ExportComic(image, layer, alchemy_version, xml1_choice, xml2_choice, mua1_choice, **kwargs):

@@ -131,11 +131,11 @@ def ExportXML2PSPLoad(image, layer, xcf_path, alchemy_version):
     if alchemy_version == 2:
         # Alchemy 5 texture replacement.
         # Export for XML2 PSP.
-        mmbgp.ExportTextureMM(black_image, black_layer, xcf_path, '.tga', file_name_prefix = '16-9_P_')
+        mmbgp.ExportTextureMM(black_image, black_layer, xcf_path, '.tga', file_name_prefix = '16-9-P_')
     else:
         # 3ds Max.
         # Export for XML2 PSP.
-        mmbgp.ExportTextureMM(black_image, black_layer, xcf_path, '.png', file_name_prefix = '16-9_P_')
+        mmbgp.ExportTextureMM(black_image, black_layer, xcf_path, '.png', file_name_prefix = '16-9-P_')
 
 # This function exports a 16:9 loading screen.
 def Export16_9Loading(image, layer, alchemy_version, xcf_path, type, personal_preview):
@@ -156,8 +156,8 @@ def Export16_9Loading(image, layer, alchemy_version, xcf_path, type, personal_pr
     if alchemy_version == 2:
         # Alchemy 5 texture replacement.
         # Export the textures.
-        mmbgp.ExportTextureMM(next_gen_image, next_gen_layer, xcf_path, '.tga', file_name_prefix = '16-9_N_')
-        mmbgp.ExportTextureMM(last_gen_image, next_gen_layer, xcf_path, '.tga', file_name_prefix = '16-9_L_')
+        mmbgp.ExportTextureMM(next_gen_image, next_gen_layer, xcf_path, '.tga', file_name_prefix = '16-9-N_')
+        mmbgp.ExportTextureMM(last_gen_image, next_gen_layer, xcf_path, '.tga', file_name_prefix = '16-9-L_')
         # Determine the type.
         if type == 'loading':
             # This is loading screen.
@@ -167,8 +167,8 @@ def Export16_9Loading(image, layer, alchemy_version, xcf_path, type, personal_pr
         # 3ds Max.
         # Export the texture.
         # Export the textures.
-        mmbgp.ExportTextureMM(next_gen_image, next_gen_layer, xcf_path, '.png', file_name_prefix = '16-9_N_')
-        mmbgp.ExportTextureMM(last_gen_image, next_gen_layer, xcf_path, '.png', file_name_prefix = '16-9_L_')
+        mmbgp.ExportTextureMM(next_gen_image, next_gen_layer, xcf_path, '.png', file_name_prefix = '16-9-N_')
+        mmbgp.ExportTextureMM(last_gen_image, next_gen_layer, xcf_path, '.png', file_name_prefix = '16-9-L_')
         # Determine the type.
         if type == 'loading':
             # This is loading screen.
