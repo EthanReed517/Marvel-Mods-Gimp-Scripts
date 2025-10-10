@@ -101,12 +101,12 @@ def ExportStandardPortrait(xcf_path, image, layer, template, alchemy_version, pr
         # Nothing needs to be removed.
         layers_for_removal = []
     # Determine the Alchemy version.
-    if alchemy_version == 2:
+    if alchemy_version == 1:
         # This is Alchemy 5 (texture replacement method).
         # Export the texture.
         mmbgp.ExportTextureMM(image, layer, xcf_path, '.tga', file_name_prefix = prefix, file_name_suffix = suffix, layers_to_remove = layers_for_removal, portrait_outline = kwargs.get('outline_choice', None))
     else:
-        # This is any version in 3ds Max.
+        # This is 3ds Max.
         # Export the texture.
         mmbgp.ExportTextureMM(image, layer, xcf_path, '.png', file_name_prefix = prefix, file_name_suffix = suffix, layers_to_remove = layers_for_removal, portrait_outline = kwargs.get('outline_choice', None))
 
@@ -131,12 +131,12 @@ def ExportNGPortrait(xcf_path, image, layer, template, alchemy_version):
         # Nothing needs to be removed.
         layers_for_removal = ['Frame', 'Background']
     # Determine the Alchemy version.
-    if alchemy_version == 2:
+    if alchemy_version == 1:
         # This is Alchemy 5 (texture replacement method).
         # Export the texture.
         mmbgp.ExportTextureMM(image, layer, xcf_path, '.tga', file_name_prefix = 'ng_', file_name_suffix = suffix, layers_to_remove = layers_for_removal, transparent = True)
     else:
-        # This is any version in 3ds Max.
+        # This is 3ds Max.
         # Export the texture.
         mmbgp.ExportTextureMM(image, layer, xcf_path, '.png', file_name_prefix = 'ng_', file_name_suffix = suffix, layers_to_remove = layers_for_removal, transparent = True)
 
@@ -153,7 +153,7 @@ def ExportXML1CSP(xcf_path, image, layer, template, alchemy_version):
         layers_for_removal = ['XML2 Background']
     # Determine if the Alchemy version is correct.
     if alchemy_version == 0:
-        # This is Alchemy 2.5.
+        # This is 3ds Max.
         # Export the texture.
         mmbgp.ExportTextureMM(image, layer, xcf_path, '.png', file_name_prefix = 'x1c_', layers_to_remove = layers_for_removal, portrait_outline = 'XML1CSP')
 
@@ -169,12 +169,12 @@ def ExportXML2CSP(xcf_path, image, layer, template, alchemy_version):
         # Nothing needs to be removed.
         layers_for_removal = ['Frame', 'XML1 Background']
     # Determine the Alchemy version.
-    if alchemy_version == 2:
+    if alchemy_version == 1:
         # This is Alchemy 5 (texture replacement method).
         # Export the texture.
         mmbgp.ExportTextureMM(image, layer, xcf_path, '.tga', file_name_prefix = 'x2c_', layers_to_remove = layers_for_removal)
     else:
-        # This is any version in 3ds Max.
+        # This is 3ds Max.
         # Export the texture.
         mmbgp.ExportTextureMM(image, layer, xcf_path, '.png', file_name_prefix = 'x2c_', layers_to_remove = layers_for_removal)
 

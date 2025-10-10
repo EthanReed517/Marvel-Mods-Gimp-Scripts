@@ -64,7 +64,7 @@ register(
     [
         (PF_IMAGE, 'image', 'Input image', None),
         (PF_DRAWABLE, 'layer', 'Layer, mask or channel', None),
-        (PF_OPTION, 'alchemy_version', 'Alchemy Version:', 0, ['Alchemy 2.5', 'Alchemy 5', 'Alchemy 5 (Texture Replacement)']),
+        (PF_OPTION, 'alchemy_version', 'Export Method:', 0, ['3ds Max', 'Alchemy 5 Texture Replacement']),
         (PF_TOGGLE, 'xml1_choice', 'Export a CSP for XML1?', 0),
         (PF_TOGGLE, 'xml2_choice', 'Export a CSP for XML2?', 1)
     ],

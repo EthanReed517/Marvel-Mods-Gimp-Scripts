@@ -14,7 +14,7 @@ This script will only work correctly if the image has been saved as a .xcf file.
 1. Start with an image open in GIMP that you would like to export. See the "Compatibility" section above for details on the image type.
 2. In the toolbar, go to `Marvel Mods/Export Textures/By Asset Type` and choose the `Export Multiple Portraits (CSP and HUD)` plugin.
 3. You will be presented with a series of options:
-	- **Alchemy Version**: Select which version of Alchemy you're using. `Alchemy 2.5` will export the textures to be set up in 3ds Max 5 with the Alchemy 2.5 plugin. `Alchemy 5` will export the textures to be set up in 3ds Max 10-12 with the Alchemy 5 plugin. `Alchemy 5 (Texture Replacement)` will export the textures in .tga format to use with the Alchemy 5 texture creation tools.
+	- **Export Method**: Select which version of Alchemy you're using. `3ds Max` will export the textures to be set up in 3ds Max. `Alchemy 5 Texture Replacment` will export the textures in .tga format to use with the Alchemy 5 texture creation tools.
 	- **Export a Plain HUD?**: Select if you want to export a plain HUD with no outline.
 	- **Export an MUA1 next-gen style HUD?**: Select if you want to export a HUD in the style of next-gen MUA1 (transparent background and no frame)
 	- **Export a HUD with a hero outline?**: Select if you want to export a HUD with a typical blue outline.

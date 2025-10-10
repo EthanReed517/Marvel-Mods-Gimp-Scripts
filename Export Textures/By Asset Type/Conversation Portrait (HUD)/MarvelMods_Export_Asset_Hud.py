@@ -65,7 +65,7 @@ register(
     [
         (PF_IMAGE, 'image', 'Input image', None),
         (PF_DRAWABLE, 'layer', 'Layer, mask or channel', None),
-        (PF_OPTION, 'alchemy_version', 'Alchemy Version:', 0, ['Alchemy 2.5', 'Alchemy 5', 'Alchemy 5 (Texture Replacement)']),
+        (PF_OPTION, 'alchemy_version', 'Export Method:', 0, ['3ds Max', 'Alchemy 5 Texture Replacement']),
         (PF_TOGGLE, 'plain_choice', 'Export a plain portrait?', 0),
         (PF_TOGGLE, 'next_gen_choice', 'Export an MUA1 next-gen\nstyle portrait?', 1),
         (PF_TOGGLE, 'hero_outline_choice', 'Export a portrait with a\nhero outline?', 1),
