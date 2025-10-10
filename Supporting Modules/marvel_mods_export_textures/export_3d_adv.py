@@ -75,11 +75,11 @@ def ExportNorm(image, layer, xcf_path, normal_color, suffix):
     if normal_color == 0:
         # The normal map should be yellow.
         # Compose the image: green channel in red channel, alpha channel in green channel, red channel (all black) in blue channel, white image in alpha channel.
-        export_image = pdb.plug_in_compose(green_image, export_layer, alpha_image, red_image, white_image, 'RGBA')
+        export_image = pdb.plug_in_compose(alpha_image, export_layer, green_image, red_image, white_image, 'RGBA')
     else:
         # The normal map should be blue.
         # Compose the image: green channel in red channel, alpha channel in green channel, white image in blue channel, white image in alpha channel.
-        export_image = pdb.plug_in_compose(green_image, export_layer, alpha_image, white_image, white_image, 'RGBA')
+        export_image = pdb.plug_in_compose(alpha_image, export_layer, green_image, white_image, white_image, 'RGBA')
     # Get the active layer of the new image.
     export_layer = pdb.gimp_image_get_active_layer(export_image)
     # Export the new image.
