@@ -14,6 +14,9 @@ This script will only work correctly if the image has been saved as a .xcf file,
 1. Start with an image open in GIMP that you would like to export. See the "Compatibility" section above for details on the image type.
 2. In the toolbar, go to `Marvel Mods/Export Textures/By Asset Type` and choose the `Export 3D Asset - Diffuse Texture` plugin.
 3. You will be presented with the following option:
+	- **Export Method**: Select which version of Alchemy you're using.
+	  - `3ds Max` will export the textures to be set up in 3ds Max.
+	  - `Alchemy 5 Texture Replacment` will export the textures in .tga format to use with the Alchemy 5 texture creation tools.
     - **Preserve Transparency**:
 	  - `Yes`: Choose if your texture needs to maintain transparency. This will keep the alpha channel on export.
 	  - `No`: Choose if your texture should not have any transparency. This will flatten the image, removing the alpha channel.

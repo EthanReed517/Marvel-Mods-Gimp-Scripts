@@ -4,7 +4,8 @@ by BaconWizard17
 ## Quick Export 3D Asset - Diffuse Texture
 This is a quick version of my `Export 3D Asset - Diffuse Texture` plugin that runs without a dialog and uses my preferred settings. This plugin exports a texture for a 3D asset (skin, mannequin, 3D head, bolton, power model, or map model). For more information on compatibility and usage, see the main script.
 
-The following setting is set as the default:
+The following settings are set as the default:
+ - **Export Method**: `3ds Max`
  - **Transparency**: `No`
 For more information on these settings, see the "Export 3D Asset - Diffuse Texture" plugin. 
 
