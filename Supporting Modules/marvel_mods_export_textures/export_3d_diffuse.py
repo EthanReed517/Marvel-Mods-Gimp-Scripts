@@ -43,13 +43,18 @@ from datetime import datetime
 # FUNCTIONS #
 # ######### #
 # This is the main operation.
-def Export3DDiffuse(image, layer, transparency):
+def Export3DDiffuse(image, layer, transparency, export_method):
     # Perform the initial operations.
     (okay_to_export, xcf_path) = mmbgp.InitialOps(image, layer)
     # Determine if it's okay to proceed.
     if okay_to_export == True:
         # No errors, can proceed.
+        # Set the extension.
+        if export_method == 0:
+            extension = '.png'
+        else:
+            extension = '.tga'
         # Export the texture.
-        mmbgp.ExportTextureMM(image, layer, xcf_path, '.png', transparent = transparency)
+        mmbgp.ExportTextureMM(image, layer, xcf_path, extension, transparent = transparency)
         # Print the success message.
         pdb.gimp_message('SUCCESS: exported ' + xcf_path + ' at ' + str(datetime.now().strftime('%H:%M:%S')))

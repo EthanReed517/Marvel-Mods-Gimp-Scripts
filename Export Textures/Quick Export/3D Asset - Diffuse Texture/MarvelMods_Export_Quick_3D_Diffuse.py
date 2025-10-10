@@ -47,7 +47,7 @@ import marvel_mods_export_textures as mmet
 # ######### #
 # This is the main operation.
 def Export3DDiffuse(image, layer):
-    mmet.Export3DDiffuse(image, layer, 0)
+    mmet.Export3DDiffuse(image, layer, 0, 0)
 
 
 # ######## #

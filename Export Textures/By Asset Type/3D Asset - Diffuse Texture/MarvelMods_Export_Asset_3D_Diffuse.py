@@ -47,8 +47,8 @@ import marvel_mods_export_textures as mmet
 # FUNCTIONS #
 # ######### #
 # This is the main operation.
-def Export3DDiffuse(image, layer, transparency):
-    mmet.Export3DDiffuse(image, layer, transparency)
+def Export3DDiffuse(image, layer, transparency, export_method):
+    mmet.Export3DDiffuse(image, layer, transparency, export_method)
 
 
 # ######## #
@@ -67,7 +67,8 @@ register(
     [
         (PF_IMAGE, 'image', 'Input image', None),
         (PF_DRAWABLE, 'layer', 'Layer, mask or channel', None),
-        (PF_OPTION, 'transparency', 'Preserve Transparency:', 0, ['No', 'Yes'])
+        (PF_OPTION, 'transparency', 'Preserve Transparency:', 0, ['No', 'Yes']),
+        (PF_OPTION, 'export_method', 'Export Method:', 0, ['3ds Max', 'Alchemy 5 Texture Replacement'])
     ],
     [],
     Export3DDiffuse,
