@@ -44,7 +44,7 @@ from datetime import datetime
 # FUNCTIONS #
 # ######### #
 # This is the main operation.
-def ExportIcons(image, layer, console, game):
+def ExportIcons(image, layer, game, alchemy_version):
     # Perform the initial operations.
     (okay_to_export, xcf_path) = mmbgp.initialOps(image, layer, check_square = True)
     # Verify that it's okay to export.
@@ -67,17 +67,27 @@ def ExportIcons(image, layer, console, game):
             else:
                 # No scaling is needed.
                 scale_factor_set = 1
-            # Export the image.
-            mmbgp.ExportTextureMM(image, layer, xcf_path, '.png', scale_factor = scale_factor_set, file_name_prefix = 'XML1_')
+            # Determine the Alchemy version.
+            if alchemy_version == 0:
+                # 3ds Max.
+                # Export the image.
+                mmbgp.ExportTextureMM(image, layer, xcf_path, '.png', scale_factor = scale_factor_set, file_name_prefix = 'XML1_')
         elif game == 1:
             # XML2.
             # Determine if an icons2 file is needed.
-            if image.width > 128:
+            if ((image.width > 128) and (alchemy_version == 0)):
                 # An icons2 file is needed.
                 # Export the icons2 file.
                 mmbgp.ExportTextureMM(image, layer, xcf_path, '.png', file_name_prefix = 'XML2_', file_name_suffix = '2')
-            # Export the icons1 file.
-            mmbgp.ExportTextureMM(image, layer, xcf_path, '.png', file_name_prefix = 'XML2_', file_name_suffix = '1', scale_factor = 128 / float(image.width))
+            # Determine the Alchemy version.
+            if alchemy_version == 0:
+                # 3ds Max.
+                # Export the icons1 file.
+                mmbgp.ExportTextureMM(image, layer, xcf_path, '.png', file_name_prefix = 'XML2_', file_name_suffix = '1', scale_factor = 128 / float(image.width))
+            else:
+                # Texture replacement.
+                # Export the icons1 file.
+                mmbgp.ExportTextureMM(image, layer, xcf_path, '.tga', file_name_prefix = 'XML2_', file_name_suffix = '1', scale_factor = 128 / float(image.width))
         elif game == 2:
             # MUA1.
             # Determine if the image is oversized.
@@ -85,8 +95,15 @@ def ExportIcons(image, layer, console, game):
                 scale_factor_set = 256 / float(image.width)
             else:
                 scale_factor_set = 1
-            # Export the image.
-            mmbgp.ExportTextureMM(image, layer, xcf_path, '.png', scale_factor = scale_factor_set, file_name_prefix = 'MUA1_', transparent = True)
+            # Determine the Alchemy version.
+            if alchemy_version == 0:
+                # 3ds Max.
+                # Export the icons1 file.
+                mmbgp.ExportTextureMM(image, layer, xcf_path, '.png', scale_factor = scale_factor_set, file_name_prefix = 'MUA1_', transparent = True)
+            else:
+                # Texture replacement.
+                # Export the icons1 file.
+                mmbgp.ExportTextureMM(image, layer, xcf_path, '.tga', scale_factor = scale_factor_set, file_name_prefix = 'MUA1_', transparent = True)
         else:
             # MUA2.
             # Determine if the image is oversized.
@@ -94,8 +111,15 @@ def ExportIcons(image, layer, console, game):
                 scale_factor_set = 128 / float(image.width)
             else:
                 scale_factor_set = 1
-            # Export the image.
-            mmbgp.ExportTextureMM(image, layer, xcf_path, '.png', scale_factor = scale_factor_set, file_name_prefix = 'MUA2_', transparent = True)
+            # Determine the Alchemy version.
+            if alchemy_version == 0:
+                # 3ds Max.
+                # Export the icons1 file.
+                mmbgp.ExportTextureMM(image, layer, xcf_path, '.png', scale_factor = scale_factor_set, file_name_prefix = 'MUA2_', transparent = True)
+            else:
+                # Texture replacement.
+                # Export the icons1 file.
+                mmbgp.ExportTextureMM(image, layer, xcf_path, '.tga', scale_factor = scale_factor_set, file_name_prefix = 'MUA2_', transparent = True)
         # Print the success message.
         pdb.gimp_message('SUCCESS: exported ' + xcf_path + ' at ' + str(datetime.now().strftime('%H:%M:%S')))
 
@@ -116,7 +140,8 @@ register(
     [
         (PF_IMAGE, 'image', 'Input image', None),
         (PF_DRAWABLE, 'layer', 'Layer, mask or channel', None),
-        (PF_OPTION, 'game', 'Game:', 0, ['XML1', 'XML2', 'MUA1', 'MUA2'])
+        (PF_OPTION, 'game', 'Game:', 0, ['XML1', 'XML2', 'MUA1', 'MUA2']),
+        (PF_OPTION, 'alchemy_version', 'Export Method:', 0, ['3ds Max', 'Alchemy 5 Texture Replacement'])
     ],
     [],
     ExportIcons,
