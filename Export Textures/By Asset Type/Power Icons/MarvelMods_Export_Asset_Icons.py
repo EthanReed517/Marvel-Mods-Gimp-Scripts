@@ -46,7 +46,7 @@ from datetime import datetime
 # This is the main operation.
 def ExportIcons(image, layer, game, alchemy_version):
     # Perform the initial operations.
-    (okay_to_export, xcf_path) = mmbgp.initialOps(image, layer, check_square = True)
+    (okay_to_export, xcf_path) = mmbgp.InitialOps(image, layer, check_square = True)
     # Verify that it's okay to export.
     if okay_to_export == True:
         # It's okay to export.

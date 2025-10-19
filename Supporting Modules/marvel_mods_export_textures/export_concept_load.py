@@ -140,7 +140,7 @@ def ExportXML2PSPLoad(image, layer, xcf_path, alchemy_version):
 # This function exports a 16:9 loading screen.
 def Export16_9Loading(image, layer, alchemy_version, xcf_path, type, personal_preview):
     # Export a plain png copy as a preview.
-    mmbgp.ExportTextureMM(image, layer, xcf_path, '.png', file_name_prefix = '!Preview - ', file_name_suffix = '(16-9)')
+    mmbgp.ExportTextureMM(image, layer, xcf_path, '.png', file_name_prefix = '!Preview - ', file_name_suffix = ' (16-9)')
     # Export the personal preview.
     ExportPersonalPreview(image, layer, xcf_path, 'XML2 PSP/MUA1/MUA2', 502, personal_preview)
     # Create a duplicate for the next-gen texture.
@@ -148,7 +148,7 @@ def Export16_9Loading(image, layer, alchemy_version, xcf_path, type, personal_pr
     next_gen_layer = pdb.gimp_image_get_active_layer(next_gen_image)
     # Create a duplicate for the last-gen texture.
     last_gen_image = pdb.gimp_image_duplicate(image)
-    last_gen_image = pdb.gimp_image_get_active_layer(next_gen_image)
+    last_gen_layer = pdb.gimp_image_get_active_layer(last_gen_image)
     # Scale the textures.
     pdb.gimp_image_scale(next_gen_image, next_gen_image.height * 2, next_gen_image.height)
     pdb.gimp_image_scale(last_gen_image, last_gen_image.height, last_gen_image.height)
@@ -157,7 +157,7 @@ def Export16_9Loading(image, layer, alchemy_version, xcf_path, type, personal_pr
         # Alchemy 5 texture replacement.
         # Export the textures.
         mmbgp.ExportTextureMM(next_gen_image, next_gen_layer, xcf_path, '.tga', file_name_prefix = '16-9-N_')
-        mmbgp.ExportTextureMM(last_gen_image, next_gen_layer, xcf_path, '.tga', file_name_prefix = '16-9-L_')
+        mmbgp.ExportTextureMM(last_gen_image, last_gen_layer, xcf_path, '.tga', file_name_prefix = '16-9-L_')
         # Determine the type.
         if type == 'loading':
             # This is loading screen.
@@ -168,7 +168,7 @@ def Export16_9Loading(image, layer, alchemy_version, xcf_path, type, personal_pr
         # Export the texture.
         # Export the textures.
         mmbgp.ExportTextureMM(next_gen_image, next_gen_layer, xcf_path, '.png', file_name_prefix = '16-9-N_')
-        mmbgp.ExportTextureMM(last_gen_image, next_gen_layer, xcf_path, '.png', file_name_prefix = '16-9-L_')
+        mmbgp.ExportTextureMM(last_gen_image, last_gen_layer, xcf_path, '.png', file_name_prefix = '16-9-L_')
         # Determine the type.
         if type == 'loading':
             # This is loading screen.
@@ -178,7 +178,7 @@ def Export16_9Loading(image, layer, alchemy_version, xcf_path, type, personal_pr
 #This function exports a 4:3 loading screen.
 def Export4_3Loading(image, layer, alchemy_version, xcf_path, personal_preview):
     # Export a plain png copy as a preview.
-    mmbgp.ExportTextureMM(image, layer, xcf_path, '.png', file_name_prefix = '!Preview - ', file_name_suffix = '(4-3)')
+    mmbgp.ExportTextureMM(image, layer, xcf_path, '.png', file_name_prefix = '!Preview - ', file_name_suffix = ' (4-3)')
     # Export the personal preview
     ExportPersonalPreview(image, layer, xcf_path, 'XML1/XML2 (not PSP)', 376, personal_preview)
     # Create a duplicate for the export image
@@ -219,15 +219,15 @@ def ExportConceptLoading(image, layer, alchemy_version, type, **kwargs):
         if aspect_ratio == '16:9':
             # This is a 16:9 loading screen.
             # Export the loading screen.
-            export16_9Loading(image, layer, alchemy_version, xcf_path, type, personal_preview)
+            Export16_9Loading(image, layer, alchemy_version, xcf_path, type, personal_preview)
             # Determine if a 4:3 loading screen is needed.
             if guide_position is not None:
                 # There is a guide.
                 # Export a 4:3 loading screen.
-                crop16_9to4_3AndExport(image, layer, alchemy_version, xcf_path, guidePosition, personal_preview)
+                Crop16_9to4_3AndExport(image, layer, alchemy_version, xcf_path, guide_position, personal_preview)
         else:
             # This is a 4:3 loading screen.
             # Export the loading screen.
-            export4_3Loading(image, layer, alchemy_version, xcf_path, personal_preview)
+            Export4_3Loading(image, layer, alchemy_version, xcf_path, personal_preview)
         # Print the success message.
         pdb.gimp_message('SUCCESS: exported ' + xcf_path + ' at ' + str(datetime.now().strftime('%H:%M:%S')))

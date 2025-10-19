@@ -111,7 +111,7 @@ def ExportXML1Cov(xcf_path, image, alchemy_version, personal_preview):
 # This function exports the XML2 texture.
 def ExportXML2Cov(xcf_path, image, alchemy_version, personal_preview):
     # Determine if the correct Alchemy version was picked.
-    if alchemyVersion == 0:
+    if alchemy_version == 0:
         # The correct alchemy version was picked.
         # Get the active layer of the image.
         layer = pdb.gimp_image_get_active_layer(image)
@@ -141,7 +141,7 @@ def ExportXML2PSPCov(xcf_path, image, alchemy_version, personal_preview):
     # Scale the image accordingly.
     pdb.gimp_image_scale(image, 512, 512)
     # Determine which version of Alchemy was picked.
-    if alchemyVersion == 2:
+    if alchemy_version == 2:
         # Alchemy 5 texture replacement.
         # Export for PSP.
         mmbgp.ExportTextureMM(image, layer, xcf_path, '.tga', file_name_prefix = 'XML2-PSP_')
@@ -161,7 +161,7 @@ def ExportMUA1NGCov(xcf_path, image, alchemy_version, personal_preview):
     # Scale the image accordingly
     pdb.gimp_image_scale(image, 2048, 1024)
     # Determine which version of Alchemy was picked.
-    if alchemyVersion == 2:
+    if alchemy_version == 2:
         # Alchemy 5 texture replacement.
         # Export the texture.
         mmbgp.ExportTextureMM(image, layer, xcf_path, '.tga', file_name_prefix = 'MUA1-NG_')
@@ -177,7 +177,7 @@ def ExportMUA1LGCov(xcf_path, image, alchemy_version, personal_preview):
     # Scale the image accordingly.
     pdb.gimp_image_scale(image, 1024, 1024)
     # Determine which version of ALchemy was picked.
-    if alchemyVersion == 2:
+    if alchemy_version == 2:
         # Alchemy 5 texture replacement.
         # Export the texture.
         mmbgp.ExportTextureMM(image, layer, xcf_path, '.tga', file_name_prefix = 'MUA1-LG_')
@@ -218,7 +218,7 @@ def ExportComic(image, layer, alchemy_version, xml1_choice, xml2_choice, mua1_ch
         # Scale the image accordingly for the game.
         pdb.gimp_image_scale(cover_image, game_info_dict[game]['width'], game_info_dict[game]['height'])
         # Open the game-specific image and get its active layer.
-        game_image = pdb.gimp_xcf_load(0, os.path.join(gimp.directory, 'plug-ins', 'MarvelModsTemplates', game_info_dict[game]['template_file_name']), os.path.join('MarvelModsTemplates', gameInfoDict[game]['template_file_name']))
+        game_image = pdb.gimp_xcf_load(0, os.path.join(gimp.directory, 'plug-ins', 'MarvelModsTemplates', game_info_dict[game]['template_file_name']), os.path.join('MarvelModsTemplates', game_info_dict[game]['template_file_name']))
         game_layer = pdb.gimp_image_get_active_layer(game_image)
         # Copy the asset layer and paste it in the new image.
         pdb.gimp_edit_copy(cover_layer)

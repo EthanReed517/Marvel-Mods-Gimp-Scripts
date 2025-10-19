@@ -103,10 +103,10 @@ def CreatePersonalLS(image, layer, hero_4_3_choice, vill_4_3_choice, hero_16_9_c
     char_name_list = SplitCharName(char_name)
     # Set up the list for processing.
     screen_list = [
-        {'variable': hero_4_3_choice, 'template_file_name': 'BW17_Load_Hero.xcf', 'color': (0, 131, 221), 'font_height': 75, 'font_height_outline': 80, 'char_center': 986, 'crop': True, 'folder': 'XML'},
-        {'variable': vill_4_3_choice, 'template_file_name': 'BW17_Load_Villain.xcf', 'color': (156, 6, 0), 'font_height': 75, 'font_height_outline': 80, 'char_center': 986, 'crop': True, 'folder': 'XML', 'prefix': 'v_'},
-        {'variable': hero_16_9_choice, 'template_file_name': 'BW17_Load_Hero.xcf', 'color': (0, 131, 221), 'font_height': 94, 'font_height_outline': 100, 'char_center': 1212, 'crop': False, 'folder': 'MUA'},
-        {'variable': vill_16_9_choice, 'template_file_name': 'BW17_Load_Villain.xcf', 'color': (156, 6, 0), 'font_height': 94, 'font_height_outline': 100, 'char_center': 1212, 'crop': False, 'folder': 'MUA', 'prefix': 'v_'}
+        {'variable': hero_4_3_choice, 'template_file_name': 'BW17_Load_Hero.xcf', 'color': (0, 131, 221), 'font_height': 75, 'font_height_outline': 80, 'char_center': 986, 'crop': True},
+        {'variable': vill_4_3_choice, 'template_file_name': 'BW17_Load_Villain.xcf', 'color': (156, 6, 0), 'font_height': 75, 'font_height_outline': 80, 'char_center': 986, 'crop': True, 'prefix': 'v_'},
+        {'variable': hero_16_9_choice, 'template_file_name': 'BW17_Load_Hero.xcf', 'color': (0, 131, 221), 'font_height': 94, 'font_height_outline': 100, 'char_center': 1212, 'crop': False},
+        {'variable': vill_16_9_choice, 'template_file_name': 'BW17_Load_Villain.xcf', 'color': (156, 6, 0), 'font_height': 94, 'font_height_outline': 100, 'char_center': 1212, 'crop': False, 'prefix': 'v_'}
     ]
     # Loop through the list of possible loading screens to create.
     for screen in screen_list:
@@ -164,7 +164,7 @@ def CreatePersonalLS(image, layer, hero_4_3_choice, vill_4_3_choice, hero_16_9_c
             # Flush displays
             #pdb.gimp_displays_flush()
             # Set up the file path.
-            xcf_path = os.path.join(directory, 'Loading Screens (' + screen['folder'] + ')', desc, screen.get('prefix', '') + '12301.xcf')
+            xcf_path = os.path.join(directory, 'Loading Screens', desc, screen.get('prefix', '') + '12301.xcf')
             # Check if the folder exists.
             if os.path.exists(os.path.dirname(xcf_path)) == False:
                 makedirs(os.path.dirname(xcf_path))
@@ -172,7 +172,7 @@ def CreatePersonalLS(image, layer, hero_4_3_choice, vill_4_3_choice, hero_16_9_c
             pdb.gimp_xcf_save(0, template_image, template_layer, xcf_path, xcf_path)
             pdb.gimp_image_set_filename(template_image, xcf_path)
             # Export the image.
-            mmet.ExportConceptLoading(template_image, template_layer, 0, 0, 'loading', personal_preview = True)
+            mmet.ExportConceptLoading(template_image, template_layer, 0, 'loading', personal_preview = True)
 
 
 # ######## #
@@ -197,7 +197,7 @@ register(
         (PF_TOGGLE, 'vill_16_9_choice', 'Create a 16:9 villain loading screen?', 0),
         (PF_STRING, 'char_name', 'Character name:', 'Character Name'),
         (PF_FLOAT, 'char_squat', 'Squat modifier:', 1.00),
-        (PF_DIRNAME, 'directory', 'Character folder:', 'C:\\Users\\ethan\\Desktop\\Marvel Mods\\BaconWizard17-Custom-Models\\Characters'),
+        (PF_DIRNAME, 'directory', 'Character folder:', 'C:\\GitHub\\BaconWizard17-Custom-Models\\Characters'),
         (PF_STRING, 'desc', 'Loading screen description:', 'Description')
     ],
     [],

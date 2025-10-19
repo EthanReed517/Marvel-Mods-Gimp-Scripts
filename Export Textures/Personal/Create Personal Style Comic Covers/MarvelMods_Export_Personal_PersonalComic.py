@@ -92,8 +92,8 @@ def CreatePersonalComic(image, layer, xml1_choice, xml2_choice, mua1_choice, cha
     floating_layer = pdb.gimp_edit_paste(template_char_layer, False)
     # Determine the offsets.
     x_offset, y_offset = floating_layer.offsets
-    x_offset = (642 - (charImage.width / 2)) - x_offset
-    y_offset = (1800 - charImage.height) - y_offset
+    x_offset = (642 - (char_image.width / 2)) - x_offset
+    y_offset = (1800 - char_image.height) - y_offset
     pdb.gimp_layer_translate(floating_layer, x_offset, y_offset)
     # Anchor the layer.
     pdb.gimp_floating_sel_anchor(floating_layer)
@@ -114,7 +114,7 @@ def CreatePersonalComic(image, layer, xml1_choice, xml2_choice, mua1_choice, cha
     pdb.gimp_xcf_save(0, template_image, template_layer, xcf_path, xcf_path)
     pdb.gimp_image_set_filename(template_image, xcf_path)
     # Export the image.
-    mmet.ExportComic(template_image, template_layer, 0, 0, xml1_choice, xml2_choice, mua1_choice, personal_preview = True)
+    mmet.ExportComic(template_image, template_layer, 0, xml1_choice, xml2_choice, mua1_choice, personal_preview = True)
 
 
 # ######## #
@@ -139,7 +139,7 @@ register(
         (PF_FLOAT, 'charSquat', 'Squat modifier:', 1.00),
         (PF_FILE, 'bigLogo', 'Big Logo:', os.path.join(gimp.directory, 'plug-ins', 'MarvelModsTemplates', 'Logos', 'Big', 'X-Men.xcf')),
         (PF_FILE, 'smallLogo', 'Small Logo:', os.path.join(gimp.directory, 'plug-ins', 'MarvelModsTemplates', 'Logos', 'Small', 'X-Men.xcf')),
-        (PF_DIRNAME, 'directory', 'Character folder:', 'C:\\Users\\ethan\\Desktop\\Marvel Mods\\BaconWizard17-Custom-Models\\Characters'),
+        (PF_DIRNAME, 'directory', 'Character folder:', 'C:\\GitHub\\BaconWizard17-Custom-Models\\Characters'),
         (PF_STRING, 'desc', 'Comic cover description:', 'Description')
     ],
     [],
