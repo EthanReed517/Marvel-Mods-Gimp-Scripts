@@ -141,7 +141,7 @@ def ExportXML2PSPCov(xcf_path, image, alchemy_version, personal_preview):
     # Scale the image accordingly.
     pdb.gimp_image_scale(image, 512, 512)
     # Determine which version of Alchemy was picked.
-    if alchemy_version == 2:
+    if alchemy_version == 1:
         # Alchemy 5 texture replacement.
         # Export for PSP.
         mmbgp.ExportTextureMM(image, layer, xcf_path, '.tga', file_name_prefix = 'XML2-PSP_')
@@ -161,7 +161,7 @@ def ExportMUA1NGCov(xcf_path, image, alchemy_version, personal_preview):
     # Scale the image accordingly
     pdb.gimp_image_scale(image, 2048, 1024)
     # Determine which version of Alchemy was picked.
-    if alchemy_version == 2:
+    if alchemy_version == 1:
         # Alchemy 5 texture replacement.
         # Export the texture.
         mmbgp.ExportTextureMM(image, layer, xcf_path, '.tga', file_name_prefix = 'MUA1-NG_')
@@ -177,7 +177,7 @@ def ExportMUA1LGCov(xcf_path, image, alchemy_version, personal_preview):
     # Scale the image accordingly.
     pdb.gimp_image_scale(image, 1024, 1024)
     # Determine which version of ALchemy was picked.
-    if alchemy_version == 2:
+    if alchemy_version == 1:
         # Alchemy 5 texture replacement.
         # Export the texture.
         mmbgp.ExportTextureMM(image, layer, xcf_path, '.tga', file_name_prefix = 'MUA1-LG_')

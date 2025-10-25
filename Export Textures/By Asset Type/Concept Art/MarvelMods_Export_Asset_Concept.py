@@ -41,8 +41,8 @@ import marvel_mods_export_textures as mmet
 # FUNCTIONS #
 # ######### #
 # This is the main operation.
-def ExportConcept(image, layer, alchemyVersion):
-    mmet.ExportConceptLoading(image, layer, alchemyVersion, "concept")
+def ExportConcept(image, layer, alchemy_version):
+    mmet.ExportConceptLoading(image, layer, alchemy_version, "concept")
 
 
 # ######## #
@@ -61,7 +61,7 @@ register(
     [
         (PF_IMAGE, 'image', 'Input image', None),
         (PF_DRAWABLE, 'layer', 'Layer, mask or channel', None),
-        (PF_OPTION, 'alchemyVersion', 'Alchemy Version:', 0, ['Alchemy 2.5', 'Alchemy 5', 'Alchemy 5 (Texture Replacement)'])
+        (PF_OPTION, 'alchemy_version', 'Export Method:', 0, ['3ds Max', 'Alchemy 5 Texture Replacement'])
     ],
     [],
     ExportConcept,

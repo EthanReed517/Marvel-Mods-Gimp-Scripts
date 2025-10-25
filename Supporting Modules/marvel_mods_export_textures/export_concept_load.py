@@ -128,7 +128,7 @@ def ExportXML2PSPLoad(image, layer, xcf_path, alchemy_version):
     # Anchor the layer.
     pdb.gimp_floating_sel_anchor(floating_layer)
     # Determine the Alchemy version.
-    if alchemy_version == 2:
+    if alchemy_version == 1:
         # Alchemy 5 texture replacement.
         # Export for XML2 PSP.
         mmbgp.ExportTextureMM(black_image, black_layer, xcf_path, '.tga', file_name_prefix = '16-9-P_')
@@ -153,7 +153,7 @@ def Export16_9Loading(image, layer, alchemy_version, xcf_path, type, personal_pr
     pdb.gimp_image_scale(next_gen_image, next_gen_image.height * 2, next_gen_image.height)
     pdb.gimp_image_scale(last_gen_image, last_gen_image.height, last_gen_image.height)
     # Determine the alchemy version.
-    if alchemy_version == 2:
+    if alchemy_version == 1:
         # Alchemy 5 texture replacement.
         # Export the textures.
         mmbgp.ExportTextureMM(next_gen_image, next_gen_layer, xcf_path, '.tga', file_name_prefix = '16-9-N_')
