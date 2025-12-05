@@ -1,0 +1,4 @@
+<icons>
+	<!-- Duplicate the following line for as many entries as needed, up to 256. Remaining entries will be filled with a placeholder -->
+	<icon path="Write the path to the exported plain png file of the character's portrait here" textureicon="Write the textureicon number from the character's herostat entry here" />
+</icons>
