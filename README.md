@@ -11,10 +11,14 @@ You must have [gegl-python-fu & gegl_graph Ver.3.0.zip](http://gimpchat.com/view
 You must have [pngquant.exe](https://pngquant.org) (choose the "Binary for Windows" option) installed in `C:\Windows` for certain scripts to function.
 
 ### Installation
- 1. Open `update.bat` with Notepad++ or another text editor.
- 2. Edit the file paths in line 6 and line 8 to reflect your GIMP configuration.
- 3. Save `update.bat`
- 4. Run `update.bat` as an administrator, which will allow you to access the necessary folders.
+ 1. If updating from version 2.0.0, delete the following folders:
+   - `(GIMP installation)\GIMP 2\lib\python2.7\site-packages\Marvel_Mods_Basic_Gimp_Procedures`
+   - `(GIMP installation)\GIMP 2\lib\python2.7\site-packages\Marvel_Mods_Export_Previews`
+   - `(GIMP installation)\GIMP 2\lib\python2.7\site-packages\Marvel_Mods_Export_Textures`
+ 2. Open `update.bat` with Notepad++ or another text editor.
+ 3. Edit the file paths in line 6 and line 8 to reflect your GIMP configuration.
+ 4. Save `update.bat`
+ 5. Run `update.bat` as an administrator, which will allow you to access the necessary folders.
 
 Alternatively, you can manually paste individual scripts into the appropriate folders.
 
