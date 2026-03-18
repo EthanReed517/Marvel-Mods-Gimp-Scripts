@@ -13,23 +13,32 @@
 		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - XML1, XML2\Defaultman\5. Ice Form\00XX (Skin - No Cel).png" row="1" column="2" desc="Skin: 0001" />
 	</pack>
 	<!-- XML2 -->
-	<pack subFolder="2X2-1. XML2 Default Plus" name="Defaultman" rows="1" columns="3" source="XML2" >
+	<pack subFolder="2X2-1. XML2 Default Plus" name="Defaultman" rows="1" columns="1" source="XML2" >
 		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - XML1, XML2\Defaultman\1. Classic\00XX (Skin - No Cel).png" row="1" column="1" desc="Skin: 0002" />
 		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Default Skins - XML1, XML2\Defaultman\1. Classic\hud_head_00XX (XML2 Version).png" row="1" column="1" pos="1" />
-		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - XML1, XML2\Defaultman\5. Ice Form\00XX (Skin - No Cel).png" row="1" column="2" desc="Skin: 0001" />
-		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - XML1, XML2\Defaultman\6. Metal Form\00XX (Skin - No Cel).png" row="1" column="3" desc="Skin: 2504" />
 	</pack>
-	<pack subFolder="2X2-2. XML2 Redesign" name="Defaultman" rows="1" columns="3" source="XML2" >
+	<pack subFolder="2X2-1. XML2 Default Plus" name="Defaultman (Elemental Forms)" rows="1" columns="3" source="XML2" >
+		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - XML1, XML2\Defaultman\5. Ice Form\00XX (Skin - No Cel).png" row="1" column="1" desc="Skin: 0001" />
+		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - XML1, XML2\Defaultman\6. Metal Form\00XX (Skin - No Cel).png" row="1" column="2" desc="Skin: 0003" />
+		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - XML1, XML2\Defaultman\7. Rock Form\00XX (Skin - No Cel).png" row="1" column="3" desc="Skin: 0004" />
+	</pack>
+	<pack subFolder="2X2-2. XML2 Redesign" name="Defaultman" rows="1" columns="1" source="XML2" >
 		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - XML1, XML2\Defaultman\1. Classic\00XX (Skin).png" row="1" column="1" desc="Skin: 0002" />
 		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Default Skins - XML1, XML2\Defaultman\1. Classic\hud_head_00XX (XML2 Version).png" row="1" column="1" pos="1" />
-		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - XML1, XML2\Defaultman\5. Ice Form\00XX (Skin - No Cel).png" row="1" column="2" desc="Skin: 0001" />
-		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - XML1, XML2\Defaultman\6. Metal Form\00XX (Skin).png" row="1" column="3" desc="Skin: 2504" />
 	</pack>
-	<pack subFolder="2X2-3. XML2 Custom" name="Defaultman" rows="1" columns="3" source="XML2" >
+	<pack subFolder="2X2-2. XML2 Redesign" name="Defaultman (Elemental Forms)" rows="1" columns="3" source="XML2" >
+		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - XML1, XML2\Defaultman\5. Ice Form\00XX (Skin - No Cel).png" row="1" column="1" desc="Skin: 0001" />
+		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - XML1, XML2\Defaultman\6. Metal Form\00XX (Skin).png" row="1" column="2" desc="Skin: 0003" />
+		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - XML1, XML2\Defaultman\7. Rock Form\00XX (Skin).png" row="1" column="3" desc="Skin: 0004" />
+	</pack>
+	<pack subFolder="2X2-3. XML2 Custom" name="Defaultman" rows="1" columns="1" source="XML2" >
 		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - XML1, XML2\Defaultman\1. Classic\00XX (Skin).png" row="1" column="1" desc="Skin: 0002" />
 		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Default Skins - XML1, XML2\Defaultman\1. Classic\hud_head_00XX (XML2 Version).png" row="1" column="1" pos="1" />
-		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - XML1, XML2\Defaultman\5. Ice Form\00XX (Skin - No Cel).png" row="1" column="2" desc="Skin: 0001" />
-		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - XML1, XML2\Defaultman\6. Metal Form\00XX (Skin).png" row="1" column="3" desc="Skin: 2504" />
+	</pack>
+	<pack subFolder="2X2-3. XML2 Custom" name="Defaultman (Elemental Forms)" rows="1" columns="3" source="XML2" >
+		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - XML1, XML2\Defaultman\5. Ice Form\00XX (Skin - No Cel).png" row="1" column="1" desc="Skin: 0001" />
+		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - XML1, XML2\Defaultman\6. Metal Form\00XX (Skin).png" row="1" column="2" desc="Skin: 0003" />
+		<screenshot path="C:\Github\BaconWizard17-Mod-Releases\Custom Models - XML1, XML2\Defaultman\7. Rock Form\00XX (Skin).png" row="1" column="3" desc="Skin: 0004" />
 	</pack>
 	<!-- MUA1 (Last-Gen) -->
 	<pack subFolder="3M1-0c. MUA1 Default (Last-Gen)" name="Defaultman" rows="1" columns="1" source="MUA1" >
