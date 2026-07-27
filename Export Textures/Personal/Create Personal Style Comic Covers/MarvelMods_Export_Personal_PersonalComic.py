@@ -44,7 +44,7 @@ import os.path
 # FUNCTIONS #
 # ######### #
 # This is the main operation.
-def CreatePersonalComic(image, layer, xml1_choice, xml2_choice, mua1_choice, char_squat, big_logo, small_logo, directory, desc):
+def CreatePersonalComic(image, layer, xml1_choice, xml2_choice, mua1_choice, char_squat, big_logo, small_logo, directory, desc, name):
     # Set the character height.
     char_height = 1500
     # Create a duplicate image of the character.
@@ -106,7 +106,7 @@ def CreatePersonalComic(image, layer, xml1_choice, xml2_choice, mua1_choice, cha
     # Flush displays.
     #pdb.gimp_displays_flush()
     # Set up the file path.
-    xcf_path = os.path.join(directory, 'Comic Covers', desc, os.path.basename(directory).replace(' ', '_').lower() + '_cov.xcf')
+    xcf_path = os.path.join(directory, 'Comic Covers', desc, name.lower() + '.xcf')
     # Check if the folder exists.
     if os.path.exists(os.path.dirname(xcf_path)) == False:
         makedirs(os.path.dirname(xcf_path))
@@ -140,7 +140,8 @@ register(
         (PF_FILE, 'bigLogo', 'Big Logo:', os.path.join(gimp.directory, 'plug-ins', 'MarvelModsTemplates', 'Logos', 'Big', 'X-Men.xcf')),
         (PF_FILE, 'smallLogo', 'Small Logo:', os.path.join(gimp.directory, 'plug-ins', 'MarvelModsTemplates', 'Logos', 'Small', 'X-Men.xcf')),
         (PF_DIRNAME, 'directory', 'Character folder:', 'C:\\GitHub\\BaconWizard17-Custom-Models\\Characters'),
-        (PF_STRING, 'desc', 'Comic cover description:', 'Description')
+        (PF_STRING, 'desc', 'Comic cover description:', 'Description'),
+        (PF_STRING, 'name', 'File name:', 'comic_cov')
     ],
     [],
     CreatePersonalComic,
